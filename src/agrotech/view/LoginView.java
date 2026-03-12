@@ -1,33 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package agrotech.view;
 
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import agrotech.model.LoginResponse;
+import agrotech.service.AuthService;
 
-/**
- *
- * @author jsant
- */
 public class LoginView extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
-    
+    private AuthService authService = new AuthService();
+
     private void loadLogo() {
-    ImageIcon icon = new ImageIcon(getClass().getResource("/agrotech/resources/Logo.jpg"));
-    Image image = icon.getImage();
-    Image scaledImage = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-    lblLogo.setIcon(new ImageIcon(scaledImage));
-    lblLogo.setText("");
-}
+        ImageIcon icon = new ImageIcon(getClass().getResource("/agrotech/resources/Logo.jpg"));
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        lblLogo.setIcon(new ImageIcon(scaledImage));
+        lblLogo.setText("");
+    }
 
     /**
      * Creates new form LoginView
      */
     public LoginView() {
         initComponents();
+        lblError.setText("");
+        setLocationRelativeTo(null);
         loadLogo();
         txtUsername.requestFocus();
     }
@@ -83,7 +80,6 @@ public class LoginView extends javax.swing.JFrame {
         txtPassword.setBackground(new java.awt.Color(255, 255, 255));
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(30, 30, 30));
-        txtPassword.setText("jPasswordField1");
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
 
         btnLogin.setBackground(new java.awt.Color(63, 175, 92));
@@ -106,13 +102,10 @@ public class LoginView extends javax.swing.JFrame {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addGap(0, 119, Short.MAX_VALUE)
@@ -170,14 +163,16 @@ public class LoginView extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword()).trim();
-        
-        if(username.isEmpty() || password.isEmpty()) {
-            lblError.setText("Omple tots els camps.");
+
+        LoginResponse response = authService.login(username, password);
+
+        if (!response.isSuccess()) {
+            lblError.setText(response.getMessage());
             return;
         }
-        
-        lblError.setText(" ");
-        
+
+        lblError.setText("");
+
         HomeView homeView = new HomeView();
         homeView.setLocationRelativeTo(null);
         homeView.setVisible(true);

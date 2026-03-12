@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package agrotech.model;
 
-/**
- *
- * @author jsant
- */
-public class Role {
-    
+public enum Role {
+    ADMIN,
+    CLIENT
 }
