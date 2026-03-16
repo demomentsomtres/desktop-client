@@ -1,9 +1,11 @@
 package agrotech.view;
 
+import agrotech.view.components.WaveBackgroundPanel;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import agrotech.model.LoginResponse;
 import agrotech.service.AuthService;
+import java.awt.BorderLayout;
 
 public class LoginView extends javax.swing.JFrame {
 
@@ -11,18 +13,34 @@ public class LoginView extends javax.swing.JFrame {
     private AuthService authService = new AuthService();
 
     private void loadLogo() {
-        ImageIcon icon = new ImageIcon(getClass().getResource("/agrotech/resources/Logo.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/agrotech/resources/logo.png"));
         Image image = icon.getImage();
         Image scaledImage = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         lblLogo.setIcon(new ImageIcon(scaledImage));
         lblLogo.setText("");
+        lblLogo.setIcon(new ImageIcon(scaledImage));
     }
+    
+    private void configureBackgroundPanel() {
+    WaveBackgroundPanel backgroundPanel = new WaveBackgroundPanel();
+    backgroundPanel.setLayout(new BorderLayout());
+
+    mainPanel.setOpaque(false);
+
+    setContentPane(backgroundPanel);
+    backgroundPanel.add(mainPanel, BorderLayout.CENTER);
+
+    revalidate();
+    repaint();
+    pack();
+}
 
     /**
      * Creates new form LoginView
      */
     public LoginView() {
         initComponents();
+        configureBackgroundPanel();
         lblError.setText("");
         setLocationRelativeTo(null);
         loadLogo();
@@ -104,25 +122,24 @@ public class LoginView extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(0, 119, Short.MAX_VALUE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPassword)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(lblUsername)))
-                .addGap(111, 111, 111))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                    .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(149, 149, 149))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addGap(0, 113, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblPassword)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addGroup(mainPanelLayout.createSequentialGroup()
+                                    .addGap(1, 1, 1)
+                                    .addComponent(lblUsername))
+                                .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(111, 111, 111))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblLogo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
