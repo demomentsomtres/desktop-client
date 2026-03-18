@@ -12,28 +12,29 @@ public class LoginView extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
     private AuthService authService = new AuthService();
 
+    // Carrega el logotip i l'ajusta a la mida de la interfície
     private void loadLogo() {
         ImageIcon icon = new ImageIcon(getClass().getResource("/agrotech/resources/logo.png"));
         Image image = icon.getImage();
         Image scaledImage = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         lblLogo.setIcon(new ImageIcon(scaledImage));
         lblLogo.setText("");
-        lblLogo.setIcon(new ImageIcon(scaledImage));
     }
-    
+
+    // Substitueix el content panel per un panell amb fons personalitzat
     private void configureBackgroundPanel() {
-    WaveBackgroundPanel backgroundPanel = new WaveBackgroundPanel();
-    backgroundPanel.setLayout(new BorderLayout());
+        WaveBackgroundPanel backgroundPanel = new WaveBackgroundPanel();
+        backgroundPanel.setLayout(new BorderLayout());
 
-    mainPanel.setOpaque(false);
+        mainPanel.setOpaque(false);
 
-    setContentPane(backgroundPanel);
-    backgroundPanel.add(mainPanel, BorderLayout.CENTER);
+        setContentPane(backgroundPanel);
+        backgroundPanel.add(mainPanel, BorderLayout.CENTER);
 
-    revalidate();
-    repaint();
-    pack();
-}
+        revalidate();
+        repaint();
+        pack();
+    }
 
     /**
      * Creates new form LoginView
@@ -177,6 +178,7 @@ public class LoginView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Recull les credencials, demana el login al servei i obre el HomeView si és correcte
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword()).trim();

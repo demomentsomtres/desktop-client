@@ -1,13 +1,12 @@
 package agrotech.view.components;
 
-
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+// Panell personalitzat que dibuixa el fons decoratiu del login
 public class WaveBackgroundPanel extends JPanel {
 
     private final ImageIcon waveIcon;

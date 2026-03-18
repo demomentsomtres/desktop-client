@@ -1,5 +1,6 @@
 package agrotech.model;
 
+// Model que representa l'usuari autenticat dins del client
 public class User {
 
     private int id;
@@ -22,6 +23,11 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", username='" + username + "', role=" + role + "}";
     }
 
 }

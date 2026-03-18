@@ -1,23 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package agrotech.model;
 
-/**
- *
- * @author jsant
- */
+// Representa la resposta del procés de login retornada pel servidor
 public class LoginResponse {
 
     private boolean success;
     private String message;
     private User user;
+    private String token;
 
-    public LoginResponse(boolean success, String message, User user) {
+    public LoginResponse(boolean success, String message, User user, String token) {
         this.success = success;
         this.message = message;
         this.user = user;
+        this.token = token;
     }
 
     public boolean isSuccess() {
@@ -30,5 +25,9 @@ public class LoginResponse {
 
     public User getUser() {
         return user;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

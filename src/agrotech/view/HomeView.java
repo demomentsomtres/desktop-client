@@ -1,6 +1,9 @@
 package agrotech.view;
 
 import agrotech.service.AuthService;
+import agrotech.model.User;
+import agrotech.session.SessionManager;
+import javax.swing.JOptionPane;
 
 public class HomeView extends javax.swing.JFrame {
 
@@ -10,6 +13,19 @@ public class HomeView extends javax.swing.JFrame {
     public HomeView() {
         initComponents();
         setLocationRelativeTo(null);
+
+        User currentUser = SessionManager.getCurrentUser();
+
+        if (currentUser != null) {
+            lblWelcome.setText("Benvingut/da, " + currentUser.getUsername() + " (" + currentUser.getRole() + ")");
+        } else {
+            lblWelcome.setText("Benvingut/da a AgroTech");
+        }
+
+        System.out.println("=== SESSIÓ ACTUAL ===");
+        System.out.println("Usuari: " + SessionManager.getCurrentUser());
+        System.out.println("Token: " + SessionManager.getCurrentToken());
+        System.out.println("=====================");
     }
 
     @SuppressWarnings("unchecked")
@@ -17,10 +33,20 @@ public class HomeView extends javax.swing.JFrame {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        lblLogo = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("AgroTech - Home");
+        setBackground(new java.awt.Color(245, 247, 248));
+        setResizable(false);
+
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblLogo.setText("LOGO");
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -29,27 +55,40 @@ public class HomeView extends javax.swing.JFrame {
         btnLogout.setText("Tanca sessió");
         btnLogout.addActionListener(this::btnLogoutActionPerformed);
 
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(131, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnLogout)
                 .addGap(145, 145, 145))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(63, 63, 63)
+                .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(btnLogout))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))))
+                .addGap(193, 193, 193)
                 .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnLogout)
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addContainerGap(366, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -73,12 +112,19 @@ public class HomeView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        authService.logout();
+        boolean logoutOk = authService.logout();
 
-        LoginView loginView = new LoginView();
-        loginView.setLocationRelativeTo(null);
-        loginView.setVisible(true);
-        this.dispose();
+        if (logoutOk) {
+            LoginView loginView = new LoginView();
+            loginView.setLocationRelativeTo(null);
+            loginView.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "No s'ha pogut tancar la sessió al servidor.",
+                    "Error de logout",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
@@ -108,6 +154,8 @@ public class HomeView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
