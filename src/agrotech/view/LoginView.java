@@ -10,7 +10,7 @@ import java.awt.BorderLayout;
 public class LoginView extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
-    private AuthService authService = new AuthService();
+    private final AuthService authService = new AuthService();
 
     // Carrega el logotip i l'ajusta a la mida de la interfície
     private void loadLogo() {
