@@ -12,49 +12,54 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Client HTTP encarregat de comunicar el client escriptori amb el servidor per
+ * a les operacions d'autenticació.
+ *
+ * <p>
+ * Actualment implementa les peticions de login i logout mitjançant HTTP.</p>
+ *
+ * @author Javier Santana Coronado
+ */
 public class AuthApiClient {
+
+    /**
+     * URL base del servidor d'autenticació.
+     */
     private static final String BASE_URL = "http://a2001678-f14b-4a5a-8211.04a74656c25a.bastion.elmeuescriptori.cat:80";
 
+    /**
+     * Envia una petició de login al servidor amb l'usuari i la contrasenya.
+     *
+     * @param username nom d'usuari introduït al formulari
+     * @param password contrasenya introduïda al formulari
+     * @return resposta del login amb l'estat, el missatge, l'usuari i el token
+     */
     public LoginResponse login(String username, String password) {
         HttpURLConnection connection = null;
 
         try {
-            // URL de l'endpoint de login
             URL url = new URL(BASE_URL + "/api/auth/login");
-
-            // Obrim la connexió HTTP
             connection = (HttpURLConnection) url.openConnection();
 
-            // Indiquem que serà una petició POST
             connection.setRequestMethod("POST");
-
-            // Indiquem que enviarem dades al body
             connection.setDoOutput(true);
-
-            // Indiquem que el body serà JSON
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-            // Construïm el JSON manualment
             String jsonBody = "{"
                     + "\"username\":\"" + username + "\","
                     + "\"password\":\"" + password + "\""
                     + "}";
 
-            // Enviem el JSON al servidor
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
-            // Llegim el codi de resposta HTTP
             int statusCode = connection.getResponseCode();
-
-            // Llegim el header Authorization si existeix
             String authHeader = connection.getHeaderField("Authorization");
 
-            // Llegim el body de la resposta
             InputStream responseStream;
-
             if (statusCode >= 200 && statusCode < 400) {
                 responseStream = connection.getInputStream();
             } else {
@@ -63,21 +68,18 @@ public class AuthApiClient {
 
             String responseBody = readStream(responseStream);
 
-            // Mostrem la resposta a consola per comprovar què retorna el servidor
             System.out.println("=== RESPOSTA SERVIDOR LOGIN ===");
             System.out.println("Status code: " + statusCode);
             System.out.println("Authorization header: " + authHeader);
             System.out.println("Body: " + responseBody);
             System.out.println("================================");
 
-            // Si el login és correcte, llegim el token i el rol reals
             if (statusCode == 200) {
                 String token = extractToken(authHeader);
                 String rolText = extractJsonValue(responseBody, "rol");
                 Role role = mapRole(rolText);
 
                 User user = new User(1, username, role);
-
                 return new LoginResponse(true, "Login correcte.", user, token);
             }
 
@@ -101,46 +103,26 @@ public class AuthApiClient {
         }
     }
 
+    /**
+     * Envia una petició de logout al servidor amb el token de sessió.
+     *
+     * @param token token de la sessió activa
+     * @return {@code true} si el servidor confirma el logout; {@code false} en
+     * cas contrari
+     */
     public boolean logout(String token) {
         HttpURLConnection connection = null;
 
         try {
-            // URL de l'endpoint de logout
             URL url = new URL(BASE_URL + "/api/auth/logout");
-
-            // Obrim la connexió HTTP
             connection = (HttpURLConnection) url.openConnection();
 
-            // Indiquem que serà una petició POST
             connection.setRequestMethod("POST");
-
-            // Indiquem que no enviarem body, només headers
             connection.setDoOutput(false);
-
-            // Enviem el token al header Authorization
             connection.setRequestProperty("Authorization", "Bearer " + token);
 
-            // Llegim el codi de resposta HTTP
             int statusCode = connection.getResponseCode();
 
-            // Llegim el body per depuració
-            InputStream responseStream;
-
-            if (statusCode >= 200 && statusCode < 400) {
-                responseStream = connection.getInputStream();
-            } else {
-                responseStream = connection.getErrorStream();
-            }
-
-            String responseBody = readStream(responseStream);
-
-            // Mostrem la resposta a consola per comprovar què retorna el servidor
-            System.out.println("=== RESPOSTA SERVIDOR LOGOUT ===");
-            System.out.println("Status code: " + statusCode);
-            System.out.println("Body: " + responseBody);
-            System.out.println("=================================");
-
-            // Si retorna 200, considerem que el logout ha anat bé
             return statusCode == 200;
 
         } catch (Exception e) {
@@ -153,7 +135,14 @@ public class AuthApiClient {
         }
     }
 
-    // Llegeix tot el contingut d'un InputStream i el converteix en String
+    /**
+     * Llegeix el contingut complet d'un {@link InputStream} i el retorna com a
+     * text.
+     *
+     * @param inputStream flux d'entrada a llegir
+     * @return contingut del flux en format {@link String}
+     * @throws Exception si es produeix un error de lectura
+     */
     private String readStream(InputStream inputStream) throws Exception {
         if (inputStream == null) {
             return "";
@@ -173,7 +162,13 @@ public class AuthApiClient {
         return result.toString();
     }
 
-    // Treu el prefix "Bearer " del header Authorization
+    /**
+     * Extreu el token del header {@code Authorization}.
+     *
+     * @param authHeader valor del header {@code Authorization}
+     * @return token sense el prefix {@code Bearer }, o {@code null} si no
+     * existeix
+     */
     private String extractToken(String authHeader) {
         if (authHeader == null || authHeader.isBlank()) {
             return null;
@@ -186,7 +181,13 @@ public class AuthApiClient {
         return authHeader;
     }
 
-    // Extreu un valor simple d'un JSON molt petit com {"rol":"user","status":200}
+    /**
+     * Extreu el valor d'una clau dins d'un JSON simple.
+     *
+     * @param json text JSON rebut
+     * @param key clau que es vol cercar
+     * @return valor associat a la clau, o {@code null} si no es troba
+     */
     private String extractJsonValue(String json, String key) {
         String search = "\"" + key + "\":";
         int start = json.indexOf(search);
@@ -213,7 +214,13 @@ public class AuthApiClient {
         return null;
     }
 
-    // Converteix el rol del servidor al rol del client
+    /**
+     * Converteix el rol textual retornat pel servidor al tipus {@link Role} del
+     * client.
+     *
+     * @param rolText rol rebut del servidor
+     * @return rol equivalent del client
+     */
     private Role mapRole(String rolText) {
         if (rolText == null) {
             return Role.CLIENT;

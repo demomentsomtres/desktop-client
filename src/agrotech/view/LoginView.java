@@ -7,12 +7,23 @@ import agrotech.model.LoginResponse;
 import agrotech.service.AuthService;
 import java.awt.BorderLayout;
 
+/**
+ * Finestra d'inici de sessió del client escriptori.
+ *
+ * <p>
+ * Permet introduir les credencials de l'usuari, iniciar el procés
+ * d'autenticació i, si el login és correcte, obrir la pantalla principal.</p>
+ *
+ * @author Javier Santana Coronado
+ */
 public class LoginView extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
     private final AuthService authService = new AuthService();
 
-    // Carrega el logotip i l'ajusta a la mida de la interfície
+    /**
+     * Carrega el logotip de l'aplicació i l'ajusta a la mida de la vista.
+     */
     private void loadLogo() {
         ImageIcon icon = new ImageIcon(getClass().getResource("/agrotech/resources/logo.png"));
         Image image = icon.getImage();
@@ -21,7 +32,9 @@ public class LoginView extends javax.swing.JFrame {
         lblLogo.setText("");
     }
 
-    // Substitueix el content panel per un panell amb fons personalitzat
+    /**
+     * Configura el panell de fons personalitzat de la finestra.
+     */
     private void configureBackgroundPanel() {
         WaveBackgroundPanel backgroundPanel = new WaveBackgroundPanel();
         backgroundPanel.setLayout(new BorderLayout());
@@ -37,7 +50,7 @@ public class LoginView extends javax.swing.JFrame {
     }
 
     /**
-     * Creates new form LoginView
+     * Crea la finestra de login i inicialitza la interfície.
      */
     public LoginView() {
         initComponents();
@@ -178,7 +191,15 @@ public class LoginView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    // Recull les credencials, demana el login al servei i obre el HomeView si és correcte
+    /**
+     * Gestiona l'acció del botó d'inici de sessió.
+     *
+     * <p>
+     * Recull les credencials introduïdes, demana el login al servei
+     * d'autenticació i obre {@link HomeView} si el procés és correcte.</p>
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword()).trim();
@@ -199,7 +220,9 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
-     * @param args the command line arguments
+     * Mètode auxiliar per executar la finestra de login de manera independent.
+     *
+     * @param args arguments de línia d'ordres
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
