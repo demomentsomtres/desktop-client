@@ -68,12 +68,6 @@ public class AuthApiClient {
 
             String responseBody = readStream(responseStream);
 
-            System.out.println("=== RESPOSTA SERVIDOR LOGIN ===");
-            System.out.println("Status code: " + statusCode);
-            System.out.println("Authorization header: " + authHeader);
-            System.out.println("Body: " + responseBody);
-            System.out.println("================================");
-
             if (statusCode == 200) {
                 String token = extractToken(authHeader);
                 String rolText = extractJsonValue(responseBody, "rol");

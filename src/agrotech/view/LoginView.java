@@ -54,6 +54,8 @@ public class LoginView extends javax.swing.JFrame {
      */
     public LoginView() {
         initComponents();
+        txtUsername.addActionListener(this::btnLoginActionPerformed);
+        txtPassword.addActionListener(this::btnLoginActionPerformed);
         configureBackgroundPanel();
         lblError.setText("");
         setLocationRelativeTo(null);
