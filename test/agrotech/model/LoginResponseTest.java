@@ -20,7 +20,7 @@ public class LoginResponseTest {
      */
     @Test
     public void constructor_iGetters_funcionenCorrectament() {
-        User user = new User(1, "javier", Role.ADMIN);
+        User user = new User(1L, "javier", Role.ADMIN);
         LoginResponse response = new LoginResponse(true, "OK", user, "token123");
 
         assertTrue(response.isSuccess());

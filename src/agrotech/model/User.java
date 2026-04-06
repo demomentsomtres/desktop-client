@@ -10,7 +10,7 @@ package agrotech.model;
  */
 public class User {
 
-    private int id;
+    private Long id;
     private String username;
     private Role role;
 
@@ -21,7 +21,7 @@ public class User {
      * @param username nom d'usuari
      * @param role rol assignat a l'usuari
      */
-    public User(int id, String username, Role role) {
+    public User(Long id, String username, Role role) {
         this.id = id;
         this.username = username;
         this.role = role;
@@ -32,7 +32,7 @@ public class User {
      *
      * @return identificador de l'usuari
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

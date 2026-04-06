@@ -45,7 +45,7 @@ public class AuthApiClientIntegrationTest {
 
     /**
      * Comprova que el login correcte d'un usuari estàndard retorna èxit,
-     * token i rol CLIENT.
+     * token i rol CUSTOMER.
      */
     @Test
     public void login_usuariCorrecte_retornaTokenIRolClient() {
@@ -55,7 +55,7 @@ public class AuthApiClientIntegrationTest {
         assertNotNull(response.getUser());
         assertNotNull(response.getToken());
         assertEquals(USER_USERNAME, response.getUser().getUsername());
-        assertEquals(Role.CLIENT, response.getUser().getRole());
+        assertEquals(Role.CUSTOMER, response.getUser().getRole());
     }
 
     /**

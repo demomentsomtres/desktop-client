@@ -65,7 +65,7 @@ public class AuthServiceTest {
      */
     @Test
     public void logout_senseToken_retornTrueINetejaSessio() {
-        User user = new User(1, "javier", Role.CLIENT);
+        User user = new User(1L, "javier", Role.CUSTOMER);
         SessionManager.login(user, null);
 
         boolean resultat = authService.logout();

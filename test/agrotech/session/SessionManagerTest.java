@@ -32,7 +32,7 @@ public class SessionManagerTest {
      */
     @Test
     public void login_desaUsuariIToken() {
-        User user = new User(1, "javier", Role.ADMIN);
+        User user = new User(1L, "javier", Role.ADMIN);
 
         SessionManager.login(user, "token123");
 
@@ -45,7 +45,7 @@ public class SessionManagerTest {
      */
     @Test
     public void logout_esborraSessio() {
-        User user = new User(1, "javier", Role.CLIENT);
+        User user = new User(1L, "javier", Role.CUSTOMER);
         SessionManager.login(user, "token123");
 
         SessionManager.logout();

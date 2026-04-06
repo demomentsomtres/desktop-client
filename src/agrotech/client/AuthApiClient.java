@@ -1,167 +1,112 @@
 package agrotech.client;
 
+import agrotech.client.retrofit.AuthApi;
+import agrotech.client.retrofit.RetrofitProvider;
+import agrotech.dto.auth.AuthenticatedUserDto;
+import agrotech.dto.auth.LoginRequestDto;
+import agrotech.dto.auth.LoginResponseDto;
 import agrotech.model.LoginResponse;
-import agrotech.model.Role;
 import agrotech.model.User;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
- * Client HTTP encarregat de comunicar el client escriptori amb el servidor per
- * a les operacions d'autenticació.
+ * Gestiona les peticions d'autenticació contra el backend.
  *
  * <p>
- * Actualment implementa les peticions de login i logout mitjançant HTTP.</p>
+ * Inclou les operacions de login i logout utilitzant Retrofit.</p>
  *
  * @author Javier Santana Coronado
  */
 public class AuthApiClient {
 
-    /**
-     * URL base del servidor d'autenticació.
-     */
-    private static final String BASE_URL = "http://a2001678-f14b-4a5a-8211.04a74656c25a.bastion.elmeuescriptori.cat:80";
+    private final AuthApi authApi;
 
     /**
-     * Envia una petició de login al servidor amb l'usuari i la contrasenya.
+     * Crea el client d'autenticació.
+     */
+    public AuthApiClient() {
+        this.authApi = RetrofitProvider.getInstance().create(AuthApi.class);
+    }
+
+    /**
+     * Envia una petició de login al backend.
      *
-     * @param username nom d'usuari introduït al formulari
-     * @param password contrasenya introduïda al formulari
-     * @return resposta del login amb l'estat, el missatge, l'usuari i el token
+     * @param username nom d'usuari
+     * @param password contrasenya
+     * @return resposta del login
      */
     public LoginResponse login(String username, String password) {
-        HttpURLConnection connection = null;
-
         try {
-            URL url = new URL(BASE_URL + "/api/auth/login");
-            connection = (HttpURLConnection) url.openConnection();
+            LoginRequestDto requestDto = new LoginRequestDto(username, password);
+            Call<LoginResponseDto> call = authApi.login(requestDto);
+            Response<LoginResponseDto> response = call.execute();
 
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            if (response.isSuccessful()) {
+                LoginResponseDto responseDto = response.body();
+                String token = extractToken(response.headers().get("Authorization"));
 
-            String jsonBody = "{"
-                    + "\"username\":\"" + username + "\","
-                    + "\"password\":\"" + password + "\""
-                    + "}";
+                if (responseDto == null || responseDto.getUser() == null || token == null) {
+                    return new LoginResponse(false,
+                            "Resposta del servidor incompleta.", null, null);
+                }
 
-            try (OutputStream os = connection.getOutputStream()) {
-                byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
-            }
+                User user = mapUser(responseDto.getUser());
 
-            int statusCode = connection.getResponseCode();
-            String authHeader = connection.getHeaderField("Authorization");
+                if (user == null) {
+                    return new LoginResponse(false,
+                            "Resposta del servidor no vàlida.", null, null);
+                }
 
-            InputStream responseStream;
-            if (statusCode >= 200 && statusCode < 400) {
-                responseStream = connection.getInputStream();
-            } else {
-                responseStream = connection.getErrorStream();
-            }
-
-            String responseBody = readStream(responseStream);
-
-            if (statusCode == 200) {
-                String token = extractToken(authHeader);
-                String rolText = extractJsonValue(responseBody, "rol");
-                Role role = mapRole(rolText);
-
-                User user = new User(1, username, role);
                 return new LoginResponse(true, "Login correcte.", user, token);
             }
 
-            if (statusCode == 401) {
+            if (response.code() == 401) {
                 return new LoginResponse(false, "Contrasenya incorrecta.", null, null);
             }
 
-            if (statusCode == 404) {
+            if (response.code() == 404) {
                 return new LoginResponse(false, "Usuari no trobat.", null, null);
             }
 
-            return new LoginResponse(false, "Error del servidor. Codi HTTP: " + statusCode, null, null);
+            return new LoginResponse(false,
+                    "Error del servidor. Codi HTTP: " + response.code(), null, null);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            return new LoginResponse(false, "No s'ha pogut connectar amb el servidor.", null, null);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+            return new LoginResponse(false,
+                    "No s'ha pogut connectar amb el servidor.", null, null);
         }
     }
 
     /**
-     * Envia una petició de logout al servidor amb el token de sessió.
+     * Envia una petició de logout al backend.
      *
-     * @param token token de la sessió activa
-     * @return {@code true} si el servidor confirma el logout; {@code false} en
-     * cas contrari
+     * @param token token de sessió
+     * @return {@code true} si el logout és correcte; {@code false} altrament
      */
     public boolean logout(String token) {
-        HttpURLConnection connection = null;
+        if (token == null || token.isBlank()) {
+            return false;
+        }
 
         try {
-            URL url = new URL(BASE_URL + "/api/auth/logout");
-            connection = (HttpURLConnection) url.openConnection();
+            Call<Void> call = authApi.logout("Bearer " + token);
+            Response<Void> response = call.execute();
+            return response.isSuccessful();
 
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(false);
-            connection.setRequestProperty("Authorization", "Bearer " + token);
-
-            int statusCode = connection.getResponseCode();
-
-            return statusCode == 200;
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
     }
 
     /**
-     * Llegeix el contingut complet d'un {@link InputStream} i el retorna com a
-     * text.
+     * Extreu el token del header Authorization.
      *
-     * @param inputStream flux d'entrada a llegir
-     * @return contingut del flux en format {@link String}
-     * @throws Exception si es produeix un error de lectura
-     */
-    private String readStream(InputStream inputStream) throws Exception {
-        if (inputStream == null) {
-            return "";
-        }
-
-        StringBuilder result = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                result.append(line);
-            }
-        }
-
-        return result.toString();
-    }
-
-    /**
-     * Extreu el token del header {@code Authorization}.
-     *
-     * @param authHeader valor del header {@code Authorization}
-     * @return token sense el prefix {@code Bearer }, o {@code null} si no
-     * existeix
+     * @param authHeader valor del header Authorization
+     * @return token sense el prefix Bearer, o {@code null} si no existeix
      */
     private String extractToken(String authHeader) {
         if (authHeader == null || authHeader.isBlank()) {
@@ -176,58 +121,17 @@ public class AuthApiClient {
     }
 
     /**
-     * Extreu el valor d'una clau dins d'un JSON simple.
+     * Converteix el DTO autenticat a un usuari del client.
      *
-     * @param json text JSON rebut
-     * @param key clau que es vol cercar
-     * @return valor associat a la clau, o {@code null} si no es troba
+     * @param dto usuari retornat pel backend
+     * @return usuari del client o {@code null} si no és vàlid
      */
-    private String extractJsonValue(String json, String key) {
-        String search = "\"" + key + "\":";
-        int start = json.indexOf(search);
-
-        if (start == -1) {
+    private User mapUser(AuthenticatedUserDto dto) {
+        if (dto == null || dto.getId() == null || dto.getUsername() == null
+                || dto.getRole() == null) {
             return null;
         }
 
-        start += search.length();
-
-        while (start < json.length() && Character.isWhitespace(json.charAt(start))) {
-            start++;
-        }
-
-        if (start < json.length() && json.charAt(start) == '"') {
-            start++;
-            int end = json.indexOf("\"", start);
-
-            if (end != -1) {
-                return json.substring(start, end);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Converteix el rol textual retornat pel servidor al tipus {@link Role} del
-     * client.
-     *
-     * @param rolText rol rebut del servidor
-     * @return rol equivalent del client
-     */
-    private Role mapRole(String rolText) {
-        if (rolText == null) {
-            return Role.CLIENT;
-        }
-
-        if (rolText.equalsIgnoreCase("admin")) {
-            return Role.ADMIN;
-        }
-
-        if (rolText.equalsIgnoreCase("user")) {
-            return Role.CLIENT;
-        }
-
-        return Role.CLIENT;
+        return new User(dto.getId(), dto.getUsername(), dto.getRole());
     }
 }
