@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 /**
  * Proves unitàries bàsiques de la classe AuthService.
  *
- * Es comprova la validació de camps i el comportament del logout
- * quan no hi ha token actiu.
+ * Es comprova la validació de camps i el comportament del logout quan no hi ha
+ * token actiu.
  *
  * @author Javier Santana Coronado
  */
@@ -60,8 +60,8 @@ public class AuthServiceTest {
     }
 
     /**
-     * Comprova que el logout retorna true i neteja la sessió
-     * quan no hi ha token actiu.
+     * Comprova que el logout retorna true i neteja la sessió quan no hi ha
+     * token actiu.
      */
     @Test
     public void logout_senseToken_retornTrueINetejaSessio() {

@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
 /**
  * Proves d'integració de la classe AuthApiClient amb el servidor real.
  *
- * Es comprova el funcionament del login i del logout mitjançant
- * comunicació HTTP amb el servidor actiu.
+ * Es comprova el funcionament del login i del logout mitjançant comunicació
+ * HTTP amb el servidor actiu.
  *
  * @author Javier Santana Coronado
  */
@@ -44,8 +44,8 @@ public class AuthApiClientIntegrationTest {
     }
 
     /**
-     * Comprova que el login correcte d'un usuari estàndard retorna èxit,
-     * token i rol CUSTOMER.
+     * Comprova que el login correcte d'un usuari estàndard retorna èxit, token
+     * i rol CUSTOMER.
      */
     @Test
     public void login_usuariCorrecte_retornaTokenIRolClient() {
@@ -59,8 +59,8 @@ public class AuthApiClientIntegrationTest {
     }
 
     /**
-     * Comprova que el login correcte d'un administrador retorna èxit,
-     * token i rol ADMIN.
+     * Comprova que el login correcte d'un administrador retorna èxit, token i
+     * rol ADMIN.
      */
     @Test
     public void login_adminCorrecte_retornaTokenIRolAdmin() {
