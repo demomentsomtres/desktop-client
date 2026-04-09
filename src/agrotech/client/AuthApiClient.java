@@ -92,7 +92,7 @@ public class AuthApiClient {
         }
 
         try {
-            Call<Void> call = authApi.logout("Bearer " + token);
+            Call<Void> call = authApi.logout();
             Response<Void> response = call.execute();
             return response.isSuccessful();
 

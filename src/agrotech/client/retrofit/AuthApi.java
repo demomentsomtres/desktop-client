@@ -4,7 +4,6 @@ import agrotech.dto.auth.LoginRequestDto;
 import agrotech.dto.auth.LoginResponseDto;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -29,9 +28,8 @@ public interface AuthApi {
     /**
      * Envia la petició de logout al backend.
      *
-     * @param authorization capçalera Authorization amb el token
      * @return resposta del backend
      */
     @POST("api/auth/logout")
-    Call<Void> logout(@Header("Authorization") String authorization);
+    Call<Void> logout();
 }
