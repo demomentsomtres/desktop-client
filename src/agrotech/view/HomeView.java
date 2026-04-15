@@ -14,6 +14,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import agrotech.view.panels.UsersPanel;
+import agrotech.view.panels.ProductsPanel;
 
 /**
  * Pantalla principal provisional del client escriptori.
@@ -84,10 +85,14 @@ public class HomeView extends javax.swing.JFrame {
 
         if (currentUser == null) {
             btnUsers.setVisible(false);
+            btnProducts.setVisible(false);
             return;
         }
 
-        btnUsers.setVisible(currentUser.getRole() == Role.ADMIN);
+        Role role = currentUser.getRole();
+
+        btnUsers.setVisible(role == Role.ADMIN);
+        btnProducts.setVisible(role == Role.ADMIN || role == Role.SUPPLIER);
     }
 
     /**
@@ -141,10 +146,11 @@ public class HomeView extends javax.swing.JFrame {
         lblTitle = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
+        btnUsers = new javax.swing.JButton();
+        btnProducts = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         lblContentPlaceholder = new javax.swing.JLabel();
-        btnUsers = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AgroTech - Home");
@@ -173,6 +179,14 @@ public class HomeView extends javax.swing.JFrame {
         lblRole.setForeground(new java.awt.Color(90, 90, 90));
         lblRole.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRole.setText("Rol: ---");
+
+        btnUsers.setText("Gestió d'usuaris");
+        btnUsers.setPreferredSize(new java.awt.Dimension(140, 30));
+        btnUsers.addActionListener(this::btnUsersActionPerformed);
+
+        btnProducts.setText("Gestió de productes");
+        btnProducts.setPreferredSize(new java.awt.Dimension(140, 30));
+        btnProducts.addActionListener(this::btnProductsActionPerformed);
 
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(30, 111, 168));
@@ -203,13 +217,9 @@ public class HomeView extends javax.swing.JFrame {
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        btnUsers.setText("Gestió d'usuaris");
-        btnUsers.setPreferredSize(new java.awt.Dimension(140, 30));
-        btnUsers.addActionListener(this::btnUsersActionPerformed);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -220,9 +230,10 @@ public class HomeView extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(contentPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 705, Short.MAX_VALUE)
+                        .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 523, Short.MAX_VALUE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -244,7 +255,8 @@ public class HomeView extends javax.swing.JFrame {
                 .addGap(4, 4, 4)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -305,6 +317,10 @@ public class HomeView extends javax.swing.JFrame {
         showPanel(new UsersPanel());
     }//GEN-LAST:event_btnUsersActionPerformed
 
+    private void btnProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductsActionPerformed
+        showPanel(new ProductsPanel());
+    }//GEN-LAST:event_btnProductsActionPerformed
+
     /**
      * Mètode auxiliar per executar la pantalla principal de manera independent.
      *
@@ -334,6 +350,7 @@ public class HomeView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnProducts;
     private javax.swing.JButton btnUsers;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JLabel lblContentPlaceholder;
