@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import agrotech.model.Role;
 import agrotech.session.SessionManager;
 import javax.swing.DefaultComboBoxModel;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  * Panell de gestió de productes de l'aplicació.
@@ -32,7 +34,7 @@ public class ProductsPanel extends javax.swing.JPanel {
         productsService = new ProductsService();
         initTableModel();
         initTableSelection();
-        loadCategories(); 
+        loadCategories();
         clearForm();
         loadProducts();
     }
@@ -93,7 +95,7 @@ public class ProductsPanel extends javax.swing.JPanel {
      */
     private void clearForm() {
         selectedProductId = null;
-        cmbCategory.setSelectedIndex(0);
+        cmbCategory.setSelectedIndex(-1);
         txtPrice.setText("");
         txtCooperativeMargin.setText("");
         txtStock.setText("");
@@ -101,7 +103,9 @@ public class ProductsPanel extends javax.swing.JPanel {
         txtTax.setText("");
         tblProducts.clearSelection();
         configurePermissionsByRole();
-        txtPrice.requestFocus();
+        if (txtPrice.isEnabled()) {
+            txtPrice.requestFocus();
+        }
     }
 
     /**
@@ -142,38 +146,111 @@ public class ProductsPanel extends javax.swing.JPanel {
         ClientResponse<List<String>> response = productsService.getAllCategories();
 
         if (!response.isSuccess()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    response.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
             return;
         }
 
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
         for (String category : response.getData()) {
             model.addElement(category);
         }
+
         cmbCategory.setModel(model);
+        cmbCategory.setSelectedIndex(-1);
     }
 
     /**
-     * Configura els botons segons el rol de l'usuari autenticat.
+     * Activa o desactiva els camps del formulari.
+     *
+     * @param editable true si els camps s'han de poder editar; false en cas
+     * contrari
+     */
+    private void setFormEditable(boolean editable) {
+        cmbCategory.setEnabled(editable);
+
+        txtPrice.setEditable(editable);
+        txtPrice.setEnabled(editable);
+
+        txtCooperativeMargin.setEditable(editable);
+        txtCooperativeMargin.setEnabled(editable);
+
+        txtStock.setEditable(editable);
+        txtStock.setEnabled(editable);
+
+        txtExpirationDate.setEditable(editable);
+        txtExpirationDate.setEnabled(editable);
+
+        txtTax.setEditable(editable);
+        txtTax.setEnabled(editable);
+    }
+
+    /**
+     * Configura els permisos visuals segons el rol de l'usuari autenticat.
      */
     private void configurePermissionsByRole() {
-        Role currentRole = SessionManager.getCurrentUser().getRole();
-
-        if (currentRole == Role.ADMIN) {
+        if (SessionManager.getCurrentUser() == null) {
             btnNew.setVisible(false);
-            btnSave.setText("Desa");
-            btnSave.setEnabled(selectedProductId != null);
-            btnDelete.setEnabled(selectedProductId != null);
+            btnSave.setVisible(false);
+            btnDelete.setVisible(false);
+            setFormEditable(false);
             return;
         }
 
-        btnNew.setVisible(true);
-        btnSave.setEnabled(true);
-        btnDelete.setEnabled(selectedProductId != null);
+        Role currentRole = SessionManager.getCurrentUser().getRole();
 
-        if (selectedProductId == null) {
-            btnSave.setText("Crea");
-        } else {
-            btnSave.setText("Desa");
+        switch (currentRole) {
+            case ADMIN -> {
+                btnNew.setVisible(false);
+
+                btnSave.setVisible(true);
+                btnDelete.setVisible(true);
+
+                btnSave.setText("Desa");
+                btnSave.setEnabled(selectedProductId != null);
+                btnDelete.setEnabled(selectedProductId != null);
+
+                setFormEditable(true);
+            }
+
+            case SUPPLIER -> {
+                btnNew.setVisible(true);
+
+                btnSave.setVisible(true);
+                btnDelete.setVisible(true);
+
+                btnSave.setEnabled(true);
+                btnDelete.setEnabled(selectedProductId != null);
+
+                if (selectedProductId == null) {
+                    btnSave.setText("Crea");
+                } else {
+                    btnSave.setText("Desa");
+                }
+
+                setFormEditable(true);
+            }
+
+            case CUSTOMER -> {
+                btnNew.setVisible(false);
+                btnSave.setVisible(false);
+                btnDelete.setVisible(false);
+
+                setFormEditable(false);
+            }
+
+            default -> {
+                btnNew.setVisible(false);
+                btnSave.setVisible(false);
+                btnDelete.setVisible(false);
+
+                setFormEditable(false);
+            }
         }
     }
 
@@ -260,7 +337,6 @@ public class ProductsPanel extends javax.swing.JPanel {
         lblCategory.setText("Categoria");
 
         cmbCategory.setForeground(new java.awt.Color(33, 37, 41));
-        cmbCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AIGUA", "OLI", "MELO", "SINDRIA", "TOMAQUET", "POMA" }));
 
         lblPrice.setBackground(new java.awt.Color(255, 255, 255));
         lblPrice.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -332,7 +408,6 @@ public class ProductsPanel extends javax.swing.JPanel {
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,7 +424,8 @@ public class ProductsPanel extends javax.swing.JPanel {
                         .addComponent(lblPrice, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtCooperativeMargin))
                     .addComponent(txtTax, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
+            .addComponent(pnlButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,8 +454,9 @@ public class ProductsPanel extends javax.swing.JPanel {
                 .addComponent(lblTax)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(pnlButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(pnlButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -415,10 +492,34 @@ public class ProductsPanel extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
             String productCategory = (String) cmbCategory.getSelectedItem();
+
+            if (productCategory == null || productCategory.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Has de seleccionar una categoria.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            String expirationDate = txtExpirationDate.getText().trim();
+
+            if (expirationDate.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Has d'introduir la data de caducitat.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            LocalDate.parse(expirationDate);
+
             Double price = Double.valueOf(txtPrice.getText().trim());
             Double cooperativeMargin = Double.valueOf(txtCooperativeMargin.getText().trim());
             Integer stock = Integer.valueOf(txtStock.getText().trim());
-            String expirationDate = txtExpirationDate.getText().trim();
             Double tax = Double.valueOf(txtTax.getText().trim());
 
             ClientResponse<Void> response = productsService.saveProduct(
@@ -455,6 +556,13 @@ public class ProductsPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(
                     this,
                     "Preu, marge, estoc i impost han de ser numèrics.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La data de caducitat ha de tenir format yyyy-MM-dd.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );

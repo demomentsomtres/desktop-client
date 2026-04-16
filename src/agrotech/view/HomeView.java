@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import agrotech.view.panels.UsersPanel;
 import agrotech.view.panels.ProductsPanel;
+import agrotech.view.panels.SuppliersPanel;
 
 /**
  * Pantalla principal provisional del client escriptori.
@@ -85,14 +86,27 @@ public class HomeView extends javax.swing.JFrame {
 
         if (currentUser == null) {
             btnUsers.setVisible(false);
+            btnSuppliers.setVisible(false);
             btnProducts.setVisible(false);
+            btnOrders.setVisible(false);
             return;
         }
 
         Role role = currentUser.getRole();
 
         btnUsers.setVisible(role == Role.ADMIN);
-        btnProducts.setVisible(role == Role.ADMIN || role == Role.SUPPLIER);
+        btnSuppliers.setVisible(role == Role.ADMIN);
+
+        btnProducts.setVisible(
+                role == Role.ADMIN
+                || role == Role.SUPPLIER
+                || role == Role.CUSTOMER
+        );
+
+        btnOrders.setVisible(
+                role == Role.ADMIN
+                || role == Role.CUSTOMER
+        );
     }
 
     /**
@@ -148,6 +162,8 @@ public class HomeView extends javax.swing.JFrame {
         lblRole = new javax.swing.JLabel();
         btnUsers = new javax.swing.JButton();
         btnProducts = new javax.swing.JButton();
+        btnSuppliers = new javax.swing.JButton();
+        btnOrders = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         lblContentPlaceholder = new javax.swing.JLabel();
@@ -188,6 +204,14 @@ public class HomeView extends javax.swing.JFrame {
         btnProducts.setPreferredSize(new java.awt.Dimension(140, 30));
         btnProducts.addActionListener(this::btnProductsActionPerformed);
 
+        btnSuppliers.setText("Gestió de proveïdors");
+        btnSuppliers.setPreferredSize(new java.awt.Dimension(140, 30));
+        btnSuppliers.addActionListener(this::btnSuppliersActionPerformed);
+
+        btnOrders.setText("Comandes");
+        btnOrders.setPreferredSize(new java.awt.Dimension(140, 30));
+        btnOrders.addActionListener(this::btnOrdersActionPerformed);
+
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(30, 111, 168));
         btnLogout.setText("Tanca sessió");
@@ -217,7 +241,7 @@ public class HomeView extends javax.swing.JFrame {
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -233,7 +257,11 @@ public class HomeView extends javax.swing.JFrame {
                         .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 523, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -256,7 +284,9 @@ public class HomeView extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -322,6 +352,19 @@ public class HomeView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProductsActionPerformed
 
     /**
+     * Mostra el mòdul de proveïdors.
+     *
+     * @param evt esdeveniment del botó
+     */
+    private void btnSuppliersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuppliersActionPerformed
+        showPanel(new SuppliersPanel());
+    }//GEN-LAST:event_btnSuppliersActionPerformed
+
+    private void btnOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdersActionPerformed
+        showPlaceholderPanel("Panell de comandes en construcció");
+    }//GEN-LAST:event_btnOrdersActionPerformed
+
+    /**
      * Mètode auxiliar per executar la pantalla principal de manera independent.
      *
      * @param args arguments de línia d'ordres
@@ -350,7 +393,9 @@ public class HomeView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnOrders;
     private javax.swing.JButton btnProducts;
+    private javax.swing.JButton btnSuppliers;
     private javax.swing.JButton btnUsers;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JLabel lblContentPlaceholder;
