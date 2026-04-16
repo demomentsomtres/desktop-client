@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import agrotech.model.Role;
 import agrotech.session.SessionManager;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  * Panell de gestió de productes de l'aplicació.
@@ -31,6 +32,7 @@ public class ProductsPanel extends javax.swing.JPanel {
         productsService = new ProductsService();
         initTableModel();
         initTableSelection();
+        loadCategories(); 
         clearForm();
         loadProducts();
     }
@@ -131,6 +133,23 @@ public class ProductsPanel extends javax.swing.JPanel {
                 product.getTax()
             });
         }
+    }
+
+    /**
+     * Carrega les categories disponibles des del backend al desplegable.
+     */
+    private void loadCategories() {
+        ClientResponse<List<String>> response = productsService.getAllCategories();
+
+        if (!response.isSuccess()) {
+            return;
+        }
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (String category : response.getData()) {
+            model.addElement(category);
+        }
+        cmbCategory.setModel(model);
     }
 
     /**

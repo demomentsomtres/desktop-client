@@ -34,7 +34,15 @@ public class ProductsService {
     public ClientResponse<List<ManagedProduct>> getAllProducts() {
         return productApiClient.getAllProducts();
     }
-    
+
+    /**
+     * Retorna totes les categories de producte disponibles.
+     *
+     * @return resposta amb la llista de categories
+     */
+    public ClientResponse<List<String>> getAllCategories() {
+        return productApiClient.getAllCategories();
+    }
 
     /**
      * Desa un producte nou o existent.
