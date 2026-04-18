@@ -614,7 +614,6 @@ public class ProductsPanel extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnNew;

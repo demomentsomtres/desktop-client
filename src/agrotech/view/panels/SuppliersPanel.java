@@ -579,7 +579,6 @@ public class SuppliersPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnFilterActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClearFilter;
     private javax.swing.JButton btnDelete;
