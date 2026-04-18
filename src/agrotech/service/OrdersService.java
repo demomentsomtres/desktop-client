@@ -91,7 +91,7 @@ public class OrdersService {
     ) {
         String normalizedPoblacio = normalize(poblacioDesti);
 
-        if (normalizedPoblacio.isEmpty()) {
+        if (normalizedPoblacio == null) {
             return new ClientResponse<>(false,
                     "La població de destí és obligatòria.", null);
         }

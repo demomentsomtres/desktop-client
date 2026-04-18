@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import agrotech.view.panels.UsersPanel;
 import agrotech.view.panels.ProductsPanel;
 import agrotech.view.panels.SuppliersPanel;
+import agrotech.view.panels.OrdersPanel;
 
 /**
  * Pantalla principal provisional del client escriptori.
@@ -94,8 +95,11 @@ public class HomeView extends javax.swing.JFrame {
 
         Role role = currentUser.getRole();
 
-        btnUsers.setVisible(role == Role.ADMIN);
-        btnSuppliers.setVisible(role == Role.ADMIN);
+        btnUsers.setVisible(
+                role == Role.ADMIN);
+
+        btnSuppliers.setVisible(
+                role == Role.ADMIN);
 
         btnProducts.setVisible(
                 role == Role.ADMIN
@@ -107,6 +111,10 @@ public class HomeView extends javax.swing.JFrame {
                 role == Role.ADMIN
                 || role == Role.CUSTOMER
         );
+
+        btnOrders.setVisible(
+                role == Role.ADMIN
+                || role == Role.CUSTOMER);
     }
 
     /**
@@ -281,12 +289,13 @@ public class HomeView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblRole, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -360,8 +369,13 @@ public class HomeView extends javax.swing.JFrame {
         showPanel(new SuppliersPanel());
     }//GEN-LAST:event_btnSuppliersActionPerformed
 
+    /**
+     * Mostra el mòdul de comandes.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdersActionPerformed
-        showPlaceholderPanel("Panell de comandes en construcció");
+        showPanel(new OrdersPanel());
     }//GEN-LAST:event_btnOrdersActionPerformed
 
     /**
