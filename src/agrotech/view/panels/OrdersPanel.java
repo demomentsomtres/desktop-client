@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import agrotech.model.Role;
 import agrotech.session.SessionManager;
+import javax.swing.SwingUtilities;
 
 /**
  * Panell de gestió de comandes de l'aplicació.
@@ -23,6 +24,7 @@ public class OrdersPanel extends javax.swing.JPanel {
     private final OrdersService ordersService;
     private DefaultTableModel tableModel;
     private Long selectedOrderId;
+    private DefaultTableModel linesTableModel;
 
     /**
      * Crea el panell de gestió de comandes.
@@ -47,10 +49,14 @@ public class OrdersPanel extends javax.swing.JPanel {
             lblTitle.setText("Gestió de comandes");
             pnlFilter.setVisible(true);
             btnNewOrder.setVisible(false);
+            lblCustomerId.setVisible(true);
+            lblCustomerIdValue.setVisible(true);
         } else {
             lblTitle.setText("Les meves comandes");
             pnlFilter.setVisible(false);
             btnNewOrder.setVisible(true);
+            lblCustomerId.setVisible(false);
+            lblCustomerIdValue.setVisible(false);
         }
     }
 
@@ -59,6 +65,7 @@ public class OrdersPanel extends javax.swing.JPanel {
      */
     private void initTableModel() {
         tableModel = (DefaultTableModel) tblOrders.getModel();
+        linesTableModel = (DefaultTableModel) tblLines.getModel();
     }
 
     /**
@@ -69,9 +76,13 @@ public class OrdersPanel extends javax.swing.JPanel {
         tblOrders.clearSelection();
 
         lblIdValue.setText("—");
+        lblCustomerIdValue.setText("—");
         lblDateValue.setText("—");
         lblPoblacioValue.setText("—");
         lblTotalValue.setText("—");
+        lblTaxValue.setText("—");
+        lblMarginValue.setText("—");
+        linesTableModel.setRowCount(0);
     }
 
     /**
@@ -145,18 +156,43 @@ public class OrdersPanel extends javax.swing.JPanel {
         }
 
         int modelRow = tblOrders.convertRowIndexToModel(selectedRow);
-
         Object idValue = tableModel.getValueAt(modelRow, 0);
-        Object dateValue = tableModel.getValueAt(modelRow, 1);
-        Object poblacioValue = tableModel.getValueAt(modelRow, 2);
-        Object totalValue = tableModel.getValueAt(modelRow, 3);
-
         selectedOrderId = Long.valueOf(idValue.toString());
 
-        lblIdValue.setText(idValue.toString());
-        lblDateValue.setText(dateValue != null ? dateValue.toString() : "—");
-        lblPoblacioValue.setText(poblacioValue != null ? poblacioValue.toString() : "—");
-        lblTotalValue.setText(totalValue != null ? totalValue.toString() + " €" : "—");
+        ClientResponse<ManagedOrder> response = ordersService.getOrder(selectedOrderId);
+
+        if (!response.isSuccess()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    response.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        ManagedOrder order = response.getData();
+
+        lblIdValue.setText(order.getId().toString());
+        lblCustomerIdValue.setText(order.getCustomerId() != null ? order.getCustomerId() : "—");
+        lblDateValue.setText(order.getDate() != null ? order.getDate() : "—");
+        lblPoblacioValue.setText(order.getPoblacioDesti() != null ? order.getPoblacioDesti() : "—");
+        lblTotalValue.setText(order.getTotalOrderPrice() != null ? order.getTotalOrderPrice() + " €" : "—");
+        lblTaxValue.setText(order.getTotalOrderTax() != null ? order.getTotalOrderTax() + " €" : "—");
+        lblMarginValue.setText(order.getTotalOrderCooperativeMargin() != null ? order.getTotalOrderCooperativeMargin() + " €" : "—");
+
+        linesTableModel.setRowCount(0);
+
+        if (order.getOrderLines() != null) {
+            for (agrotech.dto.order.OrderLineDto line : order.getOrderLines()) {
+                linesTableModel.addRow(new Object[]{
+                    line.getProductCategory(),
+                    line.getQuantity(),
+                    line.getUnitPrice() + " €",
+                    line.getTotalPrice() + " €"
+                });
+            }
+        }
     }
 
     /**
@@ -181,6 +217,8 @@ public class OrdersPanel extends javax.swing.JPanel {
         pnlForm = new javax.swing.JPanel();
         lblId = new javax.swing.JLabel();
         lblIdValue = new javax.swing.JLabel();
+        lblCustomerId = new javax.swing.JLabel();
+        lblCustomerIdValue = new javax.swing.JLabel();
         lblDate = new javax.swing.JLabel();
         lblDateValue = new javax.swing.JLabel();
         lblPoblacio = new javax.swing.JLabel();
@@ -189,6 +227,13 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblTotalValue = new javax.swing.JLabel();
         btnNewOrder = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        lblTax = new javax.swing.JLabel();
+        lblTaxValue = new javax.swing.JLabel();
+        lblMargin = new javax.swing.JLabel();
+        lblMarginValue = new javax.swing.JLabel();
+        lblLines = new javax.swing.JLabel();
+        spLines = new javax.swing.JScrollPane();
+        tblLines = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(245, 247, 248));
 
@@ -300,6 +345,13 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblIdValue.setText("—");
 
+        lblCustomerId.setBackground(new java.awt.Color(255, 255, 255));
+        lblCustomerId.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblCustomerId.setForeground(new java.awt.Color(73, 80, 87));
+        lblCustomerId.setText("Client ID:");
+
+        lblCustomerIdValue.setText("—");
+
         lblDate.setBackground(new java.awt.Color(255, 255, 255));
         lblDate.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblDate.setForeground(new java.awt.Color(73, 80, 87));
@@ -332,6 +384,46 @@ public class OrdersPanel extends javax.swing.JPanel {
         btnDelete.setPreferredSize(new java.awt.Dimension(90, 30));
         btnDelete.addActionListener(this::btnDeleteActionPerformed);
 
+        lblTax.setBackground(new java.awt.Color(255, 255, 255));
+        lblTax.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblTax.setForeground(new java.awt.Color(73, 80, 87));
+        lblTax.setText("Impostos:");
+
+        lblTaxValue.setText("—");
+
+        lblMargin.setBackground(new java.awt.Color(255, 255, 255));
+        lblMargin.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblMargin.setForeground(new java.awt.Color(73, 80, 87));
+        lblMargin.setText("Marge coop:");
+
+        lblMarginValue.setText("—");
+
+        lblLines.setBackground(new java.awt.Color(255, 255, 255));
+        lblLines.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblLines.setForeground(new java.awt.Color(73, 80, 87));
+        lblLines.setText("Línies:");
+
+        tblLines.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Categoria", "Quantitat", "Preu/u €", "Total €"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        spLines.setViewportView(tblLines);
+
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
@@ -339,44 +431,79 @@ public class OrdersPanel extends javax.swing.JPanel {
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblId)
-                    .addComponent(lblDate)
-                    .addComponent(lblPoblacio)
-                    .addComponent(lblTotal)
-                    .addComponent(lblIdValue)
-                    .addComponent(lblDateValue)
-                    .addComponent(lblPoblacioValue)
-                    .addComponent(lblTotalValue)
+                    .addComponent(spLines, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(72, Short.MAX_VALUE))
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPoblacio)
+                            .addComponent(lblPoblacioValue)
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblId)
+                                    .addComponent(lblIdValue)
+                                    .addComponent(lblCustomerId)
+                                    .addComponent(lblCustomerIdValue)
+                                    .addComponent(lblDate)
+                                    .addComponent(lblDateValue))
+                                .addGap(55, 55, 55)
+                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblTotal)
+                                    .addComponent(lblTotalValue)
+                                    .addComponent(lblTax)
+                                    .addComponent(lblTaxValue)
+                                    .addComponent(lblMargin)
+                                    .addComponent(lblMarginValue)))
+                            .addComponent(lblLines))
+                        .addGap(0, 124, Short.MAX_VALUE))
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addComponent(btnNewOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblId)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblIdValue)
-                .addGap(18, 18, 18)
-                .addComponent(lblDate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDateValue)
+                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addComponent(lblId)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblIdValue)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCustomerId)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCustomerIdValue))
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addComponent(lblTax)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTaxValue)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblMargin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMarginValue)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addComponent(lblDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDateValue))
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addComponent(lblTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTotalValue)))
                 .addGap(18, 18, 18)
                 .addComponent(lblPoblacio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPoblacioValue)
                 .addGap(18, 18, 18)
-                .addComponent(lblTotal)
+                .addComponent(lblLines)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTotalValue)
+                .addComponent(spLines, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                    .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -386,14 +513,15 @@ public class OrdersPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(spOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(spOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -402,15 +530,11 @@ public class OrdersPanel extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(spOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(spOrders)
+                    .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -488,13 +612,14 @@ public class OrdersPanel extends javax.swing.JPanel {
      * @param evt esdeveniment del botó
      */
     private void btnNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewOrderActionPerformed
-        // TODO: obrir el diàleg de creació de comanda
-        JOptionPane.showMessageDialog(
-                this,
-                "Funcionalitat en desenvolupament.",
-                "Informació",
-                JOptionPane.INFORMATION_MESSAGE
+        CreateOrderDialog dialog = new CreateOrderDialog(
+                (java.awt.Frame) SwingUtilities.getWindowAncestor(this)
         );
+        dialog.setVisible(true);
+
+        if (dialog.isOrderConfirmed()) {
+            loadOrders();
+        }
     }//GEN-LAST:event_btnNewOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -502,20 +627,29 @@ public class OrdersPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnNewOrder;
+    private javax.swing.JLabel lblCustomerId;
+    private javax.swing.JLabel lblCustomerIdValue;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblDateValue;
     private javax.swing.JLabel lblFilterPoblacio;
     private javax.swing.JLabel lblFilterTelefon;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblIdValue;
+    private javax.swing.JLabel lblLines;
+    private javax.swing.JLabel lblMargin;
+    private javax.swing.JLabel lblMarginValue;
     private javax.swing.JLabel lblPoblacio;
     private javax.swing.JLabel lblPoblacioValue;
+    private javax.swing.JLabel lblTax;
+    private javax.swing.JLabel lblTaxValue;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalValue;
     private javax.swing.JPanel pnlFilter;
     private javax.swing.JPanel pnlForm;
+    private javax.swing.JScrollPane spLines;
     private javax.swing.JScrollPane spOrders;
+    private javax.swing.JTable tblLines;
     private javax.swing.JTable tblOrders;
     private javax.swing.JTextField txtFilterPoblacio;
     private javax.swing.JTextField txtFilterTelefon;
