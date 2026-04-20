@@ -68,7 +68,7 @@
                           <Component id="btnSuppliers" min="-2" pref="155" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnOrders" min="-2" pref="155" max="-2" attributes="0"/>
-                          <EmptySpace pref="177" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnLogout" min="-2" pref="117" max="-2" attributes="0"/>
                       </Group>
                       <Component id="lblLogo" alignment="0" max="32767" attributes="0"/>
@@ -247,7 +247,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblContentPlaceholder" pref="0" max="32767" attributes="0"/>
+                      <Component id="lblContentPlaceholder" pref="1053" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -256,7 +256,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblContentPlaceholder" pref="664" max="32767" attributes="0"/>
+                      <Component id="lblContentPlaceholder" pref="823" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

@@ -28,7 +28,7 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pnlFilter" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="spOrders" min="-2" pref="558" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="pnlForm" max="32767" attributes="0"/>
@@ -47,7 +47,7 @@
               <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnlFilter" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="spOrders" max="32767" attributes="0"/>
                   <Component id="pnlForm" max="32767" attributes="0"/>
@@ -80,7 +80,13 @@
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Filtre"/>
+            <TitledBorder title="Filtre">
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder>
+                  <Color PropertyName="color" blue="dc" green="dc" red="dc" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </TitledBorder>
           </Border>
         </Property>
       </Properties>
@@ -88,17 +94,87 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtFilterPoblacio" min="-2" pref="420" max="-2" attributes="0"/>
-                      <Component id="lblFilterPoblacio" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblFilterTelefon" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFilterTelefon" alignment="0" min="-2" pref="420" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="btnFilter" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="btnClearFilter" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="sepOrder" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblSectionOrder" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblFilterCustomerId" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtFilterCustomerId" alignment="0" min="-2" pref="149" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblFilterPoblacio" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtFilterPoblacio" alignment="0" min="-2" pref="149" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblFilterStartDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtFilterStartDate" alignment="0" min="-2" pref="149" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtFilterEndDate" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <Component id="lblFilterEndDate" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="sepTotal" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFilterMinTotal" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMinTotal" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFilterMaxTotal" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMaxTotal" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="lblSectionTotal" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="sepMargin" min="-2" pref="212" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFilterMinMargin" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMinMargin" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFilterMaxMargin" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMaxMargin" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="lblSectionMargin" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="sepTax" min="-2" pref="212" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFilterMinTax" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMinTax" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblFilterMaxTax" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMaxTax" min="-2" pref="100" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="lblSectionTax" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="btnFilter" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnClearFilter" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -108,27 +184,127 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="lblFilterPoblacio" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblSectionOrder" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <Component id="sepOrder" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtFilterPoblacio" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="lblFilterTelefon" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtFilterTelefon" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="29" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnClearFilter" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="lblFilterCustomerId" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                          <Component id="lblFilterStartDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblFilterEndDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="txtFilterCustomerId" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtFilterPoblacio" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtFilterStartDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtFilterEndDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lblFilterPoblacio" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                                  <Component id="lblSectionTotal" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                  <Component id="sepTotal" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblFilterMaxTotal" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblFilterMinTotal" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="txtFilterMinTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtFilterMaxTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lblSectionTax" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="sepTax" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblFilterMinTax" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMinTax" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="lblFilterMaxTax" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                          <Component id="txtFilterMaxTax" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="lblSectionMargin" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                          <Component id="sepMargin" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblFilterMaxMargin" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblFilterMinMargin" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtFilterMinMargin" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFilterMaxMargin" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnClearFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="34" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JLabel" name="lblSectionOrder">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a8" green="6f" red="1e" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Comanda"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="sepOrder">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterCustomerId">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Client ID:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterCustomerId">
+          <Properties>
+            <Property name="columns" type="int" value="15"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="29" green="25" red="21" type="rgb"/>
+            </Property>
+          </Properties>
+        </Component>
         <Component class="javax.swing.JLabel" name="lblFilterPoblacio">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Poblaci&#xf3;:"/>
+            <Property name="text" type="java.lang.String" value="Poblaci&#xf3;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFilterPoblacio">
@@ -139,18 +315,112 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblFilterTelefon">
+        <Component class="javax.swing.JLabel" name="lblFilterStartDate">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tel&#xe8;fon:"/>
+            <Property name="text" type="java.lang.String" value="Des de (YYYY-MM-DD)"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtFilterTelefon">
+        <Component class="javax.swing.JTextField" name="txtFilterStartDate">
           <Properties>
             <Property name="columns" type="int" value="15"/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="29" green="25" red="21" type="rgb"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterEndDate">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fins a (YYYY-MM-DD)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterEndDate">
+          <Properties>
+            <Property name="columns" type="int" value="15"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="29" green="25" red="21" type="rgb"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSectionTotal">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a8" green="6f" red="1e" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Total &#x20ac;"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="sepTotal">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterMinTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xed;nim"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterMinTotal">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterMaxTotal">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xe0;xim"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterMaxTotal">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSectionMargin">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a8" green="6f" red="1e" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Marge cooperativa &#x20ac;"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="sepMargin">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterMinMargin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xed;nim"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterMinMargin">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterMaxMargin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xe0;xim"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterMaxMargin">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSectionTax">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a8" green="6f" red="1e" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Impostos &#x20ac;"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="sepTax">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterMinTax">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xed;nim"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterMinTax">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFilterMaxTax">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xe0;xim"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtFilterMaxTax">
         </Component>
         <Component class="javax.swing.JButton" name="btnFilter">
           <Properties>
@@ -277,35 +547,41 @@
                       <Component id="spLines" pref="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblPoblacio" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblPoblacioValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="btnNewOrder" min="-2" pref="172" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnDelete" min="-2" pref="139" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblId" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblIdValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblCustomerId" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblCustomerIdValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblDateValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblTotal" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblTotalValue" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblTax" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblTaxValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblPoblacio" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblPoblacioValue" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblMargin" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblMarginValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDateValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTotal" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTotalValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblCustomerId" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblCustomerIdValue" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="lblLines" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="124" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="btnNewOrder" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                          <Component id="btnDelete" min="-2" pref="139" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="61" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -322,37 +598,43 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblIdValue" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="lblCustomerId" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblCustomerIdValue" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
                           <Component id="lblTax" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblTaxValue" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="lblMargin" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblMarginValue" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="lblDate" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblDateValue" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="lblPoblacio" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblPoblacioValue" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblDate" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblDateValue" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblTotalValue" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="lblCustomerId" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblCustomerIdValue" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblMargin" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblMarginValue" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblTotalValue" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="lblPoblacio" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblPoblacioValue" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lblLines" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -362,7 +644,7 @@
                       <Component id="btnNewOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="48" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

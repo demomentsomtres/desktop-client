@@ -206,10 +206,34 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblTitle = new javax.swing.JLabel();
         pnlFilter = new javax.swing.JPanel();
+        lblSectionOrder = new javax.swing.JLabel();
+        sepOrder = new javax.swing.JSeparator();
+        lblFilterCustomerId = new javax.swing.JLabel();
+        txtFilterCustomerId = new javax.swing.JTextField();
         lblFilterPoblacio = new javax.swing.JLabel();
         txtFilterPoblacio = new javax.swing.JTextField();
-        lblFilterTelefon = new javax.swing.JLabel();
-        txtFilterTelefon = new javax.swing.JTextField();
+        lblFilterStartDate = new javax.swing.JLabel();
+        txtFilterStartDate = new javax.swing.JTextField();
+        lblFilterEndDate = new javax.swing.JLabel();
+        txtFilterEndDate = new javax.swing.JTextField();
+        lblSectionTotal = new javax.swing.JLabel();
+        sepTotal = new javax.swing.JSeparator();
+        lblFilterMinTotal = new javax.swing.JLabel();
+        txtFilterMinTotal = new javax.swing.JTextField();
+        lblFilterMaxTotal = new javax.swing.JLabel();
+        txtFilterMaxTotal = new javax.swing.JTextField();
+        lblSectionMargin = new javax.swing.JLabel();
+        sepMargin = new javax.swing.JSeparator();
+        lblFilterMinMargin = new javax.swing.JLabel();
+        txtFilterMinMargin = new javax.swing.JTextField();
+        lblFilterMaxMargin = new javax.swing.JLabel();
+        txtFilterMaxMargin = new javax.swing.JTextField();
+        lblSectionTax = new javax.swing.JLabel();
+        sepTax = new javax.swing.JSeparator();
+        lblFilterMinTax = new javax.swing.JLabel();
+        txtFilterMinTax = new javax.swing.JTextField();
+        lblFilterMaxTax = new javax.swing.JLabel();
+        txtFilterMaxTax = new javax.swing.JTextField();
         btnFilter = new javax.swing.JButton();
         btnClearFilter = new javax.swing.JButton();
         spOrders = new javax.swing.JScrollPane();
@@ -244,17 +268,55 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblTitle.setText("Les meves comandes");
 
         pnlFilter.setBackground(new java.awt.Color(255, 255, 255));
-        pnlFilter.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtre"));
+        pnlFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)), "Filtre"));
 
-        lblFilterPoblacio.setText("Població:");
+        lblSectionOrder.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblSectionOrder.setForeground(new java.awt.Color(30, 111, 168));
+        lblSectionOrder.setText("Comanda");
+
+        lblFilterCustomerId.setText("Client ID:");
+
+        txtFilterCustomerId.setColumns(15);
+        txtFilterCustomerId.setForeground(new java.awt.Color(33, 37, 41));
+
+        lblFilterPoblacio.setText("Població");
 
         txtFilterPoblacio.setColumns(15);
         txtFilterPoblacio.setForeground(new java.awt.Color(33, 37, 41));
 
-        lblFilterTelefon.setText("Telèfon:");
+        lblFilterStartDate.setText("Des de (YYYY-MM-DD)");
 
-        txtFilterTelefon.setColumns(15);
-        txtFilterTelefon.setForeground(new java.awt.Color(33, 37, 41));
+        txtFilterStartDate.setColumns(15);
+        txtFilterStartDate.setForeground(new java.awt.Color(33, 37, 41));
+
+        lblFilterEndDate.setText("Fins a (YYYY-MM-DD)");
+
+        txtFilterEndDate.setColumns(15);
+        txtFilterEndDate.setForeground(new java.awt.Color(33, 37, 41));
+
+        lblSectionTotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblSectionTotal.setForeground(new java.awt.Color(30, 111, 168));
+        lblSectionTotal.setText("Total €");
+
+        lblFilterMinTotal.setText("Mínim");
+
+        lblFilterMaxTotal.setText("Màxim");
+
+        lblSectionMargin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblSectionMargin.setForeground(new java.awt.Color(30, 111, 168));
+        lblSectionMargin.setText("Marge cooperativa €");
+
+        lblFilterMinMargin.setText("Mínim");
+
+        lblFilterMaxMargin.setText("Màxim");
+
+        lblSectionTax.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblSectionTax.setForeground(new java.awt.Color(30, 111, 168));
+        lblSectionTax.setText("Impostos €");
+
+        lblFilterMinTax.setText("Mínim");
+
+        lblFilterMaxTax.setText("Màxim");
 
         btnFilter.setForeground(new java.awt.Color(30, 111, 168));
         btnFilter.setText("Filtra");
@@ -274,32 +336,138 @@ public class OrdersPanel extends javax.swing.JPanel {
             pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFilterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFilterPoblacio)
-                    .addComponent(lblFilterTelefon)
-                    .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlFilterLayout.createSequentialGroup()
-                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(sepOrder)
+                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblSectionOrder)
+                        .addGroup(pnlFilterLayout.createSequentialGroup()
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblFilterCustomerId)
+                                .addComponent(txtFilterCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblFilterPoblacio)
+                                .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblFilterStartDate)
+                                .addComponent(txtFilterStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtFilterEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblFilterEndDate)))
+                        .addGroup(pnlFilterLayout.createSequentialGroup()
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(sepTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnlFilterLayout.createSequentialGroup()
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFilterMinTotal)
+                                        .addComponent(txtFilterMinTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFilterMaxTotal)
+                                        .addComponent(txtFilterMaxTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblSectionTotal))
+                            .addGap(18, 18, 18)
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(sepMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnlFilterLayout.createSequentialGroup()
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFilterMinMargin)
+                                        .addComponent(txtFilterMinMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFilterMaxMargin)
+                                        .addComponent(txtFilterMaxMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblSectionMargin))
+                            .addGap(18, 18, 18)
+                            .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(sepTax, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnlFilterLayout.createSequentialGroup()
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFilterMinTax)
+                                        .addComponent(txtFilterMinTax, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFilterMaxTax)
+                                        .addComponent(txtFilterMaxTax, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblSectionTax)))
+                        .addGroup(pnlFilterLayout.createSequentialGroup()
+                            .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlFilterLayout.setVerticalGroup(
             pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFilterLayout.createSequentialGroup()
-                .addComponent(lblFilterPoblacio)
+                .addComponent(lblSectionOrder)
+                .addGap(2, 2, 2)
+                .addComponent(sepOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblFilterTelefon)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblFilterCustomerId)
+                                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblFilterStartDate)
+                                        .addComponent(lblFilterEndDate)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtFilterCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFilterStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFilterEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addComponent(lblFilterPoblacio)
+                                .addGap(28, 28, 28)))
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(lblSectionTotal)
+                                .addGap(2, 2, 2)
+                                .addComponent(sepTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFilterMaxTotal, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblFilterMinTotal))
+                                .addGap(4, 4, 4)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtFilterMinTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFilterMaxTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilterLayout.createSequentialGroup()
+                                .addComponent(lblSectionTax)
+                                .addGap(2, 2, 2)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                                        .addComponent(sepTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblFilterMinTax)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(txtFilterMinTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                                        .addComponent(lblFilterMaxTax)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(txtFilterMaxTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                        .addComponent(lblSectionMargin)
+                        .addGap(2, 2, 2)
+                        .addComponent(sepMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFilterMaxMargin, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblFilterMinMargin))
+                        .addGap(4, 4, 4)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFilterMinMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFilterMaxMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
                 .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         spOrders.setBackground(new java.awt.Color(255, 255, 255));
@@ -434,30 +602,34 @@ public class OrdersPanel extends javax.swing.JPanel {
                     .addComponent(spLines, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPoblacio)
-                            .addComponent(lblPoblacioValue)
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlFormLayout.createSequentialGroup()
                                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblId)
                                     .addComponent(lblIdValue)
-                                    .addComponent(lblCustomerId)
-                                    .addComponent(lblCustomerIdValue)
-                                    .addComponent(lblDate)
-                                    .addComponent(lblDateValue))
-                                .addGap(55, 55, 55)
-                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTotal)
-                                    .addComponent(lblTotalValue)
                                     .addComponent(lblTax)
-                                    .addComponent(lblTaxValue)
+                                    .addComponent(lblTaxValue))
+                                .addGap(49, 49, 49)
+                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPoblacio)
+                                    .addComponent(lblPoblacioValue)
                                     .addComponent(lblMargin)
-                                    .addComponent(lblMarginValue)))
+                                    .addComponent(lblMarginValue))
+                                .addGap(43, 43, 43)
+                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblDate)
+                                    .addComponent(lblDateValue)
+                                    .addComponent(lblTotal)
+                                    .addComponent(lblTotalValue))
+                                .addGap(66, 66, 66)
+                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblCustomerId)
+                                    .addComponent(lblCustomerIdValue)))
                             .addComponent(lblLines))
-                        .addGap(0, 124, Short.MAX_VALUE))
-                    .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addComponent(btnNewOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 61, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlFormLayout.setVerticalGroup(
@@ -470,31 +642,33 @@ public class OrdersPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblIdValue)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblCustomerId)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCustomerIdValue))
-                    .addGroup(pnlFormLayout.createSequentialGroup()
                         .addComponent(lblTax)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTaxValue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblMargin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblMarginValue)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblTaxValue))
                     .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addComponent(lblDate)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addComponent(lblPoblacio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPoblacioValue))
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addComponent(lblDate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblDateValue)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDateValue))
-                    .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addComponent(lblTotal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotalValue)))
-                .addGap(18, 18, 18)
-                .addComponent(lblPoblacio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPoblacioValue)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addComponent(lblCustomerId)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCustomerIdValue))
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addComponent(lblMargin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblMarginValue))
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addComponent(lblTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotalValue)))))
                 .addGap(18, 18, 18)
                 .addComponent(lblLines)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -503,7 +677,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -517,7 +691,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(spOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -530,7 +704,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spOrders)
                     .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -539,21 +713,112 @@ public class OrdersPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Neteja el filtre i torna a carregar tots els proveïdors.
+     * Gestiona el botó "Neteja": neteja el filtre i torna a carregar totes les
+     * comandes.
      *
      * @param evt esdeveniment del botó
      */
     private void btnClearFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFilterActionPerformed
-
+        txtFilterCustomerId.setText("");
+        txtFilterPoblacio.setText("");
+        txtFilterStartDate.setText("");
+        txtFilterEndDate.setText("");
+        txtFilterMinTotal.setText("");
+        txtFilterMaxTotal.setText("");
+        txtFilterMinMargin.setText("");
+        txtFilterMaxMargin.setText("");
+        txtFilterMinTax.setText("");
+        txtFilterMaxTax.setText("");
+        loadOrders();
+        clearDetail();
     }//GEN-LAST:event_btnClearFilterActionPerformed
 
     /**
-     * Filtra proveïdors per població i/o telèfon.
+     * Gestiona el botó "Filtra": filtra comandes amb els criteris indicats.
      *
      * @param evt esdeveniment del botó
      */
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        Long customerId = null;
+        Double minTotal = null;
+        Double maxTotal = null;
+        Double minMargin = null;
+        Double maxMargin = null;
+        Double minTax = null;
+        Double maxTax = null;
 
+        try {
+            String customerIdText = txtFilterCustomerId.getText().trim();
+            if (!customerIdText.isEmpty()) {
+                customerId = Long.parseLong(customerIdText);
+            }
+
+            String minTotalText = txtFilterMinTotal.getText().trim();
+            if (!minTotalText.isEmpty()) {
+                minTotal = Double.parseDouble(minTotalText);
+            }
+
+            String maxTotalText = txtFilterMaxTotal.getText().trim();
+            if (!maxTotalText.isEmpty()) {
+                maxTotal = Double.parseDouble(maxTotalText);
+            }
+
+            String minMarginText = txtFilterMinMargin.getText().trim();
+            if (!minMarginText.isEmpty()) {
+                minMargin = Double.parseDouble(minMarginText);
+            }
+
+            String maxMarginText = txtFilterMaxMargin.getText().trim();
+            if (!maxMarginText.isEmpty()) {
+                maxMargin = Double.parseDouble(maxMarginText);
+            }
+
+            String minTaxText = txtFilterMinTax.getText().trim();
+            if (!minTaxText.isEmpty()) {
+                minTax = Double.parseDouble(minTaxText);
+            }
+
+            String maxTaxText = txtFilterMaxTax.getText().trim();
+            if (!maxTaxText.isEmpty()) {
+                maxTax = Double.parseDouble(maxTaxText);
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Els camps numèrics han de contenir valors vàlids.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        String poblacio = txtFilterPoblacio.getText().trim();
+        String startDate = txtFilterStartDate.getText().trim();
+        String endDate = txtFilterEndDate.getText().trim();
+
+        ClientResponse<List<ManagedOrder>> response = ordersService.getOrdersByFilters(
+                customerId,
+                poblacio.isEmpty() ? null : poblacio,
+                startDate.isEmpty() ? null : startDate,
+                endDate.isEmpty() ? null : endDate,
+                minTotal, maxTotal,
+                minMargin, maxMargin,
+                minTax, maxTax
+        );
+
+        if (!response.isSuccess()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    response.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        populateTable(response.getData());
+        clearDetail();
     }//GEN-LAST:event_btnFilterActionPerformed
 
     /**
@@ -631,8 +896,16 @@ public class OrdersPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblCustomerIdValue;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblDateValue;
+    private javax.swing.JLabel lblFilterCustomerId;
+    private javax.swing.JLabel lblFilterEndDate;
+    private javax.swing.JLabel lblFilterMaxMargin;
+    private javax.swing.JLabel lblFilterMaxTax;
+    private javax.swing.JLabel lblFilterMaxTotal;
+    private javax.swing.JLabel lblFilterMinMargin;
+    private javax.swing.JLabel lblFilterMinTax;
+    private javax.swing.JLabel lblFilterMinTotal;
     private javax.swing.JLabel lblFilterPoblacio;
-    private javax.swing.JLabel lblFilterTelefon;
+    private javax.swing.JLabel lblFilterStartDate;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblIdValue;
     private javax.swing.JLabel lblLines;
@@ -640,6 +913,10 @@ public class OrdersPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblMarginValue;
     private javax.swing.JLabel lblPoblacio;
     private javax.swing.JLabel lblPoblacioValue;
+    private javax.swing.JLabel lblSectionMargin;
+    private javax.swing.JLabel lblSectionOrder;
+    private javax.swing.JLabel lblSectionTax;
+    private javax.swing.JLabel lblSectionTotal;
     private javax.swing.JLabel lblTax;
     private javax.swing.JLabel lblTaxValue;
     private javax.swing.JLabel lblTitle;
@@ -647,11 +924,23 @@ public class OrdersPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTotalValue;
     private javax.swing.JPanel pnlFilter;
     private javax.swing.JPanel pnlForm;
+    private javax.swing.JSeparator sepMargin;
+    private javax.swing.JSeparator sepOrder;
+    private javax.swing.JSeparator sepTax;
+    private javax.swing.JSeparator sepTotal;
     private javax.swing.JScrollPane spLines;
     private javax.swing.JScrollPane spOrders;
     private javax.swing.JTable tblLines;
     private javax.swing.JTable tblOrders;
+    private javax.swing.JTextField txtFilterCustomerId;
+    private javax.swing.JTextField txtFilterEndDate;
+    private javax.swing.JTextField txtFilterMaxMargin;
+    private javax.swing.JTextField txtFilterMaxTax;
+    private javax.swing.JTextField txtFilterMaxTotal;
+    private javax.swing.JTextField txtFilterMinMargin;
+    private javax.swing.JTextField txtFilterMinTax;
+    private javax.swing.JTextField txtFilterMinTotal;
     private javax.swing.JTextField txtFilterPoblacio;
-    private javax.swing.JTextField txtFilterTelefon;
+    private javax.swing.JTextField txtFilterStartDate;
     // End of variables declaration//GEN-END:variables
 }

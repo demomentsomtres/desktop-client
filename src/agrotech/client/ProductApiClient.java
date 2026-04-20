@@ -179,11 +179,20 @@ public class ProductApiClient {
                 );
             }
 
-            return new ClientResponse<>(
-                    false,
-                    "No s'ha pogut eliminar el producte.",
-                    null
-            );
+            String errorMessage = "No s'ha pogut eliminar el producte.";
+            if (response.errorBody() != null) {
+                try {
+                    String body = response.errorBody().string();
+                    if (body != null && !body.isBlank()) {
+                        errorMessage = body;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return new ClientResponse<>(false, errorMessage, null);
+
         } catch (IOException ex) {
             return new ClientResponse<>(
                     false,
