@@ -442,7 +442,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnNewActionPerformed
 
     /**
-     * Gestiona el botó "Desa/Crea": crea o modifica el proveïdor.
+     * Desa el proveïdor actual, ja sigui creant-lo o modificant-lo.
      *
      * @param evt esdeveniment del botó
      */

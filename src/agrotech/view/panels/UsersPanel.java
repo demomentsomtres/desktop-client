@@ -9,8 +9,12 @@ import javax.swing.table.DefaultTableModel;
 import agrotech.model.Role;
 
 /**
+ * Panell de gestió d'usuaris de l'aplicació.
  *
- * @author jsant
+ * <p>
+ * Permet llistar, crear, modificar i eliminar usuaris.</p>
+ *
+ * @author Javier Santana Coronado
  */
 public class UsersPanel extends javax.swing.JPanel {
 
@@ -311,10 +315,20 @@ public class UsersPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Neteja el formulari per preparar l'alta d'un nou usuari.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
         clearForm();
     }//GEN-LAST:event_btnNewActionPerformed
 
+    /**
+     * Desa l'usuari actual, ja sigui creant-lo o modificant-lo.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());
@@ -354,6 +368,11 @@ public class UsersPanel extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    /**
+     * Elimina l'usuari seleccionat després de confirmar l'acció.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         String usernameToDelete = selectedOriginalUsername;
 

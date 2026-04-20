@@ -118,10 +118,15 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{id=" + id + ", productCategory=" + productCategory
-                + ", price=" + price + ", cooperativeMargin="
-                + cooperativeMargin + ", tax=" + tax + ", expirationDate="
-                + expirationDate + ", stock=" + stock + ", supplierId="
-                + supplierId + "}";
+        return "Product{"
+                + "id=" + id
+                + ", productCategory='" + productCategory + '\''
+                + ", price=" + price
+                + ", cooperativeMargin=" + cooperativeMargin
+                + ", tax=" + tax
+                + ", expirationDate='" + expirationDate + '\''
+                + ", stock=" + stock
+                + ", supplierId=" + supplierId
+                + '}';
     }
 }

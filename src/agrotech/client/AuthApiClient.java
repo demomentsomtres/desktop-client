@@ -83,7 +83,6 @@ public class AuthApiClient {
     /**
      * Envia una petició de logout al backend.
      *
-     * @param token token de sessió
      * @return {@code true} si el logout és correcte; {@code false} altrament
      */
     public boolean logout(String token) {

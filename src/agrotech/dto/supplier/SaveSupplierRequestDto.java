@@ -1,7 +1,7 @@
 package agrotech.dto.supplier;
 
 /**
- * Representa el cos de la petició per desar un proveïdor.
+ * Representa el cos de la petició per crear o modificar un proveïdor.
  *
  * @author Javier Santana Coronado
  */

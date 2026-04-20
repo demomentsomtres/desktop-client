@@ -485,10 +485,20 @@ public class ProductsPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Neteja el formulari per preparar l'alta d'un nou producte.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
         clearForm();
     }//GEN-LAST:event_btnNewActionPerformed
 
+    /**
+     * Desa el producte actual, ja sigui creant-lo o modificant-lo.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
             String productCategory = (String) cmbCategory.getSelectedItem();
@@ -569,6 +579,11 @@ public class ProductsPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    /**
+     * Elimina el producte seleccionat després de confirmar l'acció.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (selectedProductId == null) {
             JOptionPane.showMessageDialog(

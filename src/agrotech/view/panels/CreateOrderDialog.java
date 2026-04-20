@@ -12,6 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Diàleg modal per crear una nova comanda a partir dels productes disponibles.
+ * Permet afegir línies al carro, calcular-ne el total i confirmar l'enviament
+ * de la comanda al backend.
  *
  * @author Javier Santana Coronado
  */
@@ -528,7 +531,9 @@ public class CreateOrderDialog extends javax.swing.JDialog {
     }
 
     /**
-     * @param args the command line arguments
+     * Mètode principal per provar el diàleg de manera independent.
+     *
+     * @param args arguments de la línia d'ordres
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
