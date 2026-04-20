@@ -202,7 +202,7 @@ public class UsersPanel extends javax.swing.JPanel {
         lblRole.setText("Rol");
 
         cmbRole.setForeground(new java.awt.Color(33, 37, 41));
-        cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMIN", "CUSTOMER", "SUPPLIER" }));
+        cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMIN", "CUSTOMER" }));
 
         pnlButtons.setBackground(new java.awt.Color(255, 255, 255));
 
