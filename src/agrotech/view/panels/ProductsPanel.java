@@ -11,6 +11,8 @@ import agrotech.session.SessionManager;
 import javax.swing.DefaultComboBoxModel;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import agrotech.model.ManagedSupplier;
+import agrotech.service.SuppliersService;
 
 /**
  * Panell de gestió de productes de l'aplicació.
@@ -107,38 +109,60 @@ public class ProductsPanel extends javax.swing.JPanel {
             txtPrice.requestFocus();
         }
     }
+    
+/**
+ * Carrega la llista de productes a la taula.
+ */
+private void loadProducts() {
+    ClientResponse<List<ManagedProduct>> response;
 
-    /**
-     * Carrega la llista de productes a la taula.
-     */
-    private void loadProducts() {
-        ClientResponse<List<ManagedProduct>> response = productsService.getAllProducts();
+    if (SessionManager.getCurrentUser() != null
+            && SessionManager.getCurrentUser().getRole() == Role.SUPPLIER) {
 
-        if (!response.isSuccess()) {
+        SuppliersService suppliersService = new SuppliersService();
+        ClientResponse<ManagedSupplier> supplierResponse = suppliersService.getMySupplier();
+
+        if (!supplierResponse.isSuccess()) {
             JOptionPane.showMessageDialog(
                     this,
-                    response.getMessage(),
+                    supplierResponse.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
             return;
         }
 
-        tableModel.setRowCount(0);
+        Long supplierId = supplierResponse.getData().getId();
+        response = productsService.getProductsBySupplierId(supplierId);
 
-        for (ManagedProduct product : response.getData()) {
-            tableModel.addRow(new Object[]{
-                product.getId(),
-                product.getProductCategory(),
-                product.getPrice(),
-                product.getStock(),
-                product.getCooperativeMargin(),
-                product.getExpirationDate(),
-                product.getTax()
-            });
-        }
+    } else {
+        response = productsService.getAllProducts();
     }
 
+    if (!response.isSuccess()) {
+        JOptionPane.showMessageDialog(
+                this,
+                response.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    tableModel.setRowCount(0);
+
+    for (ManagedProduct product : response.getData()) {
+        tableModel.addRow(new Object[]{
+            product.getId(),
+            product.getProductCategory(),
+            product.getPrice(),
+            product.getStock(),
+            product.getCooperativeMargin(),
+            product.getExpirationDate(),
+            product.getTax()
+        });
+    }
+}
     /**
      * Carrega les categories disponibles des del backend al desplegable.
      */

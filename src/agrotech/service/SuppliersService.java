@@ -32,6 +32,15 @@ public class SuppliersService {
     }
 
     /**
+     * Recupera les dades del proveïdor autenticat.
+     *
+     * @return resposta amb les dades del proveïdor loguejat
+     */
+    public ClientResponse<ManagedSupplier> getMySupplier() {
+        return supplierApiClient.getMySupplier();
+    }
+
+    /**
      * Consulta un proveïdor pel seu nom.
      *
      * @param name nom del proveïdor

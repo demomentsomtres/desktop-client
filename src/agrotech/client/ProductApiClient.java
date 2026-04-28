@@ -64,6 +64,118 @@ public class ProductApiClient {
     }
 
     /**
+     * Recupera els productes d'un proveïdor pel seu identificador.
+     *
+     * @param supplierId identificador del proveïdor
+     * @return resposta amb la llista de productes del proveïdor
+     */
+    public ClientResponse<List<ManagedProduct>> getProductsBySupplierId(Long supplierId) {
+        if (supplierId == null) {
+            return new ClientResponse<>(
+                    false,
+                    "No s'ha pogut identificar el proveïdor.",
+                    null
+            );
+        }
+
+        try {
+            Response<ProductsListResponseDto> response = productsApi.filterProducts(
+                    null,
+                    supplierId,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            ).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                ProductsListResponseDto body = response.body();
+                List<ManagedProduct> products = mapProducts(body.getProducts());
+
+                return new ClientResponse<>(
+                        true,
+                        safeMessage(body.getMessage(), "Productes carregats correctament."),
+                        products
+                );
+            }
+
+            return new ClientResponse<>(
+                    false,
+                    "No s'han pogut carregar els productes del proveïdor.",
+                    null
+            );
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(
+                    false,
+                    "Error de connexió amb el servidor.",
+                    null
+            );
+        }
+    }
+
+    /**
+     * Recupera els productes associats a l'usuari d'un proveïdor.
+     *
+     * @param userId identificador de l'usuari autenticat
+     * @return resposta amb la llista de productes del proveïdor
+     */
+    public ClientResponse<List<ManagedProduct>> getProductsBySupplierUserId(Long userId) {
+        if (userId == null) {
+            return new ClientResponse<>(
+                    false,
+                    "No s'ha pogut identificar l'usuari actual.",
+                    null
+            );
+        }
+
+        try {
+            Response<ProductsListResponseDto> response = productsApi.filterProducts(
+                    null,
+                    null,
+                    userId,
+                    "1900-01-01",
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            ).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                ProductsListResponseDto body = response.body();
+                List<ManagedProduct> products = mapProducts(body.getProducts());
+
+                return new ClientResponse<>(
+                        true,
+                        safeMessage(body.getMessage(), "Productes carregats correctament."),
+                        products
+                );
+            }
+
+            return new ClientResponse<>(
+                    false,
+                    "No s'han pogut carregar els productes del proveïdor.",
+                    null
+            );
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(
+                    false,
+                    "Error de connexió amb el servidor.",
+                    null
+            );
+        }
+    }
+
+    /**
      * Recupera totes les categories del backend.
      *
      * @return resposta amb la llista de categories

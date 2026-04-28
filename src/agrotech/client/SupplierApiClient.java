@@ -34,6 +34,49 @@ public class SupplierApiClient {
     }
 
     /**
+     * Recupera les dades del proveïdor autenticat.
+     *
+     * @return resposta amb les dades del proveïdor loguejat
+     */
+    public ClientResponse<ManagedSupplier> getMySupplier() {
+        try {
+            Response<SupplierResponseDto> response = suppliersApi.getMySupplier().execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                SupplierResponseDto body = response.body();
+                ManagedSupplierDto dto = body.getSupplier();
+
+                ManagedSupplier supplier = new ManagedSupplier(
+                        dto.getId(),
+                        dto.getName(),
+                        dto.getPoblacio(),
+                        dto.getEmail(),
+                        dto.getTelefon()
+                );
+
+                return new ClientResponse<>(
+                        true,
+                        "Proveïdor carregat correctament.",
+                        supplier
+                );
+            }
+
+            return new ClientResponse<>(
+                    false,
+                    "No s'han pogut carregar les dades del proveïdor.",
+                    null
+            );
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(
+                    false,
+                    "Error de connexió amb el servidor.",
+                    null
+            );
+        }
+    }
+
+    /**
      * Consulta tots els proveïdors del sistema.
      *
      * @return resposta amb la llista de proveïdors

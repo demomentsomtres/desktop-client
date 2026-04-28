@@ -5,6 +5,9 @@ import agrotech.client.ProductApiClient;
 import agrotech.model.ManagedProduct;
 import java.util.List;
 import agrotech.dto.product.SaveProductRequestDto;
+import agrotech.model.Role;
+import agrotech.model.User;
+import agrotech.session.SessionManager;
 
 /**
  * Gestiona la lògica bàsica dels productes.
@@ -33,6 +36,26 @@ public class ProductsService {
      */
     public ClientResponse<List<ManagedProduct>> getAllProducts() {
         return productApiClient.getAllProducts();
+    }
+
+    /**
+     * Retorna els productes del proveïdor autenticat.
+     *
+     * @param userId identificador de l'usuari autenticat
+     * @return resposta amb la llista de productes del proveïdor
+     */
+    public ClientResponse<List<ManagedProduct>> getProductsBySupplierUserId(Long userId) {
+        return productApiClient.getProductsBySupplierUserId(userId);
+    }
+
+    /**
+     * Recupera els productes d'un proveïdor pel seu identificador.
+     *
+     * @param supplierId identificador del proveïdor
+     * @return resposta amb la llista de productes del proveïdor
+     */
+    public ClientResponse<List<ManagedProduct>> getProductsBySupplierId(Long supplierId) {
+        return productApiClient.getProductsBySupplierId(supplierId);
     }
 
     /**

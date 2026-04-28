@@ -51,6 +51,14 @@ public interface SuppliersApi {
     );
 
     /**
+     * Consulta les dades del proveïdor autenticat.
+     *
+     * @return resposta amb les dades del proveïdor loguejat
+     */
+    @GET("api/suppliers/me")
+    Call<SupplierResponseDto> getMySupplier();
+
+    /**
      * Dona d'alta un proveïdor nou.
      *
      * @param request dades del proveïdor
