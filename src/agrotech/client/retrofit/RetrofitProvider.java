@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitProvider {
 
     private static final String BASE_URL
-            = "http://a2001678-f14b-4a5a-8211.04a74656c25a.bastion.elmeuescriptori.cat:80/";
+            = "https://a2001678-f14b-4a5a-8211.04a74656c25a.bastion.elmeuescriptori.cat/";
 
     private static Retrofit retrofit;
 
