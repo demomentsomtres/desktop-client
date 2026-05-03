@@ -426,9 +426,13 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             return;
         }
 
-        cartLines.remove(selectedRow);
-        cartTableModel.removeRow(selectedRow);
+        int modelRow = tblCart.convertRowIndexToModel(selectedRow);
+
+        cartLines.remove(modelRow);
+        cartTableModel.removeRow(modelRow);
+
         updateTotal();
+        updateProductsStock();
     }//GEN-LAST:event_btnRemoveLineActionPerformed
 
     /**
