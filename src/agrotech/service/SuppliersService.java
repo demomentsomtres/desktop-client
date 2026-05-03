@@ -58,7 +58,7 @@ public class SuppliersService {
     }
 
     /**
-     * Consulta proveïdors filtrant per població i telèfon.
+     * Consulta proveïdors filtrant per població i/o telèfon.
      *
      * @param poblacio població a filtrar
      * @param telefon telèfon a filtrar
@@ -75,9 +75,12 @@ public class SuppliersService {
             return supplierApiClient.getAllSuppliers();
         }
 
+        String poblacioFilter = normalizedPoblacio.isEmpty() ? null : normalizedPoblacio;
+        String telefonFilter = normalizedTelefon.isEmpty() ? null : normalizedTelefon;
+
         return supplierApiClient.getSuppliersByFilters(
-                normalizedPoblacio,
-                normalizedTelefon
+                poblacioFilter,
+                telefonFilter
         );
     }
 

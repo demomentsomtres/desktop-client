@@ -4,6 +4,8 @@ import agrotech.client.ClientResponse;
 import agrotech.model.ManagedProduct;
 import agrotech.service.ProductsService;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import agrotech.model.Role;
@@ -25,6 +27,7 @@ import agrotech.service.SuppliersService;
 public class ProductsPanel extends javax.swing.JPanel {
 
     private final ProductsService productsService;
+    private final SuppliersService suppliersService;
     private DefaultTableModel tableModel;
     private Long selectedProductId;
 
@@ -34,7 +37,9 @@ public class ProductsPanel extends javax.swing.JPanel {
     public ProductsPanel() {
         initComponents();
         productsService = new ProductsService();
+        suppliersService = new SuppliersService();
         initTableModel();
+        configureSupplierColumnVisibility();
         initTableSelection();
         loadCategories();
         clearForm();
@@ -75,11 +80,11 @@ public class ProductsPanel extends javax.swing.JPanel {
 
         Object idValue = tableModel.getValueAt(modelRow, 0);
         Object categoryValue = tableModel.getValueAt(modelRow, 1);
-        Object priceValue = tableModel.getValueAt(modelRow, 2);
-        Object stockValue = tableModel.getValueAt(modelRow, 3);
-        Object marginValue = tableModel.getValueAt(modelRow, 4);
-        Object expirationValue = tableModel.getValueAt(modelRow, 5);
-        Object taxValue = tableModel.getValueAt(modelRow, 6);
+        Object priceValue = tableModel.getValueAt(modelRow, 3);
+        Object stockValue = tableModel.getValueAt(modelRow, 4);
+        Object marginValue = tableModel.getValueAt(modelRow, 5);
+        Object expirationValue = tableModel.getValueAt(modelRow, 6);
+        Object taxValue = tableModel.getValueAt(modelRow, 7);
 
         selectedProductId = Long.valueOf(idValue.toString());
         cmbCategory.setSelectedItem(categoryValue.toString());
@@ -109,60 +114,70 @@ public class ProductsPanel extends javax.swing.JPanel {
             txtPrice.requestFocus();
         }
     }
-    
-/**
- * Carrega la llista de productes a la taula.
- */
-private void loadProducts() {
-    ClientResponse<List<ManagedProduct>> response;
 
-    if (SessionManager.getCurrentUser() != null
-            && SessionManager.getCurrentUser().getRole() == Role.SUPPLIER) {
+    /**
+     * Carrega la llista de productes a la taula.
+     */
+    private void loadProducts() {
+        ClientResponse<List<ManagedProduct>> response;
+        Map<Long, String> supplierNames = new HashMap<>();
 
-        SuppliersService suppliersService = new SuppliersService();
-        ClientResponse<ManagedSupplier> supplierResponse = suppliersService.getMySupplier();
+        if (SessionManager.getCurrentUser() != null
+                && SessionManager.getCurrentUser().getRole() == Role.SUPPLIER) {
 
-        if (!supplierResponse.isSuccess()) {
+            ClientResponse<ManagedSupplier> supplierResponse = suppliersService.getMySupplier();
+
+            if (!supplierResponse.isSuccess()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        supplierResponse.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            ManagedSupplier currentSupplier = supplierResponse.getData();
+            Long supplierId = currentSupplier.getId();
+
+            supplierNames.put(supplierId, currentSupplier.getName());
+            response = productsService.getProductsBySupplierId(supplierId);
+
+        } else {
+            if (SessionManager.getCurrentUser() != null
+                    && SessionManager.getCurrentUser().getRole() == Role.ADMIN) {
+                supplierNames = getSupplierNamesById();
+            }
+
+            response = productsService.getAllProducts();
+        }
+
+        if (!response.isSuccess()) {
             JOptionPane.showMessageDialog(
                     this,
-                    supplierResponse.getMessage(),
+                    response.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
             return;
         }
 
-        Long supplierId = supplierResponse.getData().getId();
-        response = productsService.getProductsBySupplierId(supplierId);
+        tableModel.setRowCount(0);
 
-    } else {
-        response = productsService.getAllProducts();
+        for (ManagedProduct product : response.getData()) {
+            tableModel.addRow(new Object[]{
+                product.getId(),
+                product.getProductCategory(),
+                getSupplierName(product.getSupplierId(), supplierNames),
+                product.getPrice(),
+                product.getStock(),
+                product.getCooperativeMargin(),
+                product.getExpirationDate(),
+                product.getTax()
+            });
+        }
     }
 
-    if (!response.isSuccess()) {
-        JOptionPane.showMessageDialog(
-                this,
-                response.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    tableModel.setRowCount(0);
-
-    for (ManagedProduct product : response.getData()) {
-        tableModel.addRow(new Object[]{
-            product.getId(),
-            product.getProductCategory(),
-            product.getPrice(),
-            product.getStock(),
-            product.getCooperativeMargin(),
-            product.getExpirationDate(),
-            product.getTax()
-        });
-    }
-}
     /**
      * Carrega les categories disponibles des del backend al desplegable.
      */
@@ -322,20 +337,20 @@ private void loadProducts() {
         tblProducts.setForeground(new java.awt.Color(33, 37, 41));
         tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Categoria", "Preu", "Estoc", "Marge", "Caducitat", "Impost"
+                "ID", "Categoria", "Proveïdor", "Preu", "Estoc", "Marge", "Caducitat", "Impost"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -652,6 +667,71 @@ private void loadProducts() {
                 JOptionPane.ERROR_MESSAGE
         );
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    /**
+     * Carrega els noms dels proveïdors indexats pel seu identificador.
+     *
+     * @return mapa amb id de proveïdor i nom de proveïdor
+     */
+    private Map<Long, String> getSupplierNamesById() {
+        Map<Long, String> supplierNames = new HashMap<>();
+
+        ClientResponse<List<ManagedSupplier>> response = suppliersService.getAllSuppliers();
+
+        if (!response.isSuccess() || response.getData() == null) {
+            return supplierNames;
+        }
+
+        for (ManagedSupplier supplier : response.getData()) {
+            if (supplier.getId() != null) {
+                supplierNames.put(supplier.getId(), supplier.getName());
+            }
+        }
+
+        return supplierNames;
+    }
+
+    /**
+     * Retorna el nom del proveïdor associat a un producte.
+     *
+     * @param supplierId identificador del proveïdor
+     * @param supplierNames mapa de noms de proveïdors
+     * @return nom del proveïdor o text per defecte
+     */
+    private String getSupplierName(Long supplierId, Map<Long, String> supplierNames) {
+        if (SessionManager.getCurrentUser() != null
+                && SessionManager.getCurrentUser().getRole() == Role.CUSTOMER) {
+            return "";
+        }
+
+        if (supplierId == null) {
+            return "Sense proveïdor";
+        }
+
+        return supplierNames.getOrDefault(supplierId, "No disponible");
+    }
+
+    /**
+     * Amaga la columna de proveïdor quan l'usuari és CUSTOMER.
+     */
+    private void configureSupplierColumnVisibility() {
+        if (SessionManager.getCurrentUser() == null) {
+            return;
+        }
+
+        if (SessionManager.getCurrentUser().getRole() != Role.CUSTOMER) {
+            return;
+        }
+
+        for (int i = 0; i < tblProducts.getColumnModel().getColumnCount(); i++) {
+            Object header = tblProducts.getColumnModel().getColumn(i).getHeaderValue();
+
+            if ("Proveïdor".equals(header)) {
+                tblProducts.removeColumn(tblProducts.getColumnModel().getColumn(i));
+                return;
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;

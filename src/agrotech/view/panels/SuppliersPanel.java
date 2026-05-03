@@ -1,9 +1,13 @@
 package agrotech.view.panels;
 
 import agrotech.client.ClientResponse;
+import agrotech.model.ManagedProduct;
 import agrotech.model.ManagedSupplier;
+import agrotech.service.ProductsService;
 import agrotech.service.SuppliersService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public class SuppliersPanel extends javax.swing.JPanel {
 
     private final SuppliersService suppliersService;
+    private final ProductsService productsService;
     private DefaultTableModel tableModel;
     private String selectedOriginalName;
 
@@ -28,6 +33,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
     public SuppliersPanel() {
         initComponents();
         suppliersService = new SuppliersService();
+        productsService = new ProductsService();
         initTableModel();
         initTableSelection();
         clearForm();
@@ -73,6 +79,8 @@ public class SuppliersPanel extends javax.swing.JPanel {
             return;
         }
 
+        Map<Long, Integer> productCounts = getProductCountsBySupplier();
+
         tableModel.setRowCount(0);
 
         for (ManagedSupplier supplier : response.getData()) {
@@ -81,7 +89,8 @@ public class SuppliersPanel extends javax.swing.JPanel {
                 supplier.getName(),
                 supplier.getPoblacio(),
                 supplier.getEmail(),
-                supplier.getTelefon()
+                supplier.getTelefon(),
+                productCounts.getOrDefault(supplier.getId(), 0)
             });
         }
     }
@@ -236,17 +245,17 @@ public class SuppliersPanel extends javax.swing.JPanel {
         tblSuppliers.setForeground(new java.awt.Color(33, 37, 41));
         tblSuppliers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nom", "Població", "Email", "Telèfon"
+                "ID", "Nom", "Població", "Email", "Telèfon", "Productes"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -504,6 +513,12 @@ public class SuppliersPanel extends javax.swing.JPanel {
             return;
         }
 
+        Long supplierId = getSelectedSupplierId();
+
+        if (supplierHasAssociatedProducts(supplierId)) {
+            return;
+        }
+
         int option = JOptionPane.showConfirmDialog(
                 this,
                 "Vols eliminar el proveïdor \"" + nameToDelete + "\"?",
@@ -564,21 +579,128 @@ public class SuppliersPanel extends javax.swing.JPanel {
 
         if (!response.isSuccess()) {
             JOptionPane.showMessageDialog(
-                    this, response.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    this,
+                    response.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
             return;
         }
 
+        Map<Long, Integer> productCounts = getProductCountsBySupplier();
+
         tableModel.setRowCount(0);
+
         for (ManagedSupplier supplier : response.getData()) {
             tableModel.addRow(new Object[]{
                 supplier.getId(),
                 supplier.getName(),
                 supplier.getPoblacio(),
                 supplier.getEmail(),
-                supplier.getTelefon()
+                supplier.getTelefon(),
+                productCounts.getOrDefault(supplier.getId(), 0)
             });
         }
     }//GEN-LAST:event_btnFilterActionPerformed
+
+    /**
+     * Obté l'identificador del proveïdor seleccionat a la taula.
+     *
+     * @return id del proveïdor seleccionat o null si no es pot obtenir
+     */
+    private Long getSelectedSupplierId() {
+        int selectedRow = tblSuppliers.getSelectedRow();
+
+        if (selectedRow == -1) {
+            return null;
+        }
+
+        int modelRow = tblSuppliers.convertRowIndexToModel(selectedRow);
+        Object idValue = tableModel.getValueAt(modelRow, 0);
+
+        if (idValue instanceof Number number) {
+            return number.longValue();
+        }
+
+        try {
+            return Long.valueOf(idValue.toString());
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Comprova si el proveïdor té productes associats.
+     *
+     * @param supplierId id del proveïdor
+     * @return true si té productes o si no es pot comprovar
+     */
+    private boolean supplierHasAssociatedProducts(Long supplierId) {
+        if (supplierId == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No s'ha pogut identificar el proveïdor seleccionat.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return true;
+        }
+
+        ClientResponse<List<ManagedProduct>> response
+                = productsService.getProductsBySupplierId(supplierId);
+
+        if (!response.isSuccess()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No s'ha pogut comprovar si el proveïdor té productes associats.\n"
+                    + response.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return true;
+        }
+
+        List<ManagedProduct> products = response.getData();
+
+        if (products != null && !products.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No es pot eliminar aquest proveïdor perquè té productes associats.\n\n"
+                    + "Primer elimina o reassigna els seus productes.",
+                    "Proveïdor amb productes",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Compta quants productes té cada proveïdor.
+     *
+     * @return mapa amb l'identificador del proveïdor i el nombre de productes
+     */
+    private Map<Long, Integer> getProductCountsBySupplier() {
+        Map<Long, Integer> productCounts = new HashMap<>();
+
+        ClientResponse<List<ManagedProduct>> response = productsService.getAllProducts();
+
+        if (!response.isSuccess() || response.getData() == null) {
+            return productCounts;
+        }
+
+        for (ManagedProduct product : response.getData()) {
+            Long supplierId = product.getSupplierId();
+
+            if (supplierId != null) {
+                int currentCount = productCounts.getOrDefault(supplierId, 0);
+                productCounts.put(supplierId, currentCount + 1);
+            }
+        }
+
+        return productCounts;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClearFilter;
