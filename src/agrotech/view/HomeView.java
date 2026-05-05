@@ -391,17 +391,7 @@ public class HomeView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOrdersActionPerformed
 
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
-        contentPanel.removeAll();
-
-        JPanel wrapper = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 20));
-        wrapper.setBackground(new java.awt.Color(245, 247, 248));
-        ProfilePanel profilePanel = new ProfilePanel();
-        profilePanel.setPreferredSize(new java.awt.Dimension(500, 550));
-        wrapper.add(profilePanel);
-
-        contentPanel.add(wrapper, java.awt.BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
+        showPanel(new ProfilePanel());
     }//GEN-LAST:event_btnProfileActionPerformed
 
     /**
