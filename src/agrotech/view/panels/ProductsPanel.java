@@ -36,6 +36,7 @@ public class ProductsPanel extends javax.swing.JPanel {
      */
     public ProductsPanel() {
         initComponents();
+        configureTitleByRole();
         productsService = new ProductsService();
         suppliersService = new SuppliersService();
         initTableModel();
@@ -44,6 +45,21 @@ public class ProductsPanel extends javax.swing.JPanel {
         loadCategories();
         clearForm();
         loadProducts();
+    }
+
+    /**
+     * Configura el títol del panell segons el rol de l'usuari.
+     */
+    private void configureTitleByRole() {
+        Role currentRole = SessionManager.getCurrentUser().getRole();
+
+        if (currentRole == Role.SUPPLIER) {
+            lblTitle.setText("Gestió dels meus productes");
+        } else if (currentRole == Role.CUSTOMER) {
+            lblTitle.setText("Productes disponibles");
+        } else {
+            lblTitle.setText("Gestió de productes");
+        }
     }
 
     /**
@@ -716,14 +732,16 @@ public class ProductsPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Amaga la columna de proveïdor quan l'usuari és CUSTOMER.
+     * Amaga la columna de proveïdor quan no aporta informació al rol actual.
      */
     private void configureSupplierColumnVisibility() {
         if (SessionManager.getCurrentUser() == null) {
             return;
         }
 
-        if (SessionManager.getCurrentUser().getRole() != Role.CUSTOMER) {
+        Role currentRole = SessionManager.getCurrentUser().getRole();
+
+        if (currentRole != Role.SUPPLIER && currentRole != Role.CUSTOMER) {
             return;
         }
 
