@@ -46,6 +46,15 @@ public class User {
     }
 
     /**
+     * Estableix el nom d'usuari.
+     *
+     * @param username nou nom d'usuari
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
      * Retorna el rol de l'usuari.
      *
      * @return rol de l'usuari

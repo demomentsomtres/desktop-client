@@ -31,6 +31,23 @@ public interface UsersApi {
     Call<UsersListResponseDto> getAllUsers();
 
     /**
+     * Consulta les dades del propi usuari autenticat.
+     *
+     * @return resposta amb les dades de l'usuari loguejat
+     */
+    @GET("api/users/me")
+    Call<UserResponseDto> getMyUser();
+
+    /**
+     * Modifica les dades del propi usuari autenticat.
+     *
+     * @param request noves dades de l'usuari
+     * @return resposta del backend
+     */
+    @PUT("api/users/update-me")
+    Call<ApiMessageResponseDto> updateMyUser(@Body UserRequestDto request);
+
+    /**
      * Consulta un usuari pel seu nom.
      *
      * @param username nom d'usuari

@@ -72,6 +72,69 @@ public class UserApiClient {
     }
 
     /**
+     * Recupera les dades del propi usuari autenticat.
+     *
+     * @return resposta amb les dades de l'usuari loguejat
+     */
+    public ClientResponse<ManagedUser> getMyUser() {
+        try {
+            Call<UserResponseDto> call = usersApi.getMyUser();
+            retrofit2.Response<UserResponseDto> response = call.execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                ManagedUserDto dto = response.body().getUser();
+                ManagedUser user = new ManagedUser(
+                        dto.getId(),
+                        dto.getUsername(),
+                        dto.getRole()
+                );
+                return new ClientResponse<>(true, "Dades carregades correctament.", user);
+            }
+
+            return new ClientResponse<>(false, "No s'han pogut carregar les dades.", null);
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(false, "Error de connexió amb el servidor.", null);
+        }
+    }
+
+    /**
+     * Modifica les dades del propi usuari autenticat.
+     *
+     * @param username nou nom d'usuari (null si no es vol canviar)
+     * @param password nova contrasenya (null si no es vol canviar)
+     * @return resposta de l'operació
+     */
+    public ClientResponse<Void> updateMyUser(String username, String password) {
+        try {
+            UserRequestDto request = new UserRequestDto(username, password, null);
+            Call<ApiMessageResponseDto> call = usersApi.updateMyUser(request);
+            retrofit2.Response<ApiMessageResponseDto> response = call.execute();
+
+            if (response.isSuccessful()) {
+                return new ClientResponse<>(true, "Perfil actualitzat correctament.", null);
+            }
+
+            String errorMessage = "No s'ha pogut actualitzar el perfil.";
+            if (response.errorBody() != null) {
+                try {
+                    String body = response.errorBody().string();
+                    if (body != null && !body.isBlank()) {
+                        errorMessage = body;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return new ClientResponse<>(false, errorMessage, null);
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(false, "Error de connexió amb el servidor.", null);
+        }
+    }
+
+    /**
      * Consulta un usuari pel seu nom.
      *
      * @param username nom d'usuari

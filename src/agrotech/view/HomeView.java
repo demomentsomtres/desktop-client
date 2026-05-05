@@ -17,6 +17,7 @@ import agrotech.view.panels.UsersPanel;
 import agrotech.view.panels.ProductsPanel;
 import agrotech.view.panels.SuppliersPanel;
 import agrotech.view.panels.OrdersPanel;
+import agrotech.view.panels.ProfilePanel;
 
 /**
  * Pantalla principal provisional del client escriptori.
@@ -172,6 +173,7 @@ public class HomeView extends javax.swing.JFrame {
         btnProducts = new javax.swing.JButton();
         btnSuppliers = new javax.swing.JButton();
         btnOrders = new javax.swing.JButton();
+        btnProfile = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         lblContentPlaceholder = new javax.swing.JLabel();
@@ -219,6 +221,13 @@ public class HomeView extends javax.swing.JFrame {
         btnOrders.setText("Comandes");
         btnOrders.setPreferredSize(new java.awt.Dimension(140, 30));
         btnOrders.addActionListener(this::btnOrdersActionPerformed);
+
+        btnProfile.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnProfile.setForeground(new java.awt.Color(30, 111, 168));
+        btnProfile.setText("El meu perfil");
+        btnProfile.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(30, 111, 168)));
+        btnProfile.setPreferredSize(new java.awt.Dimension(117, 30));
+        btnProfile.addActionListener(this::btnProfileActionPerformed);
 
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(30, 111, 168));
@@ -270,6 +279,8 @@ public class HomeView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -295,7 +306,8 @@ public class HomeView extends javax.swing.JFrame {
                         .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -378,6 +390,20 @@ public class HomeView extends javax.swing.JFrame {
         showPanel(new OrdersPanel());
     }//GEN-LAST:event_btnOrdersActionPerformed
 
+    private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
+        contentPanel.removeAll();
+
+        JPanel wrapper = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 20));
+        wrapper.setBackground(new java.awt.Color(245, 247, 248));
+        ProfilePanel profilePanel = new ProfilePanel();
+        profilePanel.setPreferredSize(new java.awt.Dimension(500, 550));
+        wrapper.add(profilePanel);
+
+        contentPanel.add(wrapper, java.awt.BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }//GEN-LAST:event_btnProfileActionPerformed
+
     /**
      * Mètode auxiliar per executar la pantalla principal de manera independent.
      *
@@ -409,6 +435,7 @@ public class HomeView extends javax.swing.JFrame {
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnOrders;
     private javax.swing.JButton btnProducts;
+    private javax.swing.JButton btnProfile;
     private javax.swing.JButton btnSuppliers;
     private javax.swing.JButton btnUsers;
     private javax.swing.JPanel contentPanel;

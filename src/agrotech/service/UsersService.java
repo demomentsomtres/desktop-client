@@ -37,6 +37,30 @@ public class UsersService {
     }
 
     /**
+     * Recupera les dades del propi usuari autenticat.
+     *
+     * @return resposta amb les dades de l'usuari loguejat
+     */
+    public ClientResponse<ManagedUser> getMyUser() {
+        return userApiClient.getMyUser();
+    }
+
+    /**
+     * Modifica les dades del propi usuari autenticat.
+     *
+     * @param username nou nom d'usuari
+     * @param password nova contrasenya
+     * @return resposta de l'operació
+     */
+    public ClientResponse<Void> updateMyUser(String username, String password) {
+        if ((username == null || username.isBlank())
+                && (password == null || password.isBlank())) {
+            return new ClientResponse<>(false, "Cal introduir almenys un camp per modificar.", null);
+        }
+        return userApiClient.updateMyUser(username, password);
+    }
+
+    /**
      * Consulta un usuari pel seu nom.
      *
      * @param username nom d'usuari
