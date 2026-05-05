@@ -144,12 +144,16 @@ public class ProductsPanel extends javax.swing.JPanel {
             response = productsService.getProductsBySupplierId(supplierId);
 
         } else {
-            if (SessionManager.getCurrentUser() != null
-                    && SessionManager.getCurrentUser().getRole() == Role.ADMIN) {
-                supplierNames = getSupplierNamesById();
-            }
+            Role currentRole = SessionManager.getCurrentUser().getRole();
 
-            response = productsService.getAllProducts();
+            if (currentRole == Role.ADMIN) {
+                supplierNames = getSupplierNamesById();
+                response = productsService.getAllProducts();
+            } else if (currentRole == Role.CUSTOMER) {
+                response = productsService.getAvailableProducts();
+            } else {
+                response = productsService.getAllProducts();
+            }
         }
 
         if (!response.isSuccess()) {

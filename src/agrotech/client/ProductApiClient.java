@@ -64,6 +64,53 @@ public class ProductApiClient {
     }
 
     /**
+     * Recupera els productes disponibles per a la compra.
+     *
+     * @return resposta amb la llista de productes disponibles
+     */
+    public ClientResponse<List<ManagedProduct>> getAvailableProducts() {
+        try {
+            Response<ProductsListResponseDto> response = productsApi.filterProducts(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            ).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                ProductsListResponseDto body = response.body();
+                List<ManagedProduct> products = mapProducts(body.getProducts());
+
+                return new ClientResponse<>(
+                        true,
+                        safeMessage(body.getMessage(), "Productes disponibles carregats correctament."),
+                        products
+                );
+            }
+
+            return new ClientResponse<>(
+                    false,
+                    "No s'han pogut carregar els productes disponibles.",
+                    null
+            );
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(
+                    false,
+                    "Error de connexió amb el servidor.",
+                    null
+            );
+        }
+    }
+
+    /**
      * Recupera els productes d'un proveïdor pel seu identificador.
      *
      * @param supplierId identificador del proveïdor

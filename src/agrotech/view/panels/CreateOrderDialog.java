@@ -58,7 +58,7 @@ public class CreateOrderDialog extends javax.swing.JDialog {
      * Carrega els productes disponibles a la taula.
      */
     private void loadProducts() {
-        ClientResponse<List<ManagedProduct>> response = productsService.getAllProducts();
+        ClientResponse<List<ManagedProduct>> response = productsService.getAvailableProducts();
 
         if (!response.isSuccess()) {
             JOptionPane.showMessageDialog(

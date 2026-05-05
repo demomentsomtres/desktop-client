@@ -39,6 +39,15 @@ public class ProductsService {
     }
 
     /**
+     * Recupera els productes disponibles per a la compra.
+     *
+     * @return resposta amb la llista de productes disponibles
+     */
+    public ClientResponse<List<ManagedProduct>> getAvailableProducts() {
+        return productApiClient.getAvailableProducts();
+    }
+
+    /**
      * Retorna els productes del proveïdor autenticat.
      *
      * @param userId identificador de l'usuari autenticat
