@@ -148,6 +148,8 @@ public class SuppliersPanel extends javax.swing.JPanel {
 
         lblTitle = new javax.swing.JLabel();
         pnlFilter = new javax.swing.JPanel();
+        lblFilterName = new javax.swing.JLabel();
+        txtFilterName = new javax.swing.JTextField();
         lblFilterPoblacio = new javax.swing.JLabel();
         txtFilterPoblacio = new javax.swing.JTextField();
         lblFilterTelefon = new javax.swing.JLabel();
@@ -183,6 +185,11 @@ public class SuppliersPanel extends javax.swing.JPanel {
         pnlFilter.setBackground(new java.awt.Color(255, 255, 255));
         pnlFilter.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtre"));
 
+        lblFilterName.setText("Nom:");
+
+        txtFilterName.setColumns(15);
+        txtFilterName.setForeground(new java.awt.Color(33, 37, 41));
+
         lblFilterPoblacio.setText("Població:");
 
         txtFilterPoblacio.setColumns(15);
@@ -211,32 +218,38 @@ public class SuppliersPanel extends javax.swing.JPanel {
             pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFilterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFilterPoblacio)
-                    .addComponent(lblFilterTelefon)
-                    .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlFilterLayout.createSequentialGroup()
-                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblFilterName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblFilterPoblacio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblFilterTelefon)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnlFilterLayout.setVerticalGroup(
             pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFilterLayout.createSequentialGroup()
-                .addComponent(lblFilterPoblacio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblFilterTelefon)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFilterName)
+                    .addComponent(lblFilterPoblacio)
+                    .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFilterTelefon)
+                    .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         spSuppliers.setBackground(new java.awt.Color(255, 255, 255));
@@ -344,7 +357,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlButtonsLayout.setVerticalGroup(
             pnlButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,18 +380,17 @@ public class SuppliersPanel extends javax.swing.JPanel {
                     .addComponent(pnlButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lblName, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblPassword, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEmail, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblTelefon, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtPoblacio, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(lblPoblacio)
-                            .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(lblName)
+                            .addComponent(lblPassword)
+                            .addComponent(lblEmail)
+                            .addComponent(lblTelefon)
+                            .addComponent(lblPoblacio))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtName)
+                    .addComponent(txtPassword)
+                    .addComponent(txtPoblacio)
+                    .addComponent(txtEmail)
+                    .addComponent(txtTelefon))
                 .addContainerGap())
         );
         pnlFormLayout.setVerticalGroup(
@@ -406,7 +418,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
                 .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -421,9 +433,9 @@ public class SuppliersPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(spSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(spSuppliers)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -433,11 +445,11 @@ public class SuppliersPanel extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(spSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                    .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -554,11 +566,12 @@ public class SuppliersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
-     * Neteja el filtre i torna a carregar tots els proveïdors.
+     * Neteja els camps del filtre i recarrega tots els proveïdors.
      *
      * @param evt esdeveniment del botó
      */
     private void btnClearFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFilterActionPerformed
+        txtFilterName.setText("");
         txtFilterPoblacio.setText("");
         txtFilterTelefon.setText("");
         loadSuppliers();
@@ -566,13 +579,56 @@ public class SuppliersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnClearFilterActionPerformed
 
     /**
-     * Filtra proveïdors per població i/o telèfon.
+     * Filtra proveïdors per nom, població i/o telèfon.
      *
      * @param evt esdeveniment del botó
      */
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        String name = txtFilterName.getText().trim();
         String poblacio = txtFilterPoblacio.getText().trim();
         String telefon = txtFilterTelefon.getText().trim();
+
+        if (!name.isEmpty()) {
+            ClientResponse<ManagedSupplier> response
+                    = suppliersService.getSupplierByName(name);
+
+            if (!response.isSuccess()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        response.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            ManagedSupplier supplier = response.getData();
+
+            if (supplier == null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No s'ha trobat cap proveïdor amb aquest nom.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            Map<Long, Integer> productCounts = getProductCountsBySupplier();
+
+            tableModel.setRowCount(0);
+            tableModel.addRow(new Object[]{
+                supplier.getId(),
+                supplier.getName(),
+                supplier.getPoblacio(),
+                supplier.getEmail(),
+                supplier.getTelefon(),
+                productCounts.getOrDefault(supplier.getId(), 0)
+            });
+
+            tblSuppliers.setRowSelectionInterval(0, 0);
+            return;
+        }
 
         ClientResponse<List<ManagedSupplier>> response
                 = suppliersService.getSuppliersByFilters(poblacio, telefon);
@@ -709,6 +765,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblFilterName;
     private javax.swing.JLabel lblFilterPoblacio;
     private javax.swing.JLabel lblFilterTelefon;
     private javax.swing.JLabel lblName;
@@ -722,6 +779,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane spSuppliers;
     private javax.swing.JTable tblSuppliers;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFilterName;
     private javax.swing.JTextField txtFilterPoblacio;
     private javax.swing.JTextField txtFilterTelefon;
     private javax.swing.JTextField txtName;
