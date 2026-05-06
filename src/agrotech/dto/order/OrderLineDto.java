@@ -13,6 +13,7 @@ public class OrderLineDto {
     private Double unitPrice;
     private Double totalTax;
     private Double totalPrice;
+    private Double totalDiscount;
     private Double totalCooperativeMargin;
 
     /**
@@ -67,6 +68,15 @@ public class OrderLineDto {
      */
     public Double getTotalPrice() {
         return totalPrice;
+    }
+
+    /**
+     * Retorna el descompte total aplicat a la línia.
+     *
+     * @return descompte total de la línia
+     */
+    public Double getTotalDiscount() {
+        return totalDiscount;
     }
 
     /**

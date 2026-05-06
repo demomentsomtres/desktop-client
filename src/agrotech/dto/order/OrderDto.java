@@ -15,6 +15,7 @@ public class OrderDto {
     private Double totalOrderPrice;
     private Double totalOrderCooperativeMargin;
     private Double totalOrderTax;
+    private Double totalDiscount;
     private String poblacioDesti;
     private List<OrderLineDto> orderLineResponse;
 
@@ -70,6 +71,15 @@ public class OrderDto {
      */
     public Double getTotalOrderTax() {
         return totalOrderTax;
+    }
+
+    /**
+     * Retorna el descompte total de la comanda.
+     *
+     * @return descompte total
+     */
+    public Double getTotalDiscount() {
+        return totalDiscount;
     }
 
     /**

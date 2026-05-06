@@ -252,6 +252,7 @@ public class OrderApiClient {
                 dto.getTotalOrderPrice(),
                 dto.getTotalOrderCooperativeMargin(),
                 dto.getTotalOrderTax(),
+                dto.getTotalDiscount(),
                 dto.getOrderLineResponse()
         );
     }

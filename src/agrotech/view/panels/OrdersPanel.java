@@ -82,6 +82,7 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblTotalValue.setText("—");
         lblTaxValue.setText("—");
         lblMarginValue.setText("—");
+        lblDiscountValue.setText("—");
         linesTableModel.setRowCount(0);
     }
 
@@ -127,7 +128,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                 order.getId(),
                 order.getDate(),
                 order.getPoblacioDesti(),
-                order.getTotalOrderPrice()
+                formatMoney(order.getTotalOrderPrice())
             });
         }
     }
@@ -177,9 +178,10 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblCustomerIdValue.setText(order.getCustomerId() != null ? order.getCustomerId() : "—");
         lblDateValue.setText(order.getDate() != null ? order.getDate() : "—");
         lblPoblacioValue.setText(order.getPoblacioDesti() != null ? order.getPoblacioDesti() : "—");
-        lblTotalValue.setText(order.getTotalOrderPrice() != null ? order.getTotalOrderPrice() + " €" : "—");
-        lblTaxValue.setText(order.getTotalOrderTax() != null ? order.getTotalOrderTax() + " €" : "—");
-        lblMarginValue.setText(order.getTotalOrderCooperativeMargin() != null ? order.getTotalOrderCooperativeMargin() + " €" : "—");
+        lblTotalValue.setText(formatMoney(order.getTotalOrderPrice()));
+        lblTaxValue.setText(formatMoney(order.getTotalOrderTax()));
+        lblMarginValue.setText(formatMoney(order.getTotalOrderCooperativeMargin()));
+        lblDiscountValue.setText(formatMoney(order.getTotalDiscount()));
 
         linesTableModel.setRowCount(0);
 
@@ -188,11 +190,26 @@ public class OrdersPanel extends javax.swing.JPanel {
                 linesTableModel.addRow(new Object[]{
                     line.getProductCategory(),
                     line.getQuantity(),
-                    line.getUnitPrice() + " €",
-                    line.getTotalPrice() + " €"
+                    formatMoney(line.getUnitPrice()),
+                    formatMoney(line.getTotalDiscount()),
+                    formatMoney(line.getTotalPrice())
                 });
             }
         }
+    }
+
+    /**
+     * Dona format monetari a un import.
+     *
+     * @param amount import numèric
+     * @return import formatat amb dos decimals i símbol d'euro
+     */
+    private String formatMoney(Double amount) {
+        if (amount == null) {
+            return "—";
+        }
+
+        return String.format("%.2f €", amount);
     }
 
     /**
@@ -241,23 +258,25 @@ public class OrdersPanel extends javax.swing.JPanel {
         pnlForm = new javax.swing.JPanel();
         lblId = new javax.swing.JLabel();
         lblIdValue = new javax.swing.JLabel();
-        lblCustomerId = new javax.swing.JLabel();
-        lblCustomerIdValue = new javax.swing.JLabel();
-        lblDate = new javax.swing.JLabel();
-        lblDateValue = new javax.swing.JLabel();
         lblPoblacio = new javax.swing.JLabel();
         lblPoblacioValue = new javax.swing.JLabel();
-        lblTotal = new javax.swing.JLabel();
-        lblTotalValue = new javax.swing.JLabel();
-        btnNewOrder = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
+        lblDate = new javax.swing.JLabel();
+        lblDateValue = new javax.swing.JLabel();
+        lblCustomerId = new javax.swing.JLabel();
+        lblCustomerIdValue = new javax.swing.JLabel();
         lblTax = new javax.swing.JLabel();
         lblTaxValue = new javax.swing.JLabel();
         lblMargin = new javax.swing.JLabel();
         lblMarginValue = new javax.swing.JLabel();
+        lblDiscount = new javax.swing.JLabel();
+        lblDiscountValue = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        lblTotalValue = new javax.swing.JLabel();
         lblLines = new javax.swing.JLabel();
         spLines = new javax.swing.JScrollPane();
         tblLines = new javax.swing.JTable();
+        btnNewOrder = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(245, 247, 248));
 
@@ -513,12 +532,12 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblIdValue.setText("—");
 
-        lblCustomerId.setBackground(new java.awt.Color(255, 255, 255));
-        lblCustomerId.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        lblCustomerId.setForeground(new java.awt.Color(73, 80, 87));
-        lblCustomerId.setText("Client ID:");
+        lblPoblacio.setBackground(new java.awt.Color(255, 255, 255));
+        lblPoblacio.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblPoblacio.setForeground(new java.awt.Color(73, 80, 87));
+        lblPoblacio.setText("Població:");
 
-        lblCustomerIdValue.setText("—");
+        lblPoblacioValue.setText("—");
 
         lblDate.setBackground(new java.awt.Color(255, 255, 255));
         lblDate.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -527,30 +546,12 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblDateValue.setText("—");
 
-        lblPoblacio.setBackground(new java.awt.Color(255, 255, 255));
-        lblPoblacio.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        lblPoblacio.setForeground(new java.awt.Color(73, 80, 87));
-        lblPoblacio.setText("Població:");
+        lblCustomerId.setBackground(new java.awt.Color(255, 255, 255));
+        lblCustomerId.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblCustomerId.setForeground(new java.awt.Color(73, 80, 87));
+        lblCustomerId.setText("Client ID:");
 
-        lblPoblacioValue.setText("—");
-
-        lblTotal.setBackground(new java.awt.Color(255, 255, 255));
-        lblTotal.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        lblTotal.setForeground(new java.awt.Color(73, 80, 87));
-        lblTotal.setText("Total €:");
-
-        lblTotalValue.setText("—");
-
-        btnNewOrder.setForeground(new java.awt.Color(30, 111, 168));
-        btnNewOrder.setText("Nova comanda");
-        btnNewOrder.setFocusPainted(false);
-        btnNewOrder.setPreferredSize(new java.awt.Dimension(90, 30));
-        btnNewOrder.addActionListener(this::btnNewOrderActionPerformed);
-
-        btnDelete.setForeground(new java.awt.Color(120, 120, 120));
-        btnDelete.setText("Elimina");
-        btnDelete.setPreferredSize(new java.awt.Dimension(90, 30));
-        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+        lblCustomerIdValue.setText("—");
 
         lblTax.setBackground(new java.awt.Color(255, 255, 255));
         lblTax.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -566,6 +567,20 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblMarginValue.setText("—");
 
+        lblDiscount.setBackground(new java.awt.Color(255, 255, 255));
+        lblDiscount.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblDiscount.setForeground(new java.awt.Color(73, 80, 87));
+        lblDiscount.setText("Descompte:");
+
+        lblDiscountValue.setText("—");
+
+        lblTotal.setBackground(new java.awt.Color(255, 255, 255));
+        lblTotal.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(73, 80, 87));
+        lblTotal.setText("Total €:");
+
+        lblTotalValue.setText("—");
+
         lblLines.setBackground(new java.awt.Color(255, 255, 255));
         lblLines.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblLines.setForeground(new java.awt.Color(73, 80, 87));
@@ -573,17 +588,18 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         tblLines.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Categoria", "Quantitat", "Preu/u €", "Total €"
+                "Categoria", "Quantitat", "Preu/u €", "Descompte €", "Total €"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -592,6 +608,17 @@ public class OrdersPanel extends javax.swing.JPanel {
         });
         spLines.setViewportView(tblLines);
 
+        btnNewOrder.setForeground(new java.awt.Color(30, 111, 168));
+        btnNewOrder.setText("Nova comanda");
+        btnNewOrder.setFocusPainted(false);
+        btnNewOrder.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnNewOrder.addActionListener(this::btnNewOrderActionPerformed);
+
+        btnDelete.setForeground(new java.awt.Color(120, 120, 120));
+        btnDelete.setText("Elimina");
+        btnDelete.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnDelete.addActionListener(this::btnDeleteActionPerformed);
+
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
@@ -599,37 +626,36 @@ public class OrdersPanel extends javax.swing.JPanel {
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spLines, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(spLines, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                     .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTax, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                            .addComponent(lblIdValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTaxValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblPoblacio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPoblacioValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblMargin, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                            .addComponent(lblMarginValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFormLayout.createSequentialGroup()
-                                .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlFormLayout.createSequentialGroup()
-                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblId)
-                                    .addComponent(lblIdValue)
-                                    .addComponent(lblTax)
-                                    .addComponent(lblTaxValue))
-                                .addGap(49, 49, 49)
-                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPoblacio)
-                                    .addComponent(lblPoblacioValue)
-                                    .addComponent(lblMargin)
-                                    .addComponent(lblMarginValue))
-                                .addGap(43, 43, 43)
-                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblDate)
-                                    .addComponent(lblDateValue)
-                                    .addComponent(lblTotal)
-                                    .addComponent(lblTotalValue))
-                                .addGap(66, 66, 66)
-                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblCustomerId)
-                                    .addComponent(lblCustomerIdValue)))
-                            .addComponent(lblLines))
-                        .addGap(0, 61, Short.MAX_VALUE)))
+                            .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDateValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDiscount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDiscountValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCustomerId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCustomerIdValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTotalValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblLines))
                 .addContainerGap())
         );
         pnlFormLayout.setVerticalGroup(
@@ -654,21 +680,24 @@ public class OrdersPanel extends javax.swing.JPanel {
                             .addGroup(pnlFormLayout.createSequentialGroup()
                                 .addComponent(lblDate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblDateValue)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblDateValue))
                             .addGroup(pnlFormLayout.createSequentialGroup()
                                 .addComponent(lblCustomerId)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblCustomerIdValue))
+                                .addComponent(lblCustomerIdValue)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlFormLayout.createSequentialGroup()
                                 .addComponent(lblMargin)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblMarginValue))
                             .addGroup(pnlFormLayout.createSequentialGroup()
-                                .addComponent(lblTotal)
+                                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblDiscount)
+                                    .addComponent(lblTotal))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblTotalValue)))))
+                                .addComponent(lblDiscountValue))
+                            .addComponent(lblTotalValue, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(18, 18, 18)
                 .addComponent(lblLines)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -896,6 +925,8 @@ public class OrdersPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblCustomerIdValue;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblDateValue;
+    private javax.swing.JLabel lblDiscount;
+    private javax.swing.JLabel lblDiscountValue;
     private javax.swing.JLabel lblFilterCustomerId;
     private javax.swing.JLabel lblFilterEndDate;
     private javax.swing.JLabel lblFilterMaxMargin;

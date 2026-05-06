@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.time.LocalDate;
 
 /**
  * Diàleg modal per crear una nova comanda a partir dels productes disponibles.
@@ -37,6 +38,7 @@ public class CreateOrderDialog extends javax.swing.JDialog {
     public CreateOrderDialog(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        setLocationRelativeTo(parent);
         ordersService = new OrdersService();
         productsService = new ProductsService();
         cartLines = new ArrayList<>();
@@ -77,8 +79,10 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             productsTableModel.addRow(new Object[]{
                 product.getId(),
                 product.getProductCategory(),
-                product.getPrice() + " €",
-                product.getStock()
+                formatMoney(product.getPrice()),
+                product.getStock(),
+                product.getExpirationDate(),
+                getDiscountText(product)
             });
         }
     }
@@ -107,6 +111,10 @@ public class CreateOrderDialog extends javax.swing.JDialog {
         tblCart = new javax.swing.JTable();
         btnRemoveLine = new javax.swing.JButton();
         pnlBottom = new javax.swing.JPanel();
+        lblSubtotal = new javax.swing.JLabel();
+        lblSubtotalValue = new javax.swing.JLabel();
+        lblDiscount = new javax.swing.JLabel();
+        lblDiscountValue = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         lblTotalValue = new javax.swing.JLabel();
         btnConfirm = new javax.swing.JButton();
@@ -115,7 +123,8 @@ public class CreateOrderDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nova comanda");
         setModal(true);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(1200, 600));
+        setResizable(false);
 
         lblPoblacio.setText("Població de destí:");
 
@@ -144,17 +153,17 @@ public class CreateOrderDialog extends javax.swing.JDialog {
 
         tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Categoria", "Preu €", "Estoc"
+                "ID", "Categoria", "Preu €", "Estoc", "Caducitat", "Descompte"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -175,11 +184,13 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             .addGroup(pnlProductsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(pnlProductsLayout.createSequentialGroup()
+                        .addComponent(spProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlProductsLayout.createSequentialGroup()
                         .addComponent(lblQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                        .addComponent(txtQuantity)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddToCart)))
                 .addContainerGap())
@@ -204,11 +215,11 @@ public class CreateOrderDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Categoria", "Quantitat", "Preu/u €", "Total €"
+                "Categoria", "Quantitat", "Preu/u €", "Descompte €", "Total €"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -227,7 +238,7 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             .addGroup(pnlCartLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spCart, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+                    .addComponent(spCart)
                     .addGroup(pnlCartLayout.createSequentialGroup()
                         .addComponent(btnRemoveLine)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -250,8 +261,8 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             .addGroup(pnlMiddleLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
-                .addComponent(pnlCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlCart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlMiddleLayout.setVerticalGroup(
@@ -264,8 +275,18 @@ public class CreateOrderDialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        lblTotal.setText("Total:");
+        lblSubtotal.setText("Subtotal:");
 
+        lblSubtotalValue.setText("0.00 €");
+
+        lblDiscount.setText("Descompte:");
+
+        lblDiscountValue.setText("0.00 €");
+
+        lblTotal.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        lblTotal.setText("Total final:");
+
+        lblTotalValue.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblTotalValue.setText("0.00 €");
 
         btnConfirm.setText("Confirma comanda");
@@ -280,10 +301,18 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBottomLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblSubtotal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSubtotalValue)
+                .addGap(18, 18, 18)
+                .addComponent(lblDiscount)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDiscountValue)
+                .addGap(18, 18, 18)
+                .addComponent(lblTotal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTotalValue)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 444, Short.MAX_VALUE)
                 .addComponent(btnConfirm)
                 .addGap(18, 18, 18)
                 .addComponent(btnCancel)
@@ -297,7 +326,11 @@ public class CreateOrderDialog extends javax.swing.JDialog {
                     .addComponent(lblTotal)
                     .addComponent(lblTotalValue)
                     .addComponent(btnConfirm)
-                    .addComponent(btnCancel))
+                    .addComponent(btnCancel)
+                    .addComponent(lblSubtotal)
+                    .addComponent(lblSubtotalValue)
+                    .addComponent(lblDiscount)
+                    .addComponent(lblDiscountValue))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -310,7 +343,9 @@ public class CreateOrderDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlMiddle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pnlBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -378,12 +413,16 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             return;
         }
 
+        double lineDiscount = calculateLineDiscount(product, quantity);
+        double lineTotal = calculateLineTotal(product, quantity);
+
         cartLines.add(new OrderLineRequestDto(product.getId(), quantity));
         cartTableModel.addRow(new Object[]{
             product.getProductCategory(),
             quantity,
-            product.getPrice() + " €",
-            (product.getPrice() * quantity) + " €"
+            formatMoney(product.getPrice()),
+            formatMoney(lineDiscount),
+            formatMoney(lineTotal)
         });
 
         updateTotal();
@@ -467,12 +506,25 @@ public class CreateOrderDialog extends javax.swing.JDialog {
                 = ordersService.createOrder(poblacio, cartLines);
 
         if (response.isSuccess()) {
+            ManagedOrder createdOrder = response.getData();
+
+            String message = "Comanda creada correctament!";
+
+            if (createdOrder != null) {
+                message += "\nTotal final: "
+                        + formatMoney(createdOrder.getTotalOrderPrice());
+
+                message += "\nDescompte aplicat: "
+                        + formatMoney(createdOrder.getTotalDiscount());
+            }
+
             JOptionPane.showMessageDialog(
                     this,
-                    "Comanda creada correctament!",
+                    message,
                     "Informació",
                     JOptionPane.INFORMATION_MESSAGE
             );
+
             orderConfirmed = true;
             dispose();
             return;
@@ -496,21 +548,149 @@ public class CreateOrderDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
-     * Actualitza el total del carro.
+     * Actualitza els totals del carro.
      */
     private void updateTotal() {
+        double subtotal = 0.0;
+        double discount = 0.0;
         double total = 0.0;
 
         for (OrderLineRequestDto line : cartLines) {
-            for (ManagedProduct product : availableProducts) {
-                if (product.getId().equals(line.getProductId())) {
-                    total += product.getPrice() * line.getQuantity();
-                    break;
-                }
+            ManagedProduct product = findProductById(line.getProductId());
+
+            if (product != null) {
+                subtotal += calculateLineSubtotal(product, line.getQuantity());
+                discount += calculateLineDiscount(product, line.getQuantity());
+                total += calculateLineTotal(product, line.getQuantity());
             }
         }
 
-        lblTotalValue.setText(String.format("%.2f €", total));
+        lblSubtotalValue.setText(formatMoney(subtotal));
+        lblDiscountValue.setText(formatMoney(discount));
+        lblTotalValue.setText(formatMoney(total));
+    }
+
+    /**
+     * Calcula el subtotal d'una línia abans d'aplicar descompte.
+     *
+     * @param product producte de la línia
+     * @param quantity quantitat seleccionada
+     * @return subtotal de la línia
+     */
+    private double calculateLineSubtotal(ManagedProduct product, int quantity) {
+        if (product == null || product.getPrice() == null) {
+            return 0.0;
+        }
+
+        return product.getPrice() * quantity;
+    }
+
+    /**
+     * Calcula el descompte aplicable a una línia del carro.
+     *
+     * @param product producte de la línia
+     * @param quantity quantitat seleccionada
+     * @return import del descompte
+     */
+    private double calculateLineDiscount(ManagedProduct product, int quantity) {
+        double subtotal = calculateLineSubtotal(product, quantity);
+
+        if (hasExpirationDiscount(product)) {
+            return subtotal * 0.20;
+        }
+
+        return 0.0;
+    }
+
+    /**
+     * Calcula el total final d'una línia després d'aplicar descompte.
+     *
+     * @param product producte de la línia
+     * @param quantity quantitat seleccionada
+     * @return total final de la línia
+     */
+    private double calculateLineTotal(ManagedProduct product, int quantity) {
+        return calculateLineSubtotal(product, quantity)
+                - calculateLineDiscount(product, quantity);
+    }
+
+    /**
+     * Indica si un producte té descompte per caducitat propera.
+     *
+     * @param product producte que es vol comprovar
+     * @return true si caduca en tres dies o menys
+     */
+    private boolean hasExpirationDiscount(ManagedProduct product) {
+        if (product == null || product.getExpirationDate() == null) {
+            return false;
+        }
+
+        try {
+            LocalDate expirationDate = LocalDate.parse(
+                    String.valueOf(product.getExpirationDate())
+            );
+            LocalDate today = LocalDate.now();
+
+            return !expirationDate.isBefore(today)
+                    && !expirationDate.isAfter(today.plusDays(3));
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Retorna el text del descompte que s'ha de mostrar per a un producte.
+     *
+     * @param product producte que es vol mostrar
+     * @return text descriptiu del descompte
+     */
+    private String getDiscountText(ManagedProduct product) {
+        if (hasExpirationDiscount(product)) {
+            return "Sí, 20%";
+        }
+
+        return "No";
+    }
+
+    /**
+     * Cerca un producte disponible pel seu identificador.
+     *
+     * @param productId identificador del producte
+     * @return producte trobat o null si no existeix
+     */
+    private ManagedProduct findProductById(Long productId) {
+        for (ManagedProduct product : availableProducts) {
+            if (product.getId().equals(productId)) {
+                return product;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Dona format monetari a un import.
+     *
+     * @param amount import numèric
+     * @return import formatat amb euros
+     */
+    private String formatMoney(Double amount) {
+        if (amount == null) {
+            return "0.00 €";
+        }
+
+        return String.format("%.2f €", amount);
+    }
+
+    /**
+     * Dona format monetari a un import.
+     *
+     * @param amount import numèric
+     * @return import formatat amb euros
+     */
+    private String formatMoney(double amount) {
+        return String.format("%.2f €", amount);
     }
 
     /**
@@ -578,8 +758,12 @@ public class CreateOrderDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnRemoveLine;
+    private javax.swing.JLabel lblDiscount;
+    private javax.swing.JLabel lblDiscountValue;
     private javax.swing.JLabel lblPoblacio;
     private javax.swing.JLabel lblQuantity;
+    private javax.swing.JLabel lblSubtotal;
+    private javax.swing.JLabel lblSubtotalValue;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalValue;
     private javax.swing.JPanel pnlBottom;

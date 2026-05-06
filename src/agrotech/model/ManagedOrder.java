@@ -17,6 +17,7 @@ public class ManagedOrder {
     private Double totalOrderPrice;
     private Double totalOrderCooperativeMargin;
     private Double totalOrderTax;
+    private Double totalDiscount;
     private List<OrderLineDto> orderLines;
 
     /**
@@ -29,12 +30,20 @@ public class ManagedOrder {
      * @param totalOrderPrice preu total de la comanda
      * @param totalOrderCooperativeMargin marge cooperatiu total
      * @param totalOrderTax total d'impostos
+     * @param totalDiscount descompte total aplicat a la comanda
      * @param orderLines llista de línies de la comanda
      */
-    public ManagedOrder(Long id, String customerId, String date,
-            String poblacioDesti, Double totalOrderPrice,
-            Double totalOrderCooperativeMargin, Double totalOrderTax,
-            List<OrderLineDto> orderLines) {
+    public ManagedOrder(
+            Long id,
+            String customerId,
+            String date,
+            String poblacioDesti,
+            Double totalOrderPrice,
+            Double totalOrderCooperativeMargin,
+            Double totalOrderTax,
+            Double totalDiscount,
+            List<OrderLineDto> orderLines
+    ) {
         this.id = id;
         this.customerId = customerId;
         this.date = date;
@@ -42,6 +51,7 @@ public class ManagedOrder {
         this.totalOrderPrice = totalOrderPrice;
         this.totalOrderCooperativeMargin = totalOrderCooperativeMargin;
         this.totalOrderTax = totalOrderTax;
+        this.totalDiscount = totalDiscount;
         this.orderLines = orderLines;
     }
 
@@ -106,6 +116,15 @@ public class ManagedOrder {
      */
     public Double getTotalOrderTax() {
         return totalOrderTax;
+    }
+
+    /**
+     * Retorna el descompte total de la comanda.
+     *
+     * @return descompte total
+     */
+    public Double getTotalDiscount() {
+        return totalDiscount;
     }
 
     /**
