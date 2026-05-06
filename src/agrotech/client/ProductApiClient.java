@@ -111,6 +111,76 @@ public class ProductApiClient {
     }
 
     /**
+     * Filtra els productes segons els paràmetres indicats.
+     *
+     * @param categoria categoria del producte
+     * @param supplierId identificador del proveïdor
+     * @param userId identificador de l'usuari proveïdor
+     * @param expirationDateAfter data mínima de caducitat
+     * @param expirationDateBefore data màxima de caducitat
+     * @param minStock estoc mínim
+     * @param minPrice preu mínim
+     * @param maxPrice preu màxim
+     * @param minCooperativeMargin marge mínim
+     * @param maxCooperativeMargin marge màxim
+     * @param tax impost
+     * @return resposta amb la llista de productes filtrats
+     */
+    public ClientResponse<List<ManagedProduct>> filterProducts(
+            String categoria,
+            Long supplierId,
+            Long userId,
+            String expirationDateAfter,
+            String expirationDateBefore,
+            Integer minStock,
+            Double minPrice,
+            Double maxPrice,
+            Double minCooperativeMargin,
+            Double maxCooperativeMargin,
+            Double tax
+    ) {
+        try {
+            Response<ProductsListResponseDto> response = productsApi.filterProducts(
+                    categoria,
+                    supplierId,
+                    userId,
+                    expirationDateAfter,
+                    expirationDateBefore,
+                    minStock,
+                    minPrice,
+                    maxPrice,
+                    minCooperativeMargin,
+                    maxCooperativeMargin,
+                    tax
+            ).execute();
+
+            if (response.isSuccessful() && response.body() != null) {
+                ProductsListResponseDto body = response.body();
+                List<ManagedProduct> products = mapProducts(body.getProducts());
+
+                return new ClientResponse<>(
+                        true,
+                        safeMessage(body.getMessage(), "Productes filtrats correctament."),
+                        products
+                );
+            }
+
+            return new ClientResponse<>(
+                    false,
+                    "No s'han pogut filtrar els productes.",
+                    null
+            );
+
+        } catch (IOException ex) {
+            return new ClientResponse<>(
+                    false,
+                    "Error de connexió amb el servidor.",
+                    null
+            );
+        }
+    }
+
+    /**
      * Recupera els productes d'un proveïdor pel seu identificador.
      *
      * @param supplierId identificador del proveïdor

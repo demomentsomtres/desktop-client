@@ -182,24 +182,11 @@ public class ProductsPanel extends javax.swing.JPanel {
             return;
         }
 
-        tableModel.setRowCount(0);
-
-        for (ManagedProduct product : response.getData()) {
-            tableModel.addRow(new Object[]{
-                product.getId(),
-                product.getProductCategory(),
-                getSupplierName(product.getSupplierId(), supplierNames),
-                product.getPrice(),
-                product.getStock(),
-                product.getCooperativeMargin(),
-                product.getExpirationDate(),
-                product.getTax()
-            });
-        }
+        fillProductsTable(response.getData(), supplierNames);
     }
 
     /**
-     * Carrega les categories disponibles des del backend al desplegable.
+     * Carrega les categories disponibles des del backend als desplegables.
      */
     private void loadCategories() {
         ClientResponse<List<String>> response = productsService.getAllCategories();
@@ -214,14 +201,21 @@ public class ProductsPanel extends javax.swing.JPanel {
             return;
         }
 
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> formModel = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> filterModel = new DefaultComboBoxModel<>();
+
+        filterModel.addElement("Totes");
 
         for (String category : response.getData()) {
-            model.addElement(category);
+            formModel.addElement(category);
+            filterModel.addElement(category);
         }
 
-        cmbCategory.setModel(model);
+        cmbCategory.setModel(formModel);
         cmbCategory.setSelectedIndex(-1);
+
+        cmbFilterCategory.setModel(filterModel);
+        cmbFilterCategory.setSelectedIndex(0);
     }
 
     /**
@@ -323,6 +317,38 @@ public class ProductsPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         lblTitle = new javax.swing.JLabel();
+        pnlFilter = new javax.swing.JPanel();
+        lblFilterProduct = new javax.swing.JLabel();
+        lblFilterCategory = new javax.swing.JLabel();
+        cmbFilterCategory = new javax.swing.JComboBox<>();
+        sepProduct = new javax.swing.JSeparator();
+        lblFilterPriceTitle = new javax.swing.JLabel();
+        lblFilterMinPrice = new javax.swing.JLabel();
+        txtFilterMinPrice = new javax.swing.JTextField();
+        lblFilterMaxPrice = new javax.swing.JLabel();
+        txtFilterMaxPrice = new javax.swing.JTextField();
+        sepPrice = new javax.swing.JSeparator();
+        lblFilterMarginTitle = new javax.swing.JLabel();
+        lblFilterMinMargin = new javax.swing.JLabel();
+        txtFilterMinMargin = new javax.swing.JTextField();
+        lblFilterMaxMargin = new javax.swing.JLabel();
+        txtFilterMaxMargin = new javax.swing.JTextField();
+        sepMargin = new javax.swing.JSeparator();
+        lblFilterStockTitle = new javax.swing.JLabel();
+        lblFilterMinStock = new javax.swing.JLabel();
+        txtFilterMinStock = new javax.swing.JTextField();
+        sepStock = new javax.swing.JSeparator();
+        lblFilterExpirationTitle = new javax.swing.JLabel();
+        lblFilterExpirationAfter = new javax.swing.JLabel();
+        txtFilterExpirationAfter = new javax.swing.JTextField();
+        lblFilterExpirationBefore = new javax.swing.JLabel();
+        txtFilterExpirationBefore = new javax.swing.JTextField();
+        sepExpiration = new javax.swing.JSeparator();
+        lblFilterTaxTitle = new javax.swing.JLabel();
+        lblFilterTax = new javax.swing.JLabel();
+        txtFilterTax = new javax.swing.JTextField();
+        btnApplyFilters = new javax.swing.JButton();
+        btnClearFilters = new javax.swing.JButton();
         spProducts = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
         pnlForm = new javax.swing.JPanel();
@@ -350,6 +376,230 @@ public class ProductsPanel extends javax.swing.JPanel {
         lblTitle.setForeground(new java.awt.Color(30, 111, 168));
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitle.setText("Gestió de productes");
+
+        pnlFilter.setBackground(new java.awt.Color(255, 255, 255));
+        pnlFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)), "Filtre"));
+
+        lblFilterProduct.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFilterProduct.setForeground(new java.awt.Color(30, 111, 168));
+        lblFilterProduct.setText("Producte");
+
+        lblFilterCategory.setText("Categoria");
+
+        cmbFilterCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        sepProduct.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblFilterPriceTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFilterPriceTitle.setForeground(new java.awt.Color(30, 111, 168));
+        lblFilterPriceTitle.setText("Preu €");
+
+        lblFilterMinPrice.setText("Mínim");
+
+        lblFilterMaxPrice.setText("Màxim");
+
+        sepPrice.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblFilterMarginTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFilterMarginTitle.setForeground(new java.awt.Color(30, 111, 168));
+        lblFilterMarginTitle.setText("Marge cooperativa €");
+
+        lblFilterMinMargin.setText("Mínim");
+
+        lblFilterMaxMargin.setText("Màxim");
+
+        sepMargin.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblFilterStockTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFilterStockTitle.setForeground(new java.awt.Color(30, 111, 168));
+        lblFilterStockTitle.setText("Estoc");
+
+        lblFilterMinStock.setText("Mínim");
+
+        sepStock.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblFilterExpirationTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFilterExpirationTitle.setForeground(new java.awt.Color(30, 111, 168));
+        lblFilterExpirationTitle.setText("Caducitat");
+
+        lblFilterExpirationAfter.setText("Des de (YYYY-MM-DD)");
+
+        txtFilterExpirationAfter.setColumns(15);
+        txtFilterExpirationAfter.setForeground(new java.awt.Color(33, 37, 41));
+
+        lblFilterExpirationBefore.setText("Fins a (YYYY-MM-DD)");
+
+        txtFilterExpirationBefore.setColumns(15);
+        txtFilterExpirationBefore.setForeground(new java.awt.Color(33, 37, 41));
+
+        sepExpiration.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblFilterTaxTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFilterTaxTitle.setForeground(new java.awt.Color(30, 111, 168));
+        lblFilterTaxTitle.setText("Impost %");
+
+        lblFilterTax.setText("Valor");
+
+        btnApplyFilters.setForeground(new java.awt.Color(30, 111, 168));
+        btnApplyFilters.setText("Filtra");
+        btnApplyFilters.setFocusPainted(false);
+        btnApplyFilters.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnApplyFilters.addActionListener(this::btnApplyFiltersActionPerformed);
+
+        btnClearFilters.setForeground(new java.awt.Color(30, 111, 168));
+        btnClearFilters.setText("Neteja");
+        btnClearFilters.setFocusPainted(false);
+        btnClearFilters.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnClearFilters.addActionListener(this::btnClearFiltersActionPerformed);
+
+        javax.swing.GroupLayout pnlFilterLayout = new javax.swing.GroupLayout(pnlFilter);
+        pnlFilter.setLayout(pnlFilterLayout);
+        pnlFilterLayout.setHorizontalGroup(
+            pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFilterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblFilterCategory)
+                            .addComponent(cmbFilterCategory, 0, 128, Short.MAX_VALUE)
+                            .addComponent(lblFilterProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sepProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFilterMinPrice)
+                                    .addComponent(txtFilterMinPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFilterMaxPrice)
+                                    .addComponent(txtFilterMaxPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilterLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblFilterPriceTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sepPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFilterMarginTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFilterMinMargin)
+                                    .addComponent(txtFilterMinMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFilterMaxMargin)
+                                    .addComponent(txtFilterMaxMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sepMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFilterMinStock)
+                            .addComponent(lblFilterStockTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFilterMinStock, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sepStock, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblFilterExpirationAfter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtFilterExpirationAfter, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblFilterExpirationBefore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtFilterExpirationBefore, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblFilterExpirationTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sepExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblFilterTax)
+                            .addComponent(txtFilterTax)
+                            .addComponent(lblFilterTaxTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                        .addComponent(btnApplyFilters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClearFilters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlFilterLayout.setVerticalGroup(
+            pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFilterLayout.createSequentialGroup()
+                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilterLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sepMargin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilterLayout.createSequentialGroup()
+                                .addComponent(lblFilterStockTitle)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblFilterMinStock)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtFilterMinStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(sepExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                                        .addComponent(lblFilterExpirationTitle)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(lblFilterExpirationAfter)
+                                            .addComponent(lblFilterExpirationBefore))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(txtFilterExpirationAfter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFilterExpirationBefore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(sepStock, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(pnlFilterLayout.createSequentialGroup()
+                                    .addComponent(lblFilterTaxTitle)
+                                    .addGap(13, 13, 13)
+                                    .addComponent(lblFilterTax)
+                                    .addGap(4, 4, 4)
+                                    .addComponent(txtFilterTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(20, 20, 20))
+                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(lblFilterProduct)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblFilterCategory)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbFilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlFilterLayout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(sepProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                                        .addComponent(lblFilterMarginTitle)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(lblFilterMinMargin)
+                                            .addComponent(lblFilterMaxMargin))
+                                        .addGap(4, 4, 4)
+                                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(txtFilterMinMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFilterMaxMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(pnlFilterLayout.createSequentialGroup()
+                                        .addComponent(lblFilterPriceTitle)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(lblFilterMinPrice)
+                                            .addComponent(lblFilterMaxPrice))
+                                        .addGap(4, 4, 4)
+                                        .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(txtFilterMinPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFilterMaxPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(sepPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(19, 19, 19)))
+                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnApplyFilters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClearFilters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         spProducts.setBackground(new java.awt.Color(255, 255, 255));
         spProducts.setBorder(javax.swing.BorderFactory.createTitledBorder("Productes"));
@@ -450,7 +700,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlButtonsLayout.setVerticalGroup(
             pnlButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,7 +733,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                         .addComponent(lblPrice, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtCooperativeMargin))
                     .addComponent(txtTax, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(pnlButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlFormLayout.setVerticalGroup(
@@ -515,7 +765,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                 .addComponent(txtTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -525,11 +775,15 @@ public class ProductsPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(spProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(spProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -537,10 +791,11 @@ public class ProductsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -688,6 +943,271 @@ public class ProductsPanel extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnApplyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyFiltersActionPerformed
+        applyFilters();
+    }//GEN-LAST:event_btnApplyFiltersActionPerformed
+
+    private void btnClearFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFiltersActionPerformed
+        clearFilters();
+    }//GEN-LAST:event_btnClearFiltersActionPerformed
+
+    /**
+     * Aplica els filtres introduïts al panell.
+     */
+    private void applyFilters() {
+        try {
+            String category = getSelectedFilterCategory();
+
+            Double minPrice = parseDoubleFilter(txtFilterMinPrice.getText());
+            Double maxPrice = parseDoubleFilter(txtFilterMaxPrice.getText());
+
+            Double minMargin = parseDoubleFilter(txtFilterMinMargin.getText());
+            Double maxMargin = parseDoubleFilter(txtFilterMaxMargin.getText());
+
+            Integer minStock = parseIntegerFilter(txtFilterMinStock.getText());
+
+            String expirationAfter = parseDateFilter(txtFilterExpirationAfter.getText());
+            String expirationBefore = parseDateFilter(txtFilterExpirationBefore.getText());
+
+            Double tax = parseDoubleFilter(txtFilterTax.getText());
+
+            if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El preu mínim no pot ser superior al preu màxim.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            if (minMargin != null && maxMargin != null && minMargin > maxMargin) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El marge mínim no pot ser superior al marge màxim.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            if (expirationAfter != null && expirationBefore != null
+                    && LocalDate.parse(expirationAfter).isAfter(LocalDate.parse(expirationBefore))) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "La data inicial no pot ser posterior a la data final.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            Long supplierId = null;
+            Long userId = null;
+            Map<Long, String> supplierNames = new HashMap<>();
+
+            Role currentRole = SessionManager.getCurrentUser().getRole();
+
+            if (currentRole == Role.SUPPLIER) {
+                ClientResponse<ManagedSupplier> supplierResponse = suppliersService.getMySupplier();
+
+                if (!supplierResponse.isSuccess()) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            supplierResponse.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                ManagedSupplier currentSupplier = supplierResponse.getData();
+                supplierId = currentSupplier.getId();
+                supplierNames.put(supplierId, currentSupplier.getName());
+
+                if (minStock == null) {
+                    minStock = 0;
+                }
+
+                if (expirationAfter == null) {
+                    expirationAfter = "1900-01-01";
+                }
+
+            } else if (currentRole == Role.ADMIN) {
+                supplierNames = getSupplierNamesById();
+
+                if (minStock == null) {
+                    minStock = 0;
+                }
+
+                if (expirationAfter == null) {
+                    expirationAfter = "1900-01-01";
+                }
+
+            } else if (currentRole == Role.CUSTOMER) {
+                if (minStock == null || minStock < 1) {
+                    minStock = 1;
+                }
+
+                LocalDate today = LocalDate.now();
+
+                if (expirationAfter == null
+                        || LocalDate.parse(expirationAfter).isBefore(today)) {
+                    expirationAfter = today.toString();
+                }
+            }
+
+            ClientResponse<List<ManagedProduct>> response = productsService.filterProducts(
+                    category,
+                    supplierId,
+                    userId,
+                    expirationAfter,
+                    expirationBefore,
+                    minStock,
+                    minPrice,
+                    maxPrice,
+                    minMargin,
+                    maxMargin,
+                    tax
+            );
+
+            if (!response.isSuccess()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        response.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            fillProductsTable(response.getData(), supplierNames);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Els camps numèrics han de tenir un format correcte.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Les dates han de tenir format yyyy-MM-dd.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    /**
+     * Neteja els camps del filtre i recarrega els productes.
+     */
+    private void clearFilters() {
+        cmbFilterCategory.setSelectedIndex(0);
+        txtFilterMinPrice.setText("");
+        txtFilterMaxPrice.setText("");
+        txtFilterMinMargin.setText("");
+        txtFilterMaxMargin.setText("");
+        txtFilterMinStock.setText("");
+        txtFilterExpirationAfter.setText("");
+        txtFilterExpirationBefore.setText("");
+        txtFilterTax.setText("");
+
+        loadProducts();
+    }
+
+    /**
+     * Retorna la categoria seleccionada al filtre.
+     *
+     * @return categoria seleccionada o null si no es filtra per categoria
+     */
+    private String getSelectedFilterCategory() {
+        Object selectedCategory = cmbFilterCategory.getSelectedItem();
+
+        if (selectedCategory == null) {
+            return null;
+        }
+
+        String category = selectedCategory.toString().trim();
+
+        if (category.isEmpty() || "Totes".equals(category)) {
+            return null;
+        }
+
+        return category;
+    }
+
+    /**
+     * Converteix un text del filtre a Double.
+     *
+     * @param value text introduït
+     * @return valor numèric o null si està buit
+     */
+    private Double parseDoubleFilter(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        return Double.valueOf(value.trim().replace(",", "."));
+    }
+
+    /**
+     * Converteix un text del filtre a Integer.
+     *
+     * @param value text introduït
+     * @return valor enter o null si està buit
+     */
+    private Integer parseIntegerFilter(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        return Integer.valueOf(value.trim());
+    }
+
+    /**
+     * Valida una data del filtre.
+     *
+     * @param value text introduït
+     * @return data en format text o null si està buida
+     */
+    private String parseDateFilter(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        String date = value.trim();
+        LocalDate.parse(date);
+        return date;
+    }
+
+    /**
+     * Mostra els productes indicats a la taula.
+     *
+     * @param products llista de productes
+     * @param supplierNames noms dels proveïdors per identificador
+     */
+    private void fillProductsTable(
+            List<ManagedProduct> products,
+            Map<Long, String> supplierNames
+    ) {
+        tableModel.setRowCount(0);
+
+        for (ManagedProduct product : products) {
+            tableModel.addRow(new Object[]{
+                product.getId(),
+                product.getProductCategory(),
+                getSupplierName(product.getSupplierId(), supplierNames),
+                product.getPrice(),
+                product.getStock(),
+                product.getCooperativeMargin(),
+                product.getExpirationDate(),
+                product.getTax()
+            });
+        }
+    }
+
     /**
      * Carrega els noms dels proveïdors indexats pel seu identificador.
      *
@@ -756,23 +1276,55 @@ public class ProductsPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnApplyFilters;
+    private javax.swing.JButton btnClearFilters;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cmbCategory;
+    private javax.swing.JComboBox<String> cmbFilterCategory;
     private javax.swing.JLabel lblCategory;
     private javax.swing.JLabel lblCooperativeMargin;
     private javax.swing.JLabel lblExpirationDate;
+    private javax.swing.JLabel lblFilterCategory;
+    private javax.swing.JLabel lblFilterExpirationAfter;
+    private javax.swing.JLabel lblFilterExpirationBefore;
+    private javax.swing.JLabel lblFilterExpirationTitle;
+    private javax.swing.JLabel lblFilterMarginTitle;
+    private javax.swing.JLabel lblFilterMaxMargin;
+    private javax.swing.JLabel lblFilterMaxPrice;
+    private javax.swing.JLabel lblFilterMinMargin;
+    private javax.swing.JLabel lblFilterMinPrice;
+    private javax.swing.JLabel lblFilterMinStock;
+    private javax.swing.JLabel lblFilterPriceTitle;
+    private javax.swing.JLabel lblFilterProduct;
+    private javax.swing.JLabel lblFilterStockTitle;
+    private javax.swing.JLabel lblFilterTax;
+    private javax.swing.JLabel lblFilterTaxTitle;
     private javax.swing.JLabel lblPrice;
     private javax.swing.JLabel lblStock;
     private javax.swing.JLabel lblTax;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel pnlButtons;
+    private javax.swing.JPanel pnlFilter;
     private javax.swing.JPanel pnlForm;
+    private javax.swing.JSeparator sepExpiration;
+    private javax.swing.JSeparator sepMargin;
+    private javax.swing.JSeparator sepPrice;
+    private javax.swing.JSeparator sepProduct;
+    private javax.swing.JSeparator sepStock;
     private javax.swing.JScrollPane spProducts;
     private javax.swing.JTable tblProducts;
     private javax.swing.JTextField txtCooperativeMargin;
     private javax.swing.JTextField txtExpirationDate;
+    private javax.swing.JTextField txtFilterExpirationAfter;
+    private javax.swing.JTextField txtFilterExpirationBefore;
+    private javax.swing.JTextField txtFilterMaxMargin;
+    private javax.swing.JTextField txtFilterMaxPrice;
+    private javax.swing.JTextField txtFilterMinMargin;
+    private javax.swing.JTextField txtFilterMinPrice;
+    private javax.swing.JTextField txtFilterMinStock;
+    private javax.swing.JTextField txtFilterTax;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtTax;

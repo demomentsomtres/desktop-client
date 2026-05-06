@@ -48,6 +48,50 @@ public class ProductsService {
     }
 
     /**
+     * Filtra els productes segons els paràmetres indicats.
+     *
+     * @param categoria categoria del producte
+     * @param supplierId identificador del proveïdor
+     * @param userId identificador de l'usuari proveïdor
+     * @param expirationDateAfter data mínima de caducitat
+     * @param expirationDateBefore data màxima de caducitat
+     * @param minStock estoc mínim
+     * @param minPrice preu mínim
+     * @param maxPrice preu màxim
+     * @param minCooperativeMargin marge mínim
+     * @param maxCooperativeMargin marge màxim
+     * @param tax impost
+     * @return resposta amb la llista de productes filtrats
+     */
+    public ClientResponse<List<ManagedProduct>> filterProducts(
+            String categoria,
+            Long supplierId,
+            Long userId,
+            String expirationDateAfter,
+            String expirationDateBefore,
+            Integer minStock,
+            Double minPrice,
+            Double maxPrice,
+            Double minCooperativeMargin,
+            Double maxCooperativeMargin,
+            Double tax
+    ) {
+        return productApiClient.filterProducts(
+                categoria,
+                supplierId,
+                userId,
+                expirationDateAfter,
+                expirationDateBefore,
+                minStock,
+                minPrice,
+                maxPrice,
+                minCooperativeMargin,
+                maxCooperativeMargin,
+                tax
+        );
+    }
+
+    /**
      * Retorna els productes del proveïdor autenticat.
      *
      * @param userId identificador de l'usuari autenticat
