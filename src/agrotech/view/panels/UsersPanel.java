@@ -56,6 +56,58 @@ public class UsersPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Cerca un usuari pel seu nom d'usuari i el mostra a la taula.
+     */
+    private void searchUser() {
+        String username = txtSearchUsername.getText();
+
+        ClientResponse<ManagedUser> response = usersService.getUserByUsername(username);
+
+        if (!response.isSuccess()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    response.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        ManagedUser user = response.getData();
+
+        if (user == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No s'ha trobat cap usuari amb aquest nom.",
+                    "Avís",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        tableModel.setRowCount(0);
+
+        tableModel.addRow(new Object[]{
+            user.getId(),
+            user.getUsername(),
+            user.getRole()
+        });
+
+        if (tableModel.getRowCount() > 0) {
+            tblUsers.setRowSelectionInterval(0, 0);
+        }
+    }
+
+    /**
+     * Neteja la cerca i recarrega tots els usuaris.
+     */
+    private void clearSearch() {
+        txtSearchUsername.setText("");
+        loadUsers();
+        clearForm();
+    }
+
+    /**
      * Carrega la llista d'usuaris a la taula.
      */
     private void loadUsers() {
@@ -127,6 +179,11 @@ public class UsersPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         lblTitle = new javax.swing.JLabel();
+        pnlSearch = new javax.swing.JPanel();
+        lblSearchUsername = new javax.swing.JLabel();
+        txtSearchUsername = new javax.swing.JTextField();
+        btnSearchUser = new javax.swing.JButton();
+        btnClearSearch = new javax.swing.JButton();
         spUsers = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
         pnlForm = new javax.swing.JPanel();
@@ -148,6 +205,53 @@ public class UsersPanel extends javax.swing.JPanel {
         lblTitle.setForeground(new java.awt.Color(30, 111, 168));
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitle.setText("Gestió d'usuaris");
+
+        pnlSearch.setBackground(new java.awt.Color(255, 255, 255));
+        pnlSearch.setBorder(javax.swing.BorderFactory.createTitledBorder("Cerca d'usuari"));
+
+        lblSearchUsername.setText("Nom d'usuari:");
+
+        txtSearchUsername.setColumns(15);
+        txtSearchUsername.setForeground(new java.awt.Color(33, 37, 41));
+
+        btnSearchUser.setForeground(new java.awt.Color(30, 111, 168));
+        btnSearchUser.setText("Cerca");
+        btnSearchUser.setFocusPainted(false);
+        btnSearchUser.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnSearchUser.addActionListener(this::btnSearchUserActionPerformed);
+
+        btnClearSearch.setForeground(new java.awt.Color(30, 111, 168));
+        btnClearSearch.setText("Neteja");
+        btnClearSearch.setFocusPainted(false);
+        btnClearSearch.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnClearSearch.addActionListener(this::btnClearSearchActionPerformed);
+
+        javax.swing.GroupLayout pnlSearchLayout = new javax.swing.GroupLayout(pnlSearch);
+        pnlSearch.setLayout(pnlSearchLayout);
+        pnlSearchLayout.setHorizontalGroup(
+            pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSearchLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSearchUsername)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSearchUsername)
+                .addGap(30, 30, 30)
+                .addComponent(btnSearchUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnClearSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(378, 378, 378))
+        );
+        pnlSearchLayout.setVerticalGroup(
+            pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSearchLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSearchUsername)
+                    .addComponent(txtSearchUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClearSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
 
         spUsers.setBackground(new java.awt.Color(255, 255, 255));
         spUsers.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuaris"));
@@ -237,7 +341,7 @@ public class UsersPanel extends javax.swing.JPanel {
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlButtonsLayout.setVerticalGroup(
             pnlButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,7 +390,7 @@ public class UsersPanel extends javax.swing.JPanel {
                 .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -296,6 +400,9 @@ public class UsersPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnlSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(spUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -307,7 +414,9 @@ public class UsersPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(spUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -425,20 +534,33 @@ public class UsersPanel extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnSearchUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUserActionPerformed
+        searchUser();
+    }//GEN-LAST:event_btnSearchUserActionPerformed
+
+    private void btnClearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchActionPerformed
+        clearSearch();
+    }//GEN-LAST:event_btnClearSearchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSearchUser;
     private javax.swing.JComboBox<String> cmbRole;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblRole;
+    private javax.swing.JLabel lblSearchUsername;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPanel pnlButtons;
     private javax.swing.JPanel pnlForm;
+    private javax.swing.JPanel pnlSearch;
     private javax.swing.JScrollPane spUsers;
     private javax.swing.JTable tblUsers;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtSearchUsername;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
