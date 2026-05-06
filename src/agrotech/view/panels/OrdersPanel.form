@@ -28,8 +28,8 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pnlFilter" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="spOrders" min="-2" pref="558" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="spOrders" min="-2" pref="525" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="pnlForm" max="32767" attributes="0"/>
                           </Group>
@@ -541,15 +541,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="spLines" pref="446" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="btnNewOrder" min="-2" pref="172" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnDelete" min="-2" pref="139" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="spLines" pref="640" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="lblId" max="32767" attributes="0"/>
@@ -579,7 +574,17 @@
                               <Component id="lblTotalValue" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="lblLines" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="btnNewOrder" min="-2" pref="172" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnDelete" min="-2" pref="139" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="lblLines" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -639,8 +644,8 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lblLines" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="spLines" min="-2" pref="239" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="spLines" min="-2" pref="245" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnNewOrder" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDelete" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -824,10 +829,12 @@
             <Component class="javax.swing.JTable" name="tblLines">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="5">
+                  <Table columnCount="7" rowCount="5">
                     <Column editable="false" title="Categoria" type="java.lang.Object"/>
                     <Column editable="false" title="Quantitat" type="java.lang.Object"/>
                     <Column editable="false" title="Preu/u &#x20ac;" type="java.lang.Object"/>
+                    <Column editable="false" title="Marge &#x20ac;" type="java.lang.Object"/>
+                    <Column editable="false" title="Impostos &#x20ac;" type="java.lang.Object"/>
                     <Column editable="false" title="Descompte &#x20ac;" type="java.lang.Object"/>
                     <Column editable="false" title="Total &#x20ac;" type="java.lang.Object"/>
                   </Table>
