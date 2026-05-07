@@ -18,6 +18,7 @@ import agrotech.view.panels.ProductsPanel;
 import agrotech.view.panels.SuppliersPanel;
 import agrotech.view.panels.OrdersPanel;
 import agrotech.view.panels.ProfilePanel;
+import agrotech.view.panels.CustomerDashboardPanel;
 
 /**
  * Pantalla principal provisional del client escriptori.
@@ -87,6 +88,7 @@ public class HomeView extends javax.swing.JFrame {
         User currentUser = SessionManager.getCurrentUser();
 
         if (currentUser == null) {
+            btnDashboard.setVisible(false);
             btnUsers.setVisible(false);
             btnSuppliers.setVisible(false);
             btnProducts.setVisible(false);
@@ -97,6 +99,12 @@ public class HomeView extends javax.swing.JFrame {
         Role role = currentUser.getRole();
 
         configureProductsButtonText(role);
+
+        btnDashboard.setVisible(
+                role == Role.ADMIN
+                || role == Role.SUPPLIER
+                || role == Role.CUSTOMER
+        );
 
         btnUsers.setVisible(
                 role == Role.ADMIN);
@@ -132,6 +140,34 @@ public class HomeView extends javax.swing.JFrame {
             btnProducts.setText("Productes disponibles");
         } else {
             btnProducts.setText("Gestió de productes");
+        }
+    }
+
+    /**
+     * Mostra el dashboard corresponent al rol de l'usuari autenticat.
+     */
+    private void showDashboard() {
+        User currentUser = SessionManager.getCurrentUser();
+
+        if (currentUser == null) {
+            showPlaceholderPanel("Dashboard no disponible");
+            return;
+        }
+
+        Role role = currentUser.getRole();
+
+        switch (role) {
+            case CUSTOMER ->
+                showPanel(new CustomerDashboardPanel());
+
+            case ADMIN ->
+                showPlaceholderPanel("Dashboard d'administració pendent d'implementar");
+
+            case SUPPLIER ->
+                showPlaceholderPanel("Dashboard del proveïdor pendent d'implementar");
+
+            default ->
+                showPlaceholderPanel("Dashboard no disponible");
         }
     }
 
@@ -186,6 +222,7 @@ public class HomeView extends javax.swing.JFrame {
         lblTitle = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
+        btnDashboard = new javax.swing.JButton();
         btnUsers = new javax.swing.JButton();
         btnProducts = new javax.swing.JButton();
         btnSuppliers = new javax.swing.JButton();
@@ -222,6 +259,10 @@ public class HomeView extends javax.swing.JFrame {
         lblRole.setForeground(new java.awt.Color(90, 90, 90));
         lblRole.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRole.setText("Rol: ---");
+
+        btnDashboard.setText("Dashboard");
+        btnDashboard.setPreferredSize(new java.awt.Dimension(140, 30));
+        btnDashboard.addActionListener(this::btnDashboardActionPerformed);
 
         btnUsers.setText("Gestió d'usuaris");
         btnUsers.setPreferredSize(new java.awt.Dimension(140, 30));
@@ -268,14 +309,14 @@ public class HomeView extends javax.swing.JFrame {
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 1112, Short.MAX_VALUE)
+                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         contentPanelLayout.setVerticalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
+                .addComponent(lblContentPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -288,14 +329,16 @@ public class HomeView extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(contentPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                         .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -305,6 +348,9 @@ public class HomeView extends javax.swing.JFrame {
                     .addComponent(lblRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDashboard, btnOrders, btnProducts, btnSuppliers, btnUsers});
+
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
@@ -318,13 +364,15 @@ public class HomeView extends javax.swing.JFrame {
                 .addComponent(lblRole, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -412,6 +460,15 @@ public class HomeView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProfileActionPerformed
 
     /**
+     * Mostra el dashboard corresponent al rol de l'usuari autenticat.
+     *
+     * @param evt esdeveniment del botó
+     */
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
+        showDashboard();
+    }//GEN-LAST:event_btnDashboardActionPerformed
+
+    /**
      * Mètode auxiliar per executar la pantalla principal de manera independent.
      *
      * @param args arguments de línia d'ordres
@@ -439,6 +496,7 @@ public class HomeView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnOrders;
     private javax.swing.JButton btnProducts;

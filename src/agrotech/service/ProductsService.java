@@ -5,9 +5,7 @@ import agrotech.client.ProductApiClient;
 import agrotech.model.ManagedProduct;
 import java.util.List;
 import agrotech.dto.product.SaveProductRequestDto;
-import agrotech.model.Role;
-import agrotech.model.User;
-import agrotech.session.SessionManager;
+import java.time.LocalDate;
 
 /**
  * Gestiona la lògica bàsica dels productes.
@@ -45,6 +43,29 @@ public class ProductsService {
      */
     public ClientResponse<List<ManagedProduct>> getAvailableProducts() {
         return productApiClient.getAvailableProducts();
+    }
+
+    /**
+     * Retorna els productes disponibles amb caducitat propera.
+     *
+     * @return resposta amb la llista de productes amb oferta automàtica
+     */
+    public ClientResponse<List<ManagedProduct>> getProductsWithExpirationOffer() {
+        String expirationDateBefore = LocalDate.now().plusDays(3).toString();
+
+        return productApiClient.filterProducts(
+                null,
+                null,
+                null,
+                null,
+                expirationDateBefore,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
     }
 
     /**
