@@ -25,7 +25,7 @@ public class Product {
      * @param id identificador del producte
      * @param productCategory categoria del producte
      * @param price preu del producte
-     * @param cooperativeMargin marge de la cooperativa
+     * @param cooperativeMargin percentatge del marge cooperatiu
      * @param tax impost aplicat
      * @param expirationDate data de caducitat
      * @param stock estoc disponible
@@ -72,9 +72,9 @@ public class Product {
     }
 
     /**
-     * Retorna el marge de la cooperativa.
+     * Retorna el percentatge del marge cooperatiu.
      *
-     * @return marge de la cooperativa
+     * @return percentatge del marge cooperatiu
      */
     public Double getCooperativeMargin() {
         return cooperativeMargin;

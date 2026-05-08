@@ -258,7 +258,7 @@
                         <Column editable="false" title="Quantitat" type="java.lang.Object"/>
                         <Column editable="false" title="Preu/u &#x20ac;" type="java.lang.Object"/>
                         <Column editable="false" title="Descompte &#x20ac;" type="java.lang.Object"/>
-                        <Column editable="false" title="Total &#x20ac;" type="java.lang.Object"/>
+                        <Column editable="false" title="Total s/IVA &#x20ac;" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -348,7 +348,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Total final:"/>
+            <Property name="text" type="java.lang.String" value="Total s/IVA:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTotalValue">

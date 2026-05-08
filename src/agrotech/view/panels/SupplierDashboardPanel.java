@@ -248,6 +248,8 @@ public class SupplierDashboardPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
 
+        setBackground(new java.awt.Color(245, 247, 250));
+
         pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N

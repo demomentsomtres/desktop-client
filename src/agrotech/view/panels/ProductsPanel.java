@@ -402,7 +402,7 @@ public class ProductsPanel extends javax.swing.JPanel {
 
         lblFilterMarginTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblFilterMarginTitle.setForeground(new java.awt.Color(30, 111, 168));
-        lblFilterMarginTitle.setText("Marge cooperativa €");
+        lblFilterMarginTitle.setText("Marge cooperativa (%)");
 
         lblFilterMinMargin.setText("Mínim");
 
@@ -436,7 +436,7 @@ public class ProductsPanel extends javax.swing.JPanel {
 
         lblFilterTaxTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblFilterTaxTitle.setForeground(new java.awt.Color(30, 111, 168));
-        lblFilterTaxTitle.setText("Impost %");
+        lblFilterTaxTitle.setText("Impost (%)");
 
         lblFilterTax.setText("Valor");
 
@@ -616,7 +616,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Categoria", "Proveïdor", "Preu", "Estoc", "Marge", "Caducitat", "Impost"
+                "ID", "Categoria", "Proveïdor", "Preu", "Estoc", "Marge (%)", "Caducitat", "Impost (%)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -654,7 +654,7 @@ public class ProductsPanel extends javax.swing.JPanel {
 
         lblCooperativeMargin.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblCooperativeMargin.setForeground(new java.awt.Color(73, 80, 87));
-        lblCooperativeMargin.setText("Marge cooperativa");
+        lblCooperativeMargin.setText("Marge cooperativa (%)");
 
         lblStock.setBackground(new java.awt.Color(255, 255, 255));
         lblStock.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -668,7 +668,7 @@ public class ProductsPanel extends javax.swing.JPanel {
         lblTax.setBackground(new java.awt.Color(255, 255, 255));
         lblTax.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblTax.setForeground(new java.awt.Color(73, 80, 87));
-        lblTax.setText("Impost");
+        lblTax.setText("Impost (%)");
 
         pnlButtons.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -879,7 +879,7 @@ public class ProductsPanel extends javax.swing.JPanel {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
                     this,
-                    "Preu, marge, estoc i impost han de ser numèrics.",
+                    "Preu, marge (%), estoc i impost (%) han de ser numèrics.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -984,7 +984,7 @@ public class ProductsPanel extends javax.swing.JPanel {
             if (minMargin != null && maxMargin != null && minMargin > maxMargin) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "El marge mínim no pot ser superior al marge màxim.",
+                        "El marge (%) mínim no pot ser superior al marge (%) màxim.",
                         "Avís",
                         JOptionPane.WARNING_MESSAGE
                 );

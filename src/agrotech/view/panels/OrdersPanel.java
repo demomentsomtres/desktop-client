@@ -66,6 +66,9 @@ public class OrdersPanel extends javax.swing.JPanel {
     private void initTableModel() {
         tableModel = (DefaultTableModel) tblOrders.getModel();
         linesTableModel = (DefaultTableModel) tblLines.getModel();
+
+        tableModel.setRowCount(0);
+        linesTableModel.setRowCount(0);
     }
 
     /**
@@ -84,6 +87,25 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblMarginValue.setText("—");
         lblDiscountValue.setText("—");
         linesTableModel.setRowCount(0);
+    }
+
+    /**
+     * Neteja només el detall de la comanda, sense tocar la selecció de la
+     * taula.
+     */
+    private void clearOrderDetail() {
+        lblIdValue.setText("—");
+        lblCustomerIdValue.setText("—");
+        lblDateValue.setText("—");
+        lblPoblacioValue.setText("—");
+        lblTotalValue.setText("—");
+        lblTaxValue.setText("—");
+        lblMarginValue.setText("—");
+        lblDiscountValue.setText("—");
+
+        if (linesTableModel != null) {
+            linesTableModel.setRowCount(0);
+        }
     }
 
     /**
@@ -123,12 +145,16 @@ public class OrdersPanel extends javax.swing.JPanel {
     private void populateTable(List<ManagedOrder> orders) {
         tableModel.setRowCount(0);
 
+        if (orders == null) {
+            return;
+        }
+
         for (ManagedOrder order : orders) {
             tableModel.addRow(new Object[]{
                 order.getId(),
                 order.getDate(),
                 order.getPoblacioDesti(),
-                formatMoney(order.getTotalOrderPrice())
+                formatMoney(calculateCustomerTotal(order))
             });
         }
     }
@@ -152,13 +178,26 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         if (selectedRow == -1) {
             selectedOrderId = null;
-            clearDetail();
+            clearOrderDetail();
             return;
         }
 
         int modelRow = tblOrders.convertRowIndexToModel(selectedRow);
         Object idValue = tableModel.getValueAt(modelRow, 0);
-        selectedOrderId = Long.valueOf(idValue.toString());
+
+        if (idValue == null || idValue.toString().isBlank()) {
+            selectedOrderId = null;
+            clearOrderDetail();
+            return;
+        }
+
+        try {
+            selectedOrderId = Long.valueOf(idValue.toString());
+        } catch (NumberFormatException ex) {
+            selectedOrderId = null;
+            clearOrderDetail();
+            return;
+        }
 
         ClientResponse<ManagedOrder> response = ordersService.getOrder(selectedOrderId);
 
@@ -174,11 +213,17 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         ManagedOrder order = response.getData();
 
-        lblIdValue.setText(order.getId().toString());
+        if (order == null) {
+            selectedOrderId = null;
+            clearOrderDetail();
+            return;
+        }
+
+        lblIdValue.setText(order.getId() != null ? order.getId().toString() : "—");
         lblCustomerIdValue.setText(order.getCustomerId() != null ? order.getCustomerId() : "—");
         lblDateValue.setText(order.getDate() != null ? order.getDate() : "—");
         lblPoblacioValue.setText(order.getPoblacioDesti() != null ? order.getPoblacioDesti() : "—");
-        lblTotalValue.setText(formatMoney(order.getTotalOrderPrice()));
+        lblTotalValue.setText(formatMoney(calculateCustomerTotal(order)));
         lblTaxValue.setText(formatMoney(order.getTotalOrderTax()));
         lblMarginValue.setText(formatMoney(order.getTotalOrderCooperativeMargin()));
         lblDiscountValue.setText(formatMoney(order.getTotalDiscount()));
@@ -198,6 +243,28 @@ public class OrdersPanel extends javax.swing.JPanel {
                 });
             }
         }
+    }
+
+    /**
+     * Calcula el total que ha de pagar el client.
+     *
+     * @param order comanda consultada
+     * @return total amb IVA inclòs
+     */
+    private double calculateCustomerTotal(ManagedOrder order) {
+        if (order == null) {
+            return 0.0;
+        }
+
+        double total = order.getTotalOrderPrice() != null
+                ? order.getTotalOrderPrice()
+                : 0.0;
+
+        double tax = order.getTotalOrderTax() != null
+                ? order.getTotalOrderTax()
+                : 0.0;
+
+        return total + tax;
     }
 
     /**
@@ -317,7 +384,7 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblSectionTotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblSectionTotal.setForeground(new java.awt.Color(30, 111, 168));
-        lblSectionTotal.setText("Total €");
+        lblSectionTotal.setText("Total s/IVA €");
 
         lblFilterMinTotal.setText("Mínim");
 
@@ -333,7 +400,7 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         lblSectionTax.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblSectionTax.setForeground(new java.awt.Color(30, 111, 168));
-        lblSectionTax.setText("Impostos €");
+        lblSectionTax.setText("IVA €");
 
         lblFilterMinTax.setText("Mínim");
 
@@ -503,7 +570,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Data", "Població", "Total €"
+                "ID", "Data", "Població", "Total amb IVA €"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -558,14 +625,14 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblTax.setBackground(new java.awt.Color(255, 255, 255));
         lblTax.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblTax.setForeground(new java.awt.Color(73, 80, 87));
-        lblTax.setText("Impostos:");
+        lblTax.setText("IVA:");
 
         lblTaxValue.setText("—");
 
         lblMargin.setBackground(new java.awt.Color(255, 255, 255));
         lblMargin.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblMargin.setForeground(new java.awt.Color(73, 80, 87));
-        lblMargin.setText("Marge coop:");
+        lblMargin.setText("Marge coop. €:");
 
         lblMarginValue.setText("—");
 
@@ -579,7 +646,7 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblTotal.setBackground(new java.awt.Color(255, 255, 255));
         lblTotal.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblTotal.setForeground(new java.awt.Color(73, 80, 87));
-        lblTotal.setText("Total €:");
+        lblTotal.setText("Total amb IVA:");
 
         lblTotalValue.setText("—");
 
@@ -597,7 +664,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Categoria", "Quantitat", "Preu/u €", "Marge €", "Impostos €", "Descompte €", "Total €"
+                "Categoria", "Quantitat", "Preu/u €", "Marge €", "IVA €", "Descompte €", "Total s/IVA €"
             }
         ) {
             boolean[] canEdit = new boolean [] {

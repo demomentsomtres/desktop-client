@@ -27,9 +27,9 @@ public class ManagedOrder {
      * @param customerId identificador del client
      * @param date data de la comanda
      * @param poblacioDesti població de destí
-     * @param totalOrderPrice preu total de la comanda
-     * @param totalOrderCooperativeMargin marge cooperatiu total
-     * @param totalOrderTax total d'impostos
+     * @param totalOrderPrice total de la comanda amb descompte i sense IVA
+     * @param totalOrderCooperativeMargin total del marge cooperatiu en euros
+     * @param totalOrderTax import total de l'IVA en euros
      * @param totalDiscount descompte total aplicat a la comanda
      * @param orderLines llista de línies de la comanda
      */
@@ -92,27 +92,27 @@ public class ManagedOrder {
     }
 
     /**
-     * Retorna el preu total.
+     * Retorna el total de la comanda amb descompte aplicat i sense IVA.
      *
-     * @return preu total
+     * @return total de la comanda sense IVA
      */
     public Double getTotalOrderPrice() {
         return totalOrderPrice;
     }
 
     /**
-     * Retorna el marge cooperatiu total.
+     * Retorna l'import total del marge cooperatiu en euros.
      *
-     * @return marge cooperatiu total
+     * @return import total del marge cooperatiu
      */
     public Double getTotalOrderCooperativeMargin() {
         return totalOrderCooperativeMargin;
     }
 
     /**
-     * Retorna el total d'impostos.
+     * Retorna l'import total de l'IVA.
      *
-     * @return total d'impostos
+     * @return import total de l'IVA
      */
     public Double getTotalOrderTax() {
         return totalOrderTax;

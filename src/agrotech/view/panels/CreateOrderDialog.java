@@ -215,7 +215,7 @@ public class CreateOrderDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Categoria", "Quantitat", "Preu/u €", "Descompte €", "Total €"
+                "Categoria", "Quantitat", "Preu/u €", "Descompte €", "Total s/IVA €"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -284,7 +284,7 @@ public class CreateOrderDialog extends javax.swing.JDialog {
         lblDiscountValue.setText("0.00 €");
 
         lblTotal.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblTotal.setText("Total final:");
+        lblTotal.setText("Total s/IVA:");
 
         lblTotalValue.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblTotalValue.setText("0.00 €");
@@ -511,8 +511,14 @@ public class CreateOrderDialog extends javax.swing.JDialog {
             String message = "Comanda creada correctament!";
 
             if (createdOrder != null) {
-                message += "\nTotal final: "
+                message += "\nTotal s/IVA: "
                         + formatMoney(createdOrder.getTotalOrderPrice());
+
+                message += "\nIVA: "
+                        + formatMoney(createdOrder.getTotalOrderTax());
+
+                message += "\nTotal amb IVA: "
+                        + formatMoney(calculateCustomerTotal(createdOrder));
 
                 message += "\nDescompte aplicat: "
                         + formatMoney(createdOrder.getTotalDiscount());
@@ -612,6 +618,28 @@ public class CreateOrderDialog extends javax.swing.JDialog {
     private double calculateLineTotal(ManagedProduct product, int quantity) {
         return calculateLineSubtotal(product, quantity)
                 - calculateLineDiscount(product, quantity);
+    }
+
+    /**
+     * Calcula el total que ha de pagar el client.
+     *
+     * @param order comanda creada
+     * @return total amb IVA inclòs
+     */
+    private double calculateCustomerTotal(ManagedOrder order) {
+        if (order == null) {
+            return 0.0;
+        }
+
+        double total = order.getTotalOrderPrice() != null
+                ? order.getTotalOrderPrice()
+                : 0.0;
+
+        double tax = order.getTotalOrderTax() != null
+                ? order.getTotalOrderTax()
+                : 0.0;
+
+        return total + tax;
     }
 
     /**

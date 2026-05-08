@@ -349,7 +349,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="a8" green="6f" red="1e" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Total &#x20ac;"/>
+            <Property name="text" type="java.lang.String" value="Total s/IVA &#x20ac;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="sepTotal">
@@ -403,7 +403,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="a8" green="6f" red="1e" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Impostos &#x20ac;"/>
+            <Property name="text" type="java.lang.String" value="IVA &#x20ac;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="sepTax">
@@ -478,7 +478,7 @@
                 <Column editable="false" title="ID" type="java.lang.Object"/>
                 <Column editable="false" title="Data" type="java.lang.Object"/>
                 <Column editable="false" title="Poblaci&#xf3;" type="java.lang.Object"/>
-                <Column editable="false" title="Total &#x20ac;" type="java.lang.Object"/>
+                <Column editable="false" title="Total amb IVA &#x20ac;" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -743,7 +743,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="57" green="50" red="49" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Impostos:"/>
+            <Property name="text" type="java.lang.String" value="IVA:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTaxValue">
@@ -762,7 +762,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="57" green="50" red="49" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Marge coop:"/>
+            <Property name="text" type="java.lang.String" value="Marge coop. &#x20ac;:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblMarginValue">
@@ -800,7 +800,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="57" green="50" red="49" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Total &#x20ac;:"/>
+            <Property name="text" type="java.lang.String" value="Total amb IVA:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTotalValue">
@@ -834,9 +834,9 @@
                     <Column editable="false" title="Quantitat" type="java.lang.Object"/>
                     <Column editable="false" title="Preu/u &#x20ac;" type="java.lang.Object"/>
                     <Column editable="false" title="Marge &#x20ac;" type="java.lang.Object"/>
-                    <Column editable="false" title="Impostos &#x20ac;" type="java.lang.Object"/>
+                    <Column editable="false" title="IVA &#x20ac;" type="java.lang.Object"/>
                     <Column editable="false" title="Descompte &#x20ac;" type="java.lang.Object"/>
-                    <Column editable="false" title="Total &#x20ac;" type="java.lang.Object"/>
+                    <Column editable="false" title="Total s/IVA &#x20ac;" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>

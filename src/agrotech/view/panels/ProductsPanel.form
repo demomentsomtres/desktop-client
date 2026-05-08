@@ -358,7 +358,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="a8" green="6f" red="1e" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Marge cooperativa &#x20ac;"/>
+            <Property name="text" type="java.lang.String" value="Marge cooperativa (%)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFilterMinMargin">
@@ -453,7 +453,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="a8" green="6f" red="1e" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Impost %"/>
+            <Property name="text" type="java.lang.String" value="Impost (%)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFilterTax">
@@ -521,9 +521,9 @@
                 <Column editable="false" title="Prove&#xef;dor" type="java.lang.Object"/>
                 <Column editable="false" title="Preu" type="java.lang.Object"/>
                 <Column editable="false" title="Estoc" type="java.lang.Object"/>
-                <Column editable="false" title="Marge" type="java.lang.Object"/>
+                <Column editable="false" title="Marge (%)" type="java.lang.Object"/>
                 <Column editable="false" title="Caducitat" type="java.lang.Object"/>
-                <Column editable="false" title="Impost" type="java.lang.Object"/>
+                <Column editable="false" title="Impost (%)" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -690,7 +690,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="57" green="50" red="49" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Marge cooperativa"/>
+            <Property name="text" type="java.lang.String" value="Marge cooperativa (%)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCooperativeMargin">
@@ -735,7 +735,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="57" green="50" red="49" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Impost"/>
+            <Property name="text" type="java.lang.String" value="Impost (%)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTax">

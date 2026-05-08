@@ -77,18 +77,18 @@ public class ProductResponseDto {
     }
 
     /**
-     * Retorna el marge de la cooperativa.
+     * Retorna el percentatge del marge cooperatiu.
      *
-     * @return marge de la cooperativa
+     * @return percentatge del marge cooperatiu
      */
     public Double getCooperativeMargin() {
         return cooperativeMargin;
     }
 
     /**
-     * Defineix el marge de la cooperativa.
+     * Defineix el percentatge del marge cooperatiu.
      *
-     * @param cooperativeMargin marge de la cooperativa
+     * @param cooperativeMargin percentatge del marge cooperatiu
      */
     public void setCooperativeMargin(Double cooperativeMargin) {
         this.cooperativeMargin = cooperativeMargin;

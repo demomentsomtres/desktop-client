@@ -88,7 +88,7 @@ public class AdminDashboardPanel extends javax.swing.JPanel {
                     safeText(order.getPoblacioDesti()),
                     safeText(line.getProductCategory()),
                     safeText(line.getQuantity()),
-                    formatMoney(line.getTotalPrice())
+                    formatMoney(calculateLineTotalWithTax(line))
                 });
             }
         }
@@ -134,18 +134,46 @@ public class AdminDashboardPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Calcula l'import total de vendes.
+     * Calcula el total d'una línia amb IVA inclòs.
+     *
+     * @param line línia de comanda
+     * @return total de la línia amb IVA
+     */
+    private double calculateLineTotalWithTax(OrderLineDto line) {
+        if (line == null) {
+            return 0.0;
+        }
+
+        double total = line.getTotalPrice() != null
+                ? line.getTotalPrice()
+                : 0.0;
+
+        double tax = line.getTotalTax() != null
+                ? line.getTotalTax()
+                : 0.0;
+
+        return total + tax;
+    }
+
+    /**
+     * Calcula l'import total facturat als clients amb IVA inclòs.
      *
      * @param orders llista de comandes carregades
-     * @return import total de vendes
+     * @return import total facturat amb IVA
      */
     private double calculateTotalSales(List<ManagedOrder> orders) {
         double total = 0.0;
 
         for (ManagedOrder order : orders) {
-            if (order.getTotalOrderPrice() != null) {
-                total += order.getTotalOrderPrice();
-            }
+            double orderTotal = order.getTotalOrderPrice() != null
+                    ? order.getTotalOrderPrice()
+                    : 0.0;
+
+            double orderTax = order.getTotalOrderTax() != null
+                    ? order.getTotalOrderTax()
+                    : 0.0;
+
+            total += orderTotal + orderTax;
         }
 
         return total;
@@ -355,7 +383,7 @@ public class AdminDashboardPanel extends javax.swing.JPanel {
         lblTotalSalesIcon.setText("€");
 
         lblTotalSalesTitle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTotalSalesTitle.setText("Total vendes");
+        lblTotalSalesTitle.setText("Total vendes amb IVA");
 
         lblTotalSalesValue.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTotalSalesValue.setForeground(new java.awt.Color(46, 125, 50));
@@ -422,7 +450,7 @@ public class AdminDashboardPanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Comanda", "Data", "Client ID", "Població", "Producte", "Quantitat", "Total €"
+                "Comanda", "Data", "Client ID", "Població", "Producte", "Quantitat", "Total amb IVA €"
             }
         ) {
             boolean[] canEdit = new boolean [] {

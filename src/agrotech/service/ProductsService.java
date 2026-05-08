@@ -175,7 +175,7 @@ public class ProductsService {
      * @param productId identificador del producte, o null si és nou
      * @param productCategory categoria del producte
      * @param price preu del producte
-     * @param cooperativeMargin marge de la cooperativa
+     * @param cooperativeMargin percentatge del marge cooperatiu
      * @param stock estoc disponible
      * @param expirationDate data de caducitat
      * @param tax impost aplicat

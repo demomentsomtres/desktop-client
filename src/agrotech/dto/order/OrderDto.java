@@ -47,27 +47,27 @@ public class OrderDto {
     }
 
     /**
-     * Retorna el preu total de la comanda.
+     * Retorna el total de la comanda amb descompte aplicat i sense IVA.
      *
-     * @return preu total de la comanda
+     * @return total de la comanda sense IVA
      */
     public Double getTotalOrderPrice() {
         return totalOrderPrice;
     }
 
     /**
-     * Retorna el marge cooperatiu total.
+     * Retorna l'import total del marge cooperatiu en euros.
      *
-     * @return marge cooperatiu total
+     * @return import total del marge cooperatiu
      */
     public Double getTotalOrderCooperativeMargin() {
         return totalOrderCooperativeMargin;
     }
 
     /**
-     * Retorna el total d'impostos.
+     * Retorna l'import total de l'IVA.
      *
-     * @return total d'impostos
+     * @return import total de l'IVA
      */
     public Double getTotalOrderTax() {
         return totalOrderTax;

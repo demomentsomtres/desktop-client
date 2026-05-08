@@ -53,18 +53,18 @@ public class OrderLineDto {
     }
 
     /**
-     * Retorna el total d'impostos de la línia.
+     * Retorna l'import de l'IVA de la línia.
      *
-     * @return total d'impostos
+     * @return import de l'IVA de la línia
      */
     public Double getTotalTax() {
         return totalTax;
     }
 
     /**
-     * Retorna el total de la línia.
+     * Retorna el total de la línia amb descompte aplicat i sense IVA.
      *
-     * @return total de la línia
+     * @return total de la línia sense IVA
      */
     public Double getTotalPrice() {
         return totalPrice;
@@ -80,9 +80,9 @@ public class OrderLineDto {
     }
 
     /**
-     * Retorna el marge cooperatiu total de la línia.
+     * Retorna l'import del marge cooperatiu de la línia en euros.
      *
-     * @return marge cooperatiu total
+     * @return import del marge cooperatiu de la línia
      */
     public Double getTotalCooperativeMargin() {
         return totalCooperativeMargin;
