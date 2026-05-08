@@ -19,6 +19,7 @@ import agrotech.view.panels.SuppliersPanel;
 import agrotech.view.panels.OrdersPanel;
 import agrotech.view.panels.ProfilePanel;
 import agrotech.view.panels.CustomerDashboardPanel;
+import agrotech.view.panels.AdminDashboardPanel;
 
 /**
  * Pantalla principal provisional del client escriptori.
@@ -161,7 +162,7 @@ public class HomeView extends javax.swing.JFrame {
                 showPanel(new CustomerDashboardPanel());
 
             case ADMIN ->
-                showPlaceholderPanel("Dashboard d'administració pendent d'implementar");
+                showPanel(new AdminDashboardPanel());
 
             case SUPPLIER ->
                 showPlaceholderPanel("Dashboard del proveïdor pendent d'implementar");

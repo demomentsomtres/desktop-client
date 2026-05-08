@@ -79,6 +79,27 @@ public class OrdersService {
     }
 
     /**
+     * Consulta totes les comandes per mostrar-les al dashboard de
+     * l'administrador.
+     *
+     * <p>
+     * Aquest mètode reutilitza la consulta amb filtres, però sense aplicar cap
+     * filtre, per obtenir una visió global de les vendes registrades.
+     * </p>
+     *
+     * @return resposta amb la llista completa de comandes
+     */
+    public ClientResponse<List<ManagedOrder>> getAllOrdersForDashboard() {
+        return getOrdersByFilters(
+                null, null,
+                null, null,
+                null, null,
+                null, null,
+                null, null
+        );
+    }
+
+    /**
      * Crea una nova comanda.
      *
      * @param poblacioDesti població de destí
