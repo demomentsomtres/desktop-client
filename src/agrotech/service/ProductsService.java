@@ -6,6 +6,9 @@ import agrotech.model.ManagedProduct;
 import java.util.List;
 import agrotech.dto.product.SaveProductRequestDto;
 import java.time.LocalDate;
+import agrotech.model.Role;
+import agrotech.model.User;
+import agrotech.session.SessionManager;
 
 /**
  * Gestiona la lògica bàsica dels productes.
@@ -130,6 +133,31 @@ public class ProductsService {
      */
     public ClientResponse<List<ManagedProduct>> getProductsBySupplierId(Long supplierId) {
         return productApiClient.getProductsBySupplierId(supplierId);
+    }
+
+    /**
+     * Consulta els productes del proveïdor autenticat per mostrar-los al
+     * dashboard.
+     *
+     * <p>
+     * Aquest mètode utilitza l'usuari de la sessió actual per recuperar només
+     * els productes associats al proveïdor autenticat.
+     * </p>
+     *
+     * @return resposta amb la llista de productes del proveïdor actual
+     */
+    public ClientResponse<List<ManagedProduct>> getMyProductsForDashboard() {
+        User currentUser = SessionManager.getCurrentUser();
+
+        if (currentUser == null || currentUser.getRole() != Role.SUPPLIER) {
+            return new ClientResponse<>(
+                    false,
+                    "Només els proveïdors poden consultar aquest dashboard.",
+                    null
+            );
+        }
+
+        return getProductsBySupplierUserId(currentUser.getId());
     }
 
     /**
