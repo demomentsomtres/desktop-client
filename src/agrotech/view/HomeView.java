@@ -177,7 +177,7 @@ public class HomeView extends javax.swing.JFrame {
      * Mostra el contingut inicial de la pantalla principal.
      */
     private void showDefaultContent() {
-        showPlaceholderPanel("Pantalla principal provisional");
+        showDashboard();
     }
 
     /**
