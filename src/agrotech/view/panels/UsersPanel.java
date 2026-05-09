@@ -51,6 +51,8 @@ public class UsersPanel extends javax.swing.JPanel {
         cmbRole.setSelectedIndex(-1);
         tblUsers.clearSelection();
         btnDelete.setEnabled(false);
+        btnSave.setEnabled(true);
+        cmbRole.setEnabled(true);
         btnSave.setText("Crea");
         txtUsername.requestFocus();
     }
@@ -165,8 +167,22 @@ public class UsersPanel extends javax.swing.JPanel {
         txtUsername.setText(selectedOriginalUsername);
         txtPassword.setText("");
         cmbRole.setSelectedItem(roleValue.toString());
-        btnDelete.setEnabled(true);
         btnSave.setText("Desa");
+
+        boolean isSupplier = Role.SUPPLIER.toString().equals(roleValue.toString());
+
+        btnSave.setEnabled(!isSupplier);
+        btnDelete.setEnabled(!isSupplier);
+        cmbRole.setEnabled(!isSupplier);
+
+        if (isSupplier) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Els proveïdors s'han de gestionar des del mòdul de proveïdors.",
+                    "Avís",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }
 
     /**
@@ -534,10 +550,20 @@ public class UsersPanel extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Cerca usuaris segons el text introduït al filtre.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnSearchUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchUserActionPerformed
         searchUser();
     }//GEN-LAST:event_btnSearchUserActionPerformed
 
+    /**
+     * Neteja la cerca d'usuaris i torna a carregar el llistat complet.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnClearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchActionPerformed
         clearSearch();
     }//GEN-LAST:event_btnClearSearchActionPerformed

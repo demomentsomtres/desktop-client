@@ -79,20 +79,46 @@ public class SuppliersPanel extends javax.swing.JPanel {
             return;
         }
 
+        fillSuppliersTable(response.getData());
+    }
+
+    /**
+     * Omple la taula amb la llista de proveïdors indicada.
+     *
+     * @param suppliers llista de proveïdors
+     */
+    private void fillSuppliersTable(List<ManagedSupplier> suppliers) {
         Map<Long, Integer> productCounts = getProductCountsBySupplier();
 
         tableModel.setRowCount(0);
 
-        for (ManagedSupplier supplier : response.getData()) {
-            tableModel.addRow(new Object[]{
-                supplier.getId(),
-                supplier.getName(),
-                supplier.getPoblacio(),
-                supplier.getEmail(),
-                supplier.getTelefon(),
-                productCounts.getOrDefault(supplier.getId(), 0)
-            });
+        if (suppliers == null) {
+            return;
         }
+
+        for (ManagedSupplier supplier : suppliers) {
+            addSupplierRow(supplier, productCounts);
+        }
+    }
+
+    /**
+     * Afegeix un proveïdor a la taula.
+     *
+     * @param supplier proveïdor a mostrar
+     * @param productCounts recompte de productes per proveïdor
+     */
+    private void addSupplierRow(
+            ManagedSupplier supplier,
+            Map<Long, Integer> productCounts
+    ) {
+        tableModel.addRow(new Object[]{
+            supplier.getId(),
+            supplier.getName(),
+            supplier.getPoblacio(),
+            supplier.getEmail(),
+            supplier.getTelefon(),
+            productCounts.getOrDefault(supplier.getId(), 0)
+        });
     }
 
     /**
@@ -239,16 +265,17 @@ public class SuppliersPanel extends javax.swing.JPanel {
             pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFilterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFilterName)
-                    .addComponent(lblFilterPoblacio)
-                    .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFilterTelefon)
-                    .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnClearFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFilterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFilterName)
+                        .addComponent(lblFilterPoblacio)
+                        .addComponent(txtFilterPoblacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFilterTelefon)
+                        .addComponent(txtFilterTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -447,7 +474,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
                 .addComponent(pnlFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                    .addComponent(spSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -617,14 +644,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
             Map<Long, Integer> productCounts = getProductCountsBySupplier();
 
             tableModel.setRowCount(0);
-            tableModel.addRow(new Object[]{
-                supplier.getId(),
-                supplier.getName(),
-                supplier.getPoblacio(),
-                supplier.getEmail(),
-                supplier.getTelefon(),
-                productCounts.getOrDefault(supplier.getId(), 0)
-            });
+            addSupplierRow(supplier, productCounts);
 
             tblSuppliers.setRowSelectionInterval(0, 0);
             return;
@@ -643,20 +663,7 @@ public class SuppliersPanel extends javax.swing.JPanel {
             return;
         }
 
-        Map<Long, Integer> productCounts = getProductCountsBySupplier();
-
-        tableModel.setRowCount(0);
-
-        for (ManagedSupplier supplier : response.getData()) {
-            tableModel.addRow(new Object[]{
-                supplier.getId(),
-                supplier.getName(),
-                supplier.getPoblacio(),
-                supplier.getEmail(),
-                supplier.getTelefon(),
-                productCounts.getOrDefault(supplier.getId(), 0)
-            });
-        }
+        fillSuppliersTable(response.getData());
     }//GEN-LAST:event_btnFilterActionPerformed
 
     /**

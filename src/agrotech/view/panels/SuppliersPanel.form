@@ -49,7 +49,7 @@
               <Component id="pnlFilter" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="spSuppliers" pref="373" max="32767" attributes="0"/>
+                  <Component id="spSuppliers" pref="0" max="32767" attributes="0"/>
                   <Component id="pnlForm" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -113,16 +113,18 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtFilterName" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblFilterName" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblFilterPoblacio" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFilterPoblacio" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblFilterTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFilterTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="btnClearFilter" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtFilterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFilterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFilterPoblacio" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFilterPoblacio" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFilterTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFilterTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>

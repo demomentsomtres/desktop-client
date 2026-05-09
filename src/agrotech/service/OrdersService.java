@@ -70,7 +70,7 @@ public class OrdersService {
             Double minOrderTax, Double maxOrderTax
     ) {
         return orderApiClient.getOrdersByFilters(
-                customerId, normalize(poblacio),
+                customerId, normalizeLikeFilter(poblacio),
                 normalize(startDate), normalize(endDate),
                 minTotal, maxTotal,
                 minCooperativeMargin, maxCooperativeMargin,
@@ -79,17 +79,16 @@ public class OrdersService {
     }
 
     /**
-     * Consulta totes les comandes per mostrar-les al dashboard de
-     * l'administrador.
+     * Consulta totes les comandes registrades.
      *
      * <p>
      * Aquest mètode reutilitza la consulta amb filtres, però sense aplicar cap
-     * filtre, per obtenir una visió global de les vendes registrades.
+     * filtre.
      * </p>
      *
      * @return resposta amb la llista completa de comandes
      */
-    public ClientResponse<List<ManagedOrder>> getAllOrdersForDashboard() {
+    public ClientResponse<List<ManagedOrder>> getAllOrders() {
         return getOrdersByFilters(
                 null, null,
                 null, null,
@@ -140,6 +139,22 @@ public class OrdersService {
         }
 
         return orderApiClient.deleteOrder(orderId);
+    }
+
+    /**
+     * Normalitza un text per utilitzar-lo en una cerca parcial.
+     *
+     * @param text text original
+     * @return text amb comodins o null si és buit
+     */
+    private String normalizeLikeFilter(String text) {
+        String normalized = normalize(text);
+
+        if (normalized == null) {
+            return null;
+        }
+
+        return "%" + normalized + "%";
     }
 
     /**

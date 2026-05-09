@@ -72,7 +72,7 @@ public class AuthService {
             return true;
         }
 
-        boolean logoutOk = authApiClient.logout(token);
+        boolean logoutOk = authApiClient.logout();
 
         if (logoutOk) {
             SessionManager.logout();

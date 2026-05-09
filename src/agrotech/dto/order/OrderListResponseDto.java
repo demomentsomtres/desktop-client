@@ -44,7 +44,7 @@ public class OrderListResponseDto {
     /**
      * Retorna la llista de comandes.
      *
-     * = @return llista de comandes
+     * @return llista de comandes
      */
     public List<OrderDto> getOrders() {
         return orders;

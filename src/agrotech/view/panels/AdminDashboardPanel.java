@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Panell de resum principal per a l'usuari administrador.
  *
  * @author Javier Santana Coronado
  */
@@ -19,7 +20,7 @@ public class AdminDashboardPanel extends javax.swing.JPanel {
     private DefaultTableModel salesTableModel;
 
     /**
-     * Creates new form AdminDashboardPanel
+     * Crea el panell de dashboard de l'administrador.
      */
     public AdminDashboardPanel() {
         initComponents();
@@ -43,7 +44,7 @@ public class AdminDashboardPanel extends javax.swing.JPanel {
      */
     private void loadSales() {
         ClientResponse<List<ManagedOrder>> response
-                = ordersService.getAllOrdersForDashboard();
+                = ordersService.getAllOrders();
 
         if (!response.isSuccess()) {
             clearDashboard();

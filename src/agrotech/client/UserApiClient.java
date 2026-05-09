@@ -83,11 +83,21 @@ public class UserApiClient {
 
             if (response.isSuccessful() && response.body() != null) {
                 ManagedUserDto dto = response.body().getUser();
+
+                if (dto == null) {
+                    return new ClientResponse<>(
+                            false,
+                            "Resposta del servidor incompleta.",
+                            null
+                    );
+                }
+
                 ManagedUser user = new ManagedUser(
                         dto.getId(),
                         dto.getUsername(),
                         dto.getRole()
                 );
+
                 return new ClientResponse<>(true, "Dades carregades correctament.", user);
             }
 

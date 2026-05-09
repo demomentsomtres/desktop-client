@@ -2,6 +2,7 @@ package agrotech.client;
 
 import agrotech.model.LoginResponse;
 import agrotech.model.Role;
+import agrotech.session.SessionManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,7 +84,9 @@ public class AuthApiClientIntegrationTest {
         assertTrue(response.isSuccess());
         assertNotNull(response.getToken());
 
-        boolean resultatLogout = authApiClient.logout(response.getToken());
+        SessionManager.login(response.getUser(), response.getToken());
+
+        boolean resultatLogout = authApiClient.logout();
 
         assertTrue(resultatLogout);
     }

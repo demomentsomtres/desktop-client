@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 
 /**
+ * Panell de resum principal per a l'usuari client.
  *
  * @author Javier Santana Coronado
  */

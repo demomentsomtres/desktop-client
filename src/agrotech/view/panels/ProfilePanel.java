@@ -10,13 +10,14 @@ import agrotech.session.SessionManager;
 import javax.swing.JOptionPane;
 
 /**
+ * Panell que mostra i gestiona les dades del perfil de l'usuari autenticat.
  *
  * @author Javier Santana Coronado
  */
 public class ProfilePanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form ProfilePanel
+     * Crea el panell del perfil de l'usuari.
      */
     public ProfilePanel() {
         initComponents();

@@ -2,12 +2,15 @@ package agrotech.view.panels;
 
 import agrotech.client.ClientResponse;
 import agrotech.model.ManagedOrder;
+import agrotech.model.Role;
 import agrotech.service.OrdersService;
+import agrotech.session.SessionManager;
+import agrotech.dto.order.OrderLineDto;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import agrotech.model.Role;
-import agrotech.session.SessionManager;
 import javax.swing.SwingUtilities;
 
 /**
@@ -77,16 +80,7 @@ public class OrdersPanel extends javax.swing.JPanel {
     private void clearDetail() {
         selectedOrderId = null;
         tblOrders.clearSelection();
-
-        lblIdValue.setText("—");
-        lblCustomerIdValue.setText("—");
-        lblDateValue.setText("—");
-        lblPoblacioValue.setText("—");
-        lblTotalValue.setText("—");
-        lblTaxValue.setText("—");
-        lblMarginValue.setText("—");
-        lblDiscountValue.setText("—");
-        linesTableModel.setRowCount(0);
+        clearOrderDetail();
     }
 
     /**
@@ -208,6 +202,7 @@ public class OrdersPanel extends javax.swing.JPanel {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
+            clearOrderDetail();
             return;
         }
 
@@ -215,6 +210,21 @@ public class OrdersPanel extends javax.swing.JPanel {
 
         if (order == null) {
             selectedOrderId = null;
+            clearOrderDetail();
+            return;
+        }
+
+        fillOrderDetail(order);
+        fillOrderLines(order);
+    }
+
+    /**
+     * Omple les dades principals del detall d'una comanda.
+     *
+     * @param order comanda a mostrar
+     */
+    private void fillOrderDetail(ManagedOrder order) {
+        if (order == null) {
             clearOrderDetail();
             return;
         }
@@ -227,21 +237,30 @@ public class OrdersPanel extends javax.swing.JPanel {
         lblTaxValue.setText(formatMoney(order.getTotalOrderTax()));
         lblMarginValue.setText(formatMoney(order.getTotalOrderCooperativeMargin()));
         lblDiscountValue.setText(formatMoney(order.getTotalDiscount()));
+    }
 
+    /**
+     * Omple la taula de línies d'una comanda.
+     *
+     * @param order comanda de la qual es mostren les línies
+     */
+    private void fillOrderLines(ManagedOrder order) {
         linesTableModel.setRowCount(0);
 
-        if (order.getOrderLines() != null) {
-            for (agrotech.dto.order.OrderLineDto line : order.getOrderLines()) {
-                linesTableModel.addRow(new Object[]{
-                    line.getProductCategory(),
-                    line.getQuantity(),
-                    formatMoney(line.getUnitPrice()),
-                    formatMoney(line.getTotalCooperativeMargin()),
-                    formatMoney(line.getTotalTax()),
-                    formatMoney(line.getTotalDiscount()),
-                    formatMoney(line.getTotalPrice())
-                });
-            }
+        if (order == null || order.getOrderLines() == null) {
+            return;
+        }
+
+        for (OrderLineDto line : order.getOrderLines()) {
+            linesTableModel.addRow(new Object[]{
+                line.getProductCategory(),
+                line.getQuantity(),
+                formatMoney(line.getUnitPrice()),
+                formatMoney(line.getTotalCooperativeMargin()),
+                formatMoney(line.getTotalTax()),
+                formatMoney(line.getTotalDiscount()),
+                formatMoney(line.getTotalPrice())
+            });
         }
     }
 
@@ -279,6 +298,61 @@ public class OrdersPanel extends javax.swing.JPanel {
         }
 
         return String.format("%.2f €", amount);
+    }
+
+    /**
+     * Converteix un filtre de text a Long.
+     *
+     * @param value valor introduït al camp
+     * @return valor convertit o null si el camp està buit
+     */
+    private Long parseLongFilter(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        return Long.valueOf(value.trim());
+    }
+
+    /**
+     * Converteix un filtre de text a Double.
+     *
+     * @param value valor introduït al camp
+     * @return valor convertit o null si el camp està buit
+     */
+    private Double parseDoubleFilter(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        return Double.valueOf(value.trim().replace(",", "."));
+    }
+
+    /**
+     * Valida i retorna una data de filtre.
+     *
+     * @param value valor introduït al camp
+     * @return data validada o null si el camp està buit
+     */
+    private String parseDateFilter(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+
+        String date = value.trim();
+        LocalDate.parse(date);
+        return date;
+    }
+
+    /**
+     * Comprova si un rang numèric és incorrecte.
+     *
+     * @param min valor mínim
+     * @param max valor màxim
+     * @return true si el rang és incorrecte
+     */
+    private boolean isInvalidRange(Double min, Double max) {
+        return min != null && max != null && min > max;
     }
 
     /**
@@ -840,54 +914,81 @@ public class OrdersPanel extends javax.swing.JPanel {
      * @param evt esdeveniment del botó
      */
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
-        Long customerId = null;
-        Double minTotal = null;
-        Double maxTotal = null;
-        Double minMargin = null;
-        Double maxMargin = null;
-        Double minTax = null;
-        Double maxTax = null;
+        Long customerId;
+        Double minTotal;
+        Double maxTotal;
+        Double minMargin;
+        Double maxMargin;
+        Double minTax;
+        Double maxTax;
+        String startDate;
+        String endDate;
 
         try {
-            String customerIdText = txtFilterCustomerId.getText().trim();
-            if (!customerIdText.isEmpty()) {
-                customerId = Long.parseLong(customerIdText);
-            }
-
-            String minTotalText = txtFilterMinTotal.getText().trim();
-            if (!minTotalText.isEmpty()) {
-                minTotal = Double.parseDouble(minTotalText);
-            }
-
-            String maxTotalText = txtFilterMaxTotal.getText().trim();
-            if (!maxTotalText.isEmpty()) {
-                maxTotal = Double.parseDouble(maxTotalText);
-            }
-
-            String minMarginText = txtFilterMinMargin.getText().trim();
-            if (!minMarginText.isEmpty()) {
-                minMargin = Double.parseDouble(minMarginText);
-            }
-
-            String maxMarginText = txtFilterMaxMargin.getText().trim();
-            if (!maxMarginText.isEmpty()) {
-                maxMargin = Double.parseDouble(maxMarginText);
-            }
-
-            String minTaxText = txtFilterMinTax.getText().trim();
-            if (!minTaxText.isEmpty()) {
-                minTax = Double.parseDouble(minTaxText);
-            }
-
-            String maxTaxText = txtFilterMaxTax.getText().trim();
-            if (!maxTaxText.isEmpty()) {
-                maxTax = Double.parseDouble(maxTaxText);
-            }
+            customerId = parseLongFilter(txtFilterCustomerId.getText());
+            minTotal = parseDoubleFilter(txtFilterMinTotal.getText());
+            maxTotal = parseDoubleFilter(txtFilterMaxTotal.getText());
+            minMargin = parseDoubleFilter(txtFilterMinMargin.getText());
+            maxMargin = parseDoubleFilter(txtFilterMaxMargin.getText());
+            minTax = parseDoubleFilter(txtFilterMinTax.getText());
+            maxTax = parseDoubleFilter(txtFilterMaxTax.getText());
+            startDate = parseDateFilter(txtFilterStartDate.getText());
+            endDate = parseDateFilter(txtFilterEndDate.getText());
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
                     this,
-                    "Els camps numèrics han de contenir valors vàlids.",
+                    "El client ID ha de ser un número enter i els imports han de ser valors numèrics.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Les dates han de tenir el format YYYY-MM-DD.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (isInvalidRange(minTotal, maxTotal)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El total mínim no pot ser superior al total màxim.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (isInvalidRange(minMargin, maxMargin)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El marge mínim no pot ser superior al marge màxim.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (isInvalidRange(minTax, maxTax)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "L'IVA mínim no pot ser superior a l'IVA màxim.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (startDate != null && endDate != null
+                && LocalDate.parse(startDate).isAfter(LocalDate.parse(endDate))) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La data inicial no pot ser posterior a la data final.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -895,14 +996,12 @@ public class OrdersPanel extends javax.swing.JPanel {
         }
 
         String poblacio = txtFilterPoblacio.getText().trim();
-        String startDate = txtFilterStartDate.getText().trim();
-        String endDate = txtFilterEndDate.getText().trim();
 
         ClientResponse<List<ManagedOrder>> response = ordersService.getOrdersByFilters(
                 customerId,
                 poblacio.isEmpty() ? null : poblacio,
-                startDate.isEmpty() ? null : startDate,
-                endDate.isEmpty() ? null : endDate,
+                startDate,
+                endDate,
                 minTotal, maxTotal,
                 minMargin, maxMargin,
                 minTax, maxTax

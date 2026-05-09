@@ -23,11 +23,11 @@ import agrotech.view.panels.AdminDashboardPanel;
 import agrotech.view.panels.SupplierDashboardPanel;
 
 /**
- * Pantalla principal provisional del client escriptori.
+ * Pantalla principal del client escriptori.
  *
  * <p>
- * Mostra la informació bàsica de la sessió activa i permet tancar-la mitjançant
- * l'opció de logout.</p>
+ * Mostra la informació de la sessió activa i permet accedir als diferents
+ * mòduls de l'aplicació segons el rol de l'usuari.</p>
  *
  * @author Javier Santana Coronado
  */
@@ -124,10 +124,6 @@ public class HomeView extends javax.swing.JFrame {
                 role == Role.ADMIN
                 || role == Role.CUSTOMER
         );
-
-        btnOrders.setVisible(
-                role == Role.ADMIN
-                || role == Role.CUSTOMER);
     }
 
     /**
@@ -262,7 +258,7 @@ public class HomeView extends javax.swing.JFrame {
         lblRole.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRole.setText("Rol: ---");
 
-        btnDashboard.setText("Dashboard");
+        btnDashboard.setText("Inici");
         btnDashboard.setPreferredSize(new java.awt.Dimension(140, 30));
         btnDashboard.addActionListener(this::btnDashboardActionPerformed);
 
@@ -302,7 +298,7 @@ public class HomeView extends javax.swing.JFrame {
         lblContentPlaceholder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblContentPlaceholder.setForeground(new java.awt.Color(150, 150, 150));
         lblContentPlaceholder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblContentPlaceholder.setText("Pantalla principal provisional");
+        lblContentPlaceholder.setText("Pantalla principal");
         lblContentPlaceholder.setPreferredSize(new java.awt.Dimension(1110, 430));
 
         javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
@@ -335,12 +331,12 @@ public class HomeView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                         .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -369,12 +365,12 @@ public class HomeView extends javax.swing.JFrame {
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -435,6 +431,11 @@ public class HomeView extends javax.swing.JFrame {
         showPanel(new UsersPanel());
     }//GEN-LAST:event_btnUsersActionPerformed
 
+    /**
+     * Mostra el mòdul de productes.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductsActionPerformed
         showPanel(new ProductsPanel());
     }//GEN-LAST:event_btnProductsActionPerformed
@@ -457,6 +458,11 @@ public class HomeView extends javax.swing.JFrame {
         showPanel(new OrdersPanel());
     }//GEN-LAST:event_btnOrdersActionPerformed
 
+    /**
+     * Mostra el perfil de l'usuari autenticat.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
         showPanel(new ProfilePanel());
     }//GEN-LAST:event_btnProfileActionPerformed

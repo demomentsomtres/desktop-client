@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Response;
+import java.time.LocalDate;
 
 /**
  * Gestiona les crides HTTP relacionades amb productes.
@@ -19,9 +20,10 @@ import retrofit2.Response;
  * @author Javier Santana Coronado
  */
 public class ProductApiClient {
-
+    
+    private static final String MIN_EXPIRATION_DATE = "1900-01-01";
     private final ProductsApi productsApi;
-
+    
     /**
      * Crea el client d'API de productes.
      */
@@ -74,9 +76,9 @@ public class ProductApiClient {
                     null,
                     null,
                     null,
+                    LocalDate.now().toString(),
                     null,
-                    null,
-                    null,
+                    1,
                     null,
                     null,
                     null,
@@ -200,7 +202,7 @@ public class ProductApiClient {
                     null,
                     supplierId,
                     null,
-                    "1900-01-01",
+                    MIN_EXPIRATION_DATE,
                     null,
                     0,
                     null,
@@ -256,7 +258,7 @@ public class ProductApiClient {
                     null,
                     null,
                     userId,
-                    "1900-01-01",
+                    MIN_EXPIRATION_DATE,
                     null,
                     0,
                     null,
@@ -454,7 +456,11 @@ public class ProductApiClient {
         }
 
         for (ManagedProductDto dto : dtos) {
-            products.add(mapProduct(dto));
+            ManagedProduct product = mapProduct(dto);
+
+            if (product != null) {
+                products.add(product);
+            }
         }
 
         return products;
@@ -467,6 +473,10 @@ public class ProductApiClient {
      * @return producte del client
      */
     private ManagedProduct mapProduct(ManagedProductDto dto) {
+        if (dto == null || dto.getId() == null) {
+            return null;
+        }
+
         return new ManagedProduct(
                 dto.getId(),
                 dto.getProductCategory(),

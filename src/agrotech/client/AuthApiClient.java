@@ -7,6 +7,7 @@ import agrotech.dto.auth.LoginRequestDto;
 import agrotech.dto.auth.LoginResponseDto;
 import agrotech.model.LoginResponse;
 import agrotech.model.User;
+import agrotech.session.SessionManager;
 import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -85,7 +86,9 @@ public class AuthApiClient {
      *
      * @return {@code true} si el logout és correcte; {@code false} altrament
      */
-    public boolean logout(String token) {
+    public boolean logout() {
+        String token = SessionManager.getCurrentToken();
+
         if (token == null || token.isBlank()) {
             return false;
         }

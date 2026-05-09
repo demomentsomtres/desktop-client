@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Panell de resum principal per a l'usuari proveïdor.
  *
  * @author Javier Santana Coronado
  */
@@ -19,7 +20,7 @@ public class SupplierDashboardPanel extends javax.swing.JPanel {
     private DefaultTableModel productsTableModel;
 
     /**
-     * Creates new form SupplierDashboardPanel
+     * Crea el panell de dashboard del proveïdor.
      */
     public SupplierDashboardPanel() {
         initComponents();

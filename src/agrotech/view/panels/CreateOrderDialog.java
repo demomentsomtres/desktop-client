@@ -712,16 +712,6 @@ public class CreateOrderDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Dona format monetari a un import.
-     *
-     * @param amount import numèric
-     * @return import formatat amb euros
-     */
-    private String formatMoney(double amount) {
-        return String.format("%.2f €", amount);
-    }
-
-    /**
      * Actualitza la columna d'estoc de la taula de productes.
      */
     private void updateProductsStock() {

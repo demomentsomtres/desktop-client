@@ -54,15 +54,16 @@ public class ProductsService {
      * @return resposta amb la llista de productes amb oferta automàtica
      */
     public ClientResponse<List<ManagedProduct>> getProductsWithExpirationOffer() {
+        String today = LocalDate.now().toString();
         String expirationDateBefore = LocalDate.now().plusDays(3).toString();
 
         return productApiClient.filterProducts(
                 null,
                 null,
                 null,
-                null,
+                today,
                 expirationDateBefore,
-                null,
+                1,
                 null,
                 null,
                 null,

@@ -26,6 +26,8 @@ import agrotech.service.SuppliersService;
  */
 public class ProductsPanel extends javax.swing.JPanel {
 
+    private static final String MIN_EXPIRATION_DATE = "1900-01-01";
+
     private final ProductsService productsService;
     private final SuppliersService suppliersService;
     private DefaultTableModel tableModel;
@@ -841,10 +843,21 @@ public class ProductsPanel extends javax.swing.JPanel {
 
             LocalDate.parse(expirationDate);
 
-            Double price = Double.valueOf(txtPrice.getText().trim());
-            Double cooperativeMargin = Double.valueOf(txtCooperativeMargin.getText().trim());
+            Double price = Double.valueOf(txtPrice.getText().trim().replace(",", "."));
+            Double cooperativeMargin = Double.valueOf(txtCooperativeMargin.getText().trim().replace(",", "."));
             Integer stock = Integer.valueOf(txtStock.getText().trim());
-            Double tax = Double.valueOf(txtTax.getText().trim());
+            Double tax = Double.valueOf(txtTax.getText().trim().replace(",", "."));
+
+            if (price < 0 || cooperativeMargin < 0 || cooperativeMargin > 100
+                    || stock < 0 || tax < 0 || tax > 100) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Preu, marge (%), estoc i impost (%) han de tenir valors vàlids.",
+                        "Avís",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
 
             ClientResponse<Void> response = productsService.saveProduct(
                     selectedProductId,
@@ -943,10 +956,20 @@ public class ProductsPanel extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Aplica els filtres introduïts al llistat de productes.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnApplyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyFiltersActionPerformed
         applyFilters();
     }//GEN-LAST:event_btnApplyFiltersActionPerformed
 
+    /**
+     * Neteja els filtres del llistat de productes.
+     *
+     * @param evt esdeveniment del botó
+     */
     private void btnClearFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFiltersActionPerformed
         clearFilters();
     }//GEN-LAST:event_btnClearFiltersActionPerformed
@@ -1003,7 +1026,6 @@ public class ProductsPanel extends javax.swing.JPanel {
             }
 
             Long supplierId = null;
-            Long userId = null;
             Map<Long, String> supplierNames = new HashMap<>();
 
             Role currentRole = SessionManager.getCurrentUser().getRole();
@@ -1030,7 +1052,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                 }
 
                 if (expirationAfter == null) {
-                    expirationAfter = "1900-01-01";
+                    expirationAfter = MIN_EXPIRATION_DATE;
                 }
 
             } else if (currentRole == Role.ADMIN) {
@@ -1041,7 +1063,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                 }
 
                 if (expirationAfter == null) {
-                    expirationAfter = "1900-01-01";
+                    expirationAfter = MIN_EXPIRATION_DATE;
                 }
 
             } else if (currentRole == Role.CUSTOMER) {
@@ -1060,7 +1082,7 @@ public class ProductsPanel extends javax.swing.JPanel {
             ClientResponse<List<ManagedProduct>> response = productsService.filterProducts(
                     category,
                     supplierId,
-                    userId,
+                    null,
                     expirationAfter,
                     expirationBefore,
                     minStock,
@@ -1193,6 +1215,10 @@ public class ProductsPanel extends javax.swing.JPanel {
             Map<Long, String> supplierNames
     ) {
         tableModel.setRowCount(0);
+
+        if (products == null) {
+            return;
+        }
 
         for (ManagedProduct product : products) {
             tableModel.addRow(new Object[]{
