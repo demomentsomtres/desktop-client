@@ -200,13 +200,11 @@ public class ProfilePanel extends javax.swing.JPanel {
         lblNewPassword.setText("Nova contrasenya");
 
         txtNewPassword.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtNewPassword.setText("jPasswordField1");
 
         lblConfirmPassword.setForeground(new java.awt.Color(120, 120, 120));
         lblConfirmPassword.setText("Confirma la contrasenya");
 
         txtConfirmPassword.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtConfirmPassword.setText("jPasswordField1");
 
         btnSave.setBackground(new java.awt.Color(63, 175, 92));
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
